@@ -5,7 +5,6 @@ import {
   SearchIcon,
   WifiIcon,
 } from "@/imagecomponents";
-import DashboardModals from "./DashboardModals";
 
 function LeftSection() {
   return (
@@ -20,8 +19,6 @@ function LeftSection() {
         </div>
         <div></div>
       </div>
-      {/* SEARCH MODAL */}
-      <DashboardModals />
     </section>
   );
 }

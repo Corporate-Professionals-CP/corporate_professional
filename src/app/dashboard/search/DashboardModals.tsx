@@ -1,13 +1,11 @@
+import CPModal from "@/components/CPModal";
 import CPprofileImg from "@/components/CPprofileImg";
 import { SearchIcon } from "@/imagecomponents";
 
 function DashboardModals() {
   return (
-    <div
-      className="fixed top-0 left-0 flex justify-center items-center h-screen w-screen"
-      style={{ backdropFilter: "blur(12px)" }}
-    >
-      <div className="bg-white border border-[#F1F5F9] w-[840] max-w-full rounded-2xl p-[18] max-h-2/3 overflow-y-scroll ">
+    <CPModal>
+      <div className="p-[18]">
         <div className="flex items-center gap-[11] py-3 mb-4">
           <SearchIcon size={20} />
           <input
@@ -48,7 +46,7 @@ function DashboardModals() {
           <CPprofileCard />
         </div>
       </div>
-    </div>
+    </CPModal>
   );
 }
 

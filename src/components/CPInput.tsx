@@ -1,4 +1,4 @@
-type CPInput = {
+type CPInputType = {
   type?: string;
   placeholder?: string;
   className?: string;
@@ -7,7 +7,7 @@ function CPInput({
   type = "text",
   placeholder = "Email Address",
   className = "",
-}: CPInput) {
+}: CPInputType) {
   if (type == "textarea") {
     return (
       <textarea
