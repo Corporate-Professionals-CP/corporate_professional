@@ -13,6 +13,7 @@
   --font-mono: var(--font-geist-mono);
   --font-helv-neue: var(--helv-neue);
   --color-primary: #7074ff;
+  --shadow-dropdown: 0px 12px 16px -4px #1018280a;
 }
 
 /* @media (prefers-color-scheme: dark) {

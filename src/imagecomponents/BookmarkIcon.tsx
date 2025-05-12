@@ -1,10 +1,10 @@
 import React from "react";
 
-function BookmarkIcon() {
+function BookmarkIcon({ size = "32" }: { size?: string }) {
   return (
     <svg
-      width="32"
-      height="32"
+      width={size}
+      height={size}
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

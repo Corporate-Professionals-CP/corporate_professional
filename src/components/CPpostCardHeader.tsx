@@ -1,3 +1,4 @@
+import MoreIcon from "@/imagecomponents/MoreIcon";
 import React from "react";
 
 function CPpostCardHeader() {
@@ -13,8 +14,9 @@ function CPpostCardHeader() {
         </p>
         <p className="text-[#64748B] text-sm ">Multidisciplinary Designer.</p>
       </div>
-      <div>
-        <span>1D</span>
+      <div className="flex items-center gap-2">
+        <span className="text-[#64748B] text-xs">1D</span>
+        <MoreIcon />
       </div>
     </div>
   );

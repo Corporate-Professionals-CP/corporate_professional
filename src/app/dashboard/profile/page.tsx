@@ -1,97 +1,90 @@
-import CPcheckbox from "@/components/CPcheckbox";
-import CPInput from "@/components/CPInput";
+"use client";
 import CPModal from "@/components/CPModal";
-import CPprofileImg from "@/components/CPprofileImg";
-import CPselect from "@/components/CPselect";
-import React from "react";
+import React, { useState } from "react";
+import General from "./General";
+import Contact from "./Contact";
+import WorkExperience from "./WorkExperience";
+import { GeneralIcon, SettingsIcon } from "@/imagecomponents";
+import ProfileIcon from "@/imagecomponents/ProfileIcon";
+import Volunteering from "./Volunteering";
+import Education from "./Education";
+import Certifications from "./Certifications";
+import Skills from "./Skills";
+import MiddleSection from "../MiddleSection";
+import RightSection from "../RightSection";
 
-function page() {
+function Page() {
+  const [tab, setTab] = useState<
+    | "general"
+    | "contact"
+    | "work_experience"
+    | "volunteering"
+    | "education"
+    | "certification"
+    | "skills"
+  >("general");
   return (
-    <CPModal>
-      <div className="flex text-[#020617] p-2">
-        <div className="flex flex-col gap-8">{/* icons */}</div>
-        <div className="w-[280] border-[#E2E8F0] border-r py-8 ">
-          <h3 className="mb-5 text-lg font-medium px-4.5">Profile</h3>
-          <ul>
-            <Item text="General" />
-            <Item text="Contact" />
-            <Item text="Work Experience" />
-            <Item text="Volunteering" />
-            <Item text="Education" />
-            <Item text="Certifications" />
-            <Item text="Skills" />
-          </ul>
-        </div>
-        <div className="flex-1 p-4.5">
-          <div className="flex items-center gap-4 mb-8">
-            <CPprofileImg size={63} />
-            <p className="font-medium text-sm ">Update image</p>
+    <>
+      <MiddleSection />
+      <RightSection />
+
+      <CPModal>
+        <div className="flex text-[#020617] p-2">
+          <div className="flex flex-col gap-8 bg-[#F8FAFC] px-4 py-8">
+            <button>
+              <ProfileIcon />
+            </button>
+            <button>
+              <GeneralIcon />
+            </button>
+            <button>
+              <SettingsIcon />
+            </button>
           </div>
-          <form>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">Name</label>
-              <CPInput placeholder="Fullname" />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">
-                What do you do?
-              </label>
-              <CPInput placeholder="Fullname" />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">
-                Which industry best describes your work?
-              </label>
-              <CPselect />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">Location</label>
-              <CPInput placeholder="Where are you based?" />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">Pronouns</label>
-              <CPInput placeholder="They/them, etc" />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">
-                Are you a recruiter?
-              </label>
-              <div className="flex gap-2">
-                <CPcheckbox text="Yes" />
-                <CPcheckbox text="No" />
-              </div>
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">
-                Who should see your profile?
-              </label>
-              <div className="flex gap-2">
-                <CPcheckbox text="Public" />
-                <CPcheckbox text="Private" />
-              </div>
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">
-                How experienced are you?
-              </label>
-              <CPselect />
-            </div>
-            <div className="mb-5">
-              <label className="mb-2 text-sm text-[#475569]">About</label>
-              <CPInput type="textarea" className="h-[169]" />
-            </div>
-          </form>
+          <div className="w-[280] border-[#E2E8F0] border-r py-8 ">
+            <h3 className="mb-5 text-lg font-medium px-4.5">Profile</h3>
+            <ul>
+              <Item text="General" onClick={() => setTab("general")} />
+              <Item text="Contact" onClick={() => setTab("contact")} />
+              <Item
+                text="Work Experience"
+                onClick={() => setTab("work_experience")}
+              />
+              <Item
+                text="Volunteering"
+                onClick={() => setTab("volunteering")}
+              />
+              <Item text="Education" onClick={() => setTab("education")} />
+              <Item
+                text="Certifications"
+                onClick={() => setTab("certification")}
+              />
+              <Item text="Skills" onClick={() => setTab("skills")} />
+            </ul>
+          </div>
+          <div className="flex-1 p-4.5">
+            {tab == "general" && <General />}
+            {tab == "contact" && <Contact />}
+            {tab == "work_experience" && <WorkExperience />}
+            {tab == "volunteering" && <Volunteering />}
+            {tab == "education" && <Education />}
+            {tab == "certification" && <Certifications />}
+            {tab == "skills" && <Skills />}
+          </div>
         </div>
-      </div>
-    </CPModal>
+      </CPModal>
+    </>
   );
 }
 
-const Item = ({ text }: { text: string }) => {
+const Item = ({ text, onClick }: { text: string; onClick: () => void }) => {
   return (
-    <li className="text-sm py-3 px-4.5 flex items-center justify-between text-[#475569]">
+    <li
+      className="text-sm py-3 px-4.5 flex items-center justify-between text-[#475569] cursor-pointer"
+      onClick={onClick}
+    >
       {text}
     </li>
   );
 };
-export default page;
+export default Page;
