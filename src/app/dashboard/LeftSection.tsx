@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 import {
   BookmarkIcon,
   HomeIcon,
@@ -7,28 +7,44 @@ import {
   SearchIcon,
   WifiIcon,
 } from "@/imagecomponents";
+import Link from "next/link";
+
+import { usePathname } from "next/navigation";
 
 function LeftSection() {
-  const router = useRouter();
+  useAuth();
+  const pathname = usePathname();
   return (
-    <section className="flex-1 py-4 p-8 flex justify-end">
+    <section className="w-[420] py-4 p-8 flex justify-end">
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
-          <button onClick={() => router.push("dashboard/profile")}>
-            <HomeIcon />
-          </button>
-          <button onClick={() => router.push("dashboard/profile")}>
-            <SearchIcon />
-          </button>
-          <button onClick={() => router.push("dashboard/profile")}>
-            <WifiIcon />
-          </button>
-          <button onClick={() => router.push("dashboard/profile")}>
-            <BookmarkIcon />
-          </button>
-          <button onClick={() => router.push("dashboard/profile")}>
-            <NotificationIcon />
-          </button>
+          <Link href="/dashboard">
+            <HomeIcon
+              color={pathname == "/dashboard" ? "#7074ff" : "#020617"}
+            />
+          </Link>
+          <Link href="/dashboard/search">
+            <SearchIcon
+              color={pathname == "/dashboard/search" ? "#7074ff" : "#020617"}
+            />
+          </Link>
+          <Link href="/dashboard/network">
+            <WifiIcon
+              color={pathname == "/dashboard/network" ? "#7074ff" : "#020617"}
+            />
+          </Link>
+          <Link href="/dashboard/bookmark">
+            <BookmarkIcon
+              color={pathname == "/dashboard/bookmark" ? "#7074ff" : "#020617"}
+            />
+          </Link>
+          <Link href="/dashboard/notification">
+            <NotificationIcon
+              color={
+                pathname == "/dashboard/notification" ? "#7074ff" : "#020617"
+              }
+            />
+          </Link>
         </div>
         <div></div>
       </div>

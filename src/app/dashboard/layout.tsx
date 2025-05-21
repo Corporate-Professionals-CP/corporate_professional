@@ -7,7 +7,7 @@ function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex min-h-screen">
+    <main className="flex min-h-screen justify-center">
       <LeftSection />
       {children}
     </main>

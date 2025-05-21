@@ -1,13 +1,22 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
-import { TWorkExperienceSchema, WorkExperienceSchema } from "./type";
+import { TSkill, TWorkExperienceSchema, WorkExperienceSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
+import httprequest from "@/utils/httpRequest";
+import useSWR from "swr";
+import { CPspinnerLoader } from "@/components";
 
 function Skills() {
+  const { data = [], isLoading } = useSWR("/api/skills/all", () =>
+    httprequest
+      .get("/api/skills/all")
+      .then((res) => res.data as TSkill[])
+      .catch(() => [])
+  );
   const [addSkills, setAddSkills] = useState(false);
   return (
     <div>
@@ -24,8 +33,10 @@ function Skills() {
       </div>
       {addSkills ? (
         <AddNewSkills setAddSkills={setAddSkills} />
+      ) : isLoading ? (
+        <CPspinnerLoader size={40} />
       ) : (
-        <ListContact setAddSkills={setAddSkills} />
+        <ListContact setAddSkills={setAddSkills} skills={data} />
       )}
     </div>
   );
@@ -33,29 +44,31 @@ function Skills() {
 
 const ListContact = ({
   setAddSkills,
+  skills = [],
 }: {
   setAddSkills: React.Dispatch<React.SetStateAction<boolean>>;
+  skills?: TSkill[];
 }) => {
-  return (
-    <CPEmptyState
-      textIcon={"💡"}
-      btnText="Add a skill you have"
-      action={() => setAddSkills(true)}
-    />
-  );
-
-  return (
-    <div>
-      <CPtableListWorkExp
-        left="2023 - 2024"
-        title="Head of Strategy at Refresh Studio"
-        location="Remote"
-        list={[
-          "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-        ]}
+  if (skills.length == 0) {
+    return (
+      <CPEmptyState
+        textIcon={"💡"}
+        btnText="Add a skill you have"
+        action={() => setAddSkills(true)}
       />
-    </div>
-  );
+    );
+  }
+  return skills.map((skill) => (
+    <CPtableListWorkExp
+      key={skill.id}
+      left="2023 - 2024"
+      title="Head of Strategy at Refresh Studio"
+      location="Remote"
+      list={[
+        "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
+      ]}
+    />
+  ));
 };
 function AddNewSkills({
   setAddSkills,

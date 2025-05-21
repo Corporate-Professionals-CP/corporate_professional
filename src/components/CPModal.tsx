@@ -1,12 +1,30 @@
-import React, { ReactNode } from "react";
+"use client";
+import React, { ReactNode, useEffect, useRef } from "react";
 
 function CPModal({
   children,
   width = 840,
+  backgroundAction = () => {},
 }: {
   children: ReactNode;
   width?: number;
+  backgroundAction?: () => void;
 }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        backgroundAction();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div
       className="fixed top-0 left-0 flex justify-center items-center h-screen w-screen"
@@ -17,6 +35,7 @@ function CPModal({
         style={{
           width: width,
         }}
+        ref={modalRef}
       >
         {children}
       </div>

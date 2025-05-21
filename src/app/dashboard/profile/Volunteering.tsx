@@ -1,13 +1,29 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
-import { TWorkExperienceSchema, WorkExperienceSchema } from "./type";
+import {
+  TVolunteering,
+  TWorkExperienceSchema,
+  WorkExperienceSchema,
+} from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
+import httprequest from "@/utils/httpRequest";
+import useSWR, { mutate } from "swr";
+import { CPspinnerLoader } from "@/components";
+import { errorMessage, successMessage } from "@/utils/toastalert";
+import useSWRMutation from "swr/mutation";
 
 function Volunteering() {
+  const { data = [], isLoading } = useSWR("/api/contacts/", () =>
+    httprequest
+      .get("/api/volunteering/")
+      .then((res) => res.data as TVolunteering[])
+      .catch(() => [])
+  );
+
   const [addVolunteering, setAddVolunteering] = useState(false);
   return (
     <div>
@@ -24,8 +40,13 @@ function Volunteering() {
       </div>
       {addVolunteering ? (
         <AddNewVolunteer setAddVolunteering={setAddVolunteering} />
+      ) : isLoading ? (
+        <CPspinnerLoader size={40} />
       ) : (
-        <ListContact setAddVolunteering={setAddVolunteering} />
+        <ListContact
+          setAddVolunteering={setAddVolunteering}
+          volunteers={data}
+        />
       )}
     </div>
   );
@@ -33,42 +54,76 @@ function Volunteering() {
 
 const ListContact = ({
   setAddVolunteering,
+  volunteers = [],
 }: {
   setAddVolunteering: React.Dispatch<React.SetStateAction<boolean>>;
+  volunteers?: TVolunteering[];
 }) => {
-  return (
-    <CPEmptyState
-      textIcon={"🤝"}
-      btnText="Add a volunteering role you had"
-      action={() => setAddVolunteering(true)}
-    />
-  );
-  return (
-    <div>
-      <CPtableListWorkExp
-        left="2023 - 2024"
-        title="Head of Strategy at Refresh Studio"
-        location="Remote"
-        list={[
-          "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-        ]}
+  if (volunteers.length == 0) {
+    return (
+      <CPEmptyState
+        textIcon={"🤝"}
+        btnText="Add a volunteering role you had"
+        action={() => setAddVolunteering(true)}
       />
-    </div>
-  );
+    );
+  }
+  return volunteers.map((vol) => (
+    <CPtableListWorkExp
+      key={vol.id}
+      left={`${vol.start_date} ${vol.end_date}`}
+      title={vol.organization}
+      location={vol.location}
+      list={[vol.description]}
+    />
+  ));
 };
+
+async function addvolunteer(
+  url: string,
+  { arg }: { arg: TWorkExperienceSchema }
+) {
+  const response = await httprequest.post("/api/volunteering/", {
+    role: arg.title,
+    organization: arg.company,
+    // organization_url: string,
+    location: arg.locatiom,
+    start_date: arg.from,
+    end_date: arg.to,
+    // currently_volunteering: false,
+    description: arg.description,
+  });
+
+  return response.data;
+}
+
 function AddNewVolunteer({
   setAddVolunteering,
 }: {
   setAddVolunteering: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
+    handleSubmit,
     register,
     formState: { errors },
   } = useForm<TWorkExperienceSchema>({
     resolver: zodResolver(WorkExperienceSchema),
   });
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/volunteering/",
+    addvolunteer
+  );
+  const onclick = (data: TWorkExperienceSchema) => {
+    try {
+      trigger(data);
+      mutate("/api/contacts/");
+      successMessage("Volunteering added successfully");
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   return (
-    <section>
+    <form onSubmit={handleSubmit(onclick)}>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
@@ -118,8 +173,8 @@ function AddNewVolunteer({
           <label className="text-[#475569] text-sm mb-2">URL</label>
           <CPInput
             placeholder="https://example.com"
-            // error={errors.username?.message}
-            // {...register("username")}
+            error={errors.url?.message}
+            {...register("url")}
           />
         </div>
       </div>
@@ -145,9 +200,9 @@ function AddNewVolunteer({
         <button onClick={() => setAddVolunteering(false)} className="p-3">
           Back
         </button>
-        <CPsmallButton type="submit" text="Save" />
+        <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
-    </section>
+    </form>
   );
 }
 

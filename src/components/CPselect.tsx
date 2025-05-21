@@ -3,7 +3,7 @@ import DropDownIcon from "@/imagecomponents/DropDownIcon";
 import { useEffect, useRef, useState } from "react";
 // import { ChangeHandler } from "react-hook-form";
 
-type CPInput = {
+type CPselectType = {
   className?: string;
 
   placeholder?: string;
@@ -20,7 +20,7 @@ function CPselect({
   items,
   value,
   onChange = () => {},
-}: CPInput) {
+}: CPselectType) {
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);

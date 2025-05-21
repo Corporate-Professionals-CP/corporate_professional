@@ -1,13 +1,28 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
-import { TWorkExperienceSchema, WorkExperienceSchema } from "./type";
+import {
+  TEducation,
+  TWorkExperienceSchema,
+  WorkExperienceSchema,
+} from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
+import httprequest from "@/utils/httpRequest";
+import useSWR, { mutate } from "swr";
+import { CPspinnerLoader } from "@/components";
+import useSWRMutation from "swr/mutation";
+import { errorMessage, successMessage } from "@/utils/toastalert";
 
 function Education() {
+  const { data = [], isLoading } = useSWR("/education/me", () =>
+    httprequest
+      .get("/education/me")
+      .then((res) => res.data as TEducation[])
+      .catch(() => [])
+  );
   const [addEduction, setAddEduction] = useState(false);
   return (
     <div>
@@ -24,8 +39,10 @@ function Education() {
       </div>
       {addEduction ? (
         <AddNewEduction setAddEduction={setAddEduction} />
+      ) : isLoading ? (
+        <CPspinnerLoader size={40} />
       ) : (
-        <ListContact setAddEduction={setAddEduction} />
+        <ListContact setAddEduction={setAddEduction} educations={data} />
       )}
     </div>
   );
@@ -33,29 +50,50 @@ function Education() {
 
 const ListContact = ({
   setAddEduction,
+  educations = [],
 }: {
   setAddEduction: React.Dispatch<React.SetStateAction<boolean>>;
+  educations?: TEducation[];
 }) => {
-  return (
-    <CPEmptyState
-      textIcon={"🎓"}
-      btnText="Add education"
-      action={() => setAddEduction(true)}
-    />
-  );
-  return (
-    <div>
-      <CPtableListWorkExp
-        left="2023 - 2024"
-        title="Head of Strategy at Refresh Studio"
-        location="Remote"
-        list={[
-          "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-        ]}
+  if (educations.length == 0) {
+    return (
+      <CPEmptyState
+        textIcon={"🎓"}
+        btnText="Add education"
+        action={() => setAddEduction(true)}
       />
-    </div>
-  );
+    );
+  }
+  return educations.map((edu) => (
+    <CPtableListWorkExp
+      key={edu.id}
+      left="2023 - 2024"
+      title="Head of Strategy at Refresh Studio"
+      location="Remote"
+      list={[
+        "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
+      ]}
+    />
+  ));
 };
+
+async function addEducation(
+  url: string,
+  { arg }: { arg: TWorkExperienceSchema }
+) {
+  const response = await httprequest.post("/api/education/", {
+    degree: arg.company,
+    school: arg.company,
+    location: arg.locatiom,
+    url: arg.url,
+    description: arg.description,
+    media_url: arg.url,
+    from_date: arg.from,
+    to_date: arg.to,
+  });
+
+  return response.data;
+}
 
 function AddNewEduction({
   setAddEduction,
@@ -63,13 +101,27 @@ function AddNewEduction({
   setAddEduction: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
+    handleSubmit,
     register,
     formState: { errors },
   } = useForm<TWorkExperienceSchema>({
     resolver: zodResolver(WorkExperienceSchema),
   });
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/contacts/post",
+    addEducation
+  );
+  const onclick = (data: TWorkExperienceSchema) => {
+    try {
+      trigger(data);
+      successMessage("Education added successfully");
+      mutate("/api/education/me");
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   return (
-    <section>
+    <form onSubmit={handleSubmit(onclick)}>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
@@ -146,9 +198,9 @@ function AddNewEduction({
         <button onClick={() => setAddEduction(false)} className="p-3">
           Back
         </button>
-        <CPsmallButton type="submit" text="Save" />
+        <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
-    </section>
+    </form>
   );
 }
 

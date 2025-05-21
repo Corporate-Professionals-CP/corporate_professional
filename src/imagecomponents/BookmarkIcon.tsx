@@ -1,6 +1,12 @@
 import React from "react";
 
-function BookmarkIcon({ size = "32" }: { size?: string }) {
+function BookmarkIcon({
+  size = "32",
+  color = "#020617",
+}: {
+  size?: string;
+  color?: string;
+}) {
   return (
     <svg
       width={size}
@@ -11,7 +17,7 @@ function BookmarkIcon({ size = "32" }: { size?: string }) {
     >
       <path
         d="M23.4578 4.42988C24.9252 4.60018 26 5.86533 26 7.34265V28L16 23L6 28V7.34265C6 5.86533 7.07477 4.60018 8.54224 4.42988C10.9887 4.14595 13.4773 4 16 4C18.5227 4 21.0113 4.14595 23.4578 4.42988Z"
-        stroke="#020617"
+        stroke={color}
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"

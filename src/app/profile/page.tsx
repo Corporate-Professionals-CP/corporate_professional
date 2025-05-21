@@ -1,10 +1,16 @@
+"use client";
 import CPdropDown from "@/components/CPdropDown";
 import CPsideOnboard from "@/components/CPsideOnboard";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import { CameraIcon } from "@/imagecomponents";
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
+  const router = useRouter();
+  const onClick = () => {
+    router.push("/dashboard");
+  };
   return (
     <main className="bg-primary p-4 h-screen min-h-screen flex ">
       <CPsideOnboard />
@@ -108,7 +114,7 @@ export default function Profile() {
           </div>
           <div className="flex justify-end gap-2 py-12">
             <button className="p-3">Back</button>
-            <CPsmallButton text="Next" />
+            <CPsmallButton text="Next" onClick={onClick} />
           </div>
         </div>
       </div>
@@ -126,21 +132,27 @@ const CPtableList = ({ left, right }: { left: string; right: string }) => {
 };
 
 const TopProfile = () => {
+  const onClickEdit = () => {};
+  const onClickPrint = () => {
+    window.print();
+    window.alert("hi there");
+  };
   return (
     <div className="flex items-center ">
       {/* picture */}
       <div className="bg-[#050505] w-[90] h-[90] rounded-full  flex justify-center items-center relative">
         <p className="text-5xl text-white">D</p>
-        <div
+        <label
           className="rounded-full absolute -bottom-4 bg-white text-[#050505] px-[11] py-[5] text-xs flex items-center gap-1"
           style={{
             boxShadow:
               "0px 17.29px 20.75px -3.46px #10182814, 0px 6.92px 6.92px -3.46px #10182808 ",
           }}
         >
+          <input className="hidden" type="file" />
           <CameraIcon />
           <span className="translate-y-0.5">Add</span>
-        </div>
+        </label>
       </div>
       <div className="ml-5 flex-1">
         <div className="flex gap-5 items-center mb-2">
@@ -150,7 +162,12 @@ const TopProfile = () => {
         <p className="text-[#64748B]">Product Designer in Lagos. He/Him</p>
       </div>
       <div className="self-start">
-        <CPdropDown />
+        <CPdropDown
+          items={[
+            { name: "Edit Profile", onclick: onClickEdit },
+            { name: "Print Profile", onclick: onClickPrint },
+          ]}
+        />
       </div>
       {/* more */}
     </div>

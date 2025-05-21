@@ -21,31 +21,16 @@ import CPsmallButton from "@/components/CPsmallButton";
 import { Dispatch, SetStateAction, useState } from "react";
 import httprequest from "@/utils/httpRequest";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-
-const loginUser = async (url: string, { arg }: { arg: TLoginSchema }) => {
-  await httprequest.post("auth/login", {
-    email: arg.email,
-    password: arg.password,
-  });
-};
-
-const createOptions = (router: AppRouterInstance) => ({
-  onSuccess: () => {
-    // set global context up
-    router.push("/dashboard");
-  },
-});
+// import useUser from "@/statestore/useUser";
+import { loginUser } from "./functions";
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
+  // const state = useUser((state) => state.updateBears);
   const router = useRouter();
-  const { trigger, isMutating, error } = useSWRMutation(
-    "auth/login",
-    loginUser,
-    createOptions(router)
-  );
+  const { trigger, isMutating } = useSWRMutation("auth/login", loginUser);
+
   const {
     register,
     handleSubmit,
@@ -53,8 +38,15 @@ export default function Login() {
   } = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
   });
-  const onSubmit = (data: TLoginSchema) => {
-    trigger(data);
+  const onSubmit = async (data: TLoginSchema) => {
+    try {
+      await trigger(data);
+      successMessage("Login Successful");
+      router.push("/dashboard");
+    } catch (err) {
+      console.log(err);
+      errorMessage(err);
+    }
   };
   return (
     <main
@@ -86,8 +78,8 @@ export default function Login() {
             placeholder="Password"
             error={errors.password?.message}
           />
-          <div className="flex justify-between mb-6 text-sm">
-            <p className="text-[#E62E2E] ">{error && "Incorrect password"}</p>
+          <div className="flex justify-end mb-6 text-sm">
+            {/* <p className="text-[#E62E2E] ">{error && "Incorrect password"}</p> */}
             <button type="button" onClick={() => setModalOpen(true)}>
               Forgot password?
             </button>

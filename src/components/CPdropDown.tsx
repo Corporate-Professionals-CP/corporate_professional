@@ -2,7 +2,11 @@
 import MoreIcon from "@/imagecomponents/MoreIcon";
 import React, { useEffect, useRef, useState } from "react";
 
-function CPdropDown() {
+function CPdropDown({
+  items,
+}: {
+  items: { name: string; onclick: () => void }[];
+}) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -29,12 +33,15 @@ function CPdropDown() {
       </button>
       {open && (
         <div className="p-1 rounded-lg min-w-[187] absolute shadow-dropdown right-0 top-8 bg-white">
-          <p className="text-[#020617] text-sm py-3 px-2 hover:bg-[#F8FAFC]">
-            Edit Profile
-          </p>
-          <p className="text-[#020617] text-sm py-3 px-2  hover:bg-[#F8FAFC]">
-            Print profile
-          </p>
+          {items.map((item) => (
+            <p
+              className="text-[#020617] text-sm py-3 px-2 hover:bg-[#F8FAFC]"
+              onClick={item.onclick}
+              key={item.name}
+            >
+              {item.name}
+            </p>
+          ))}
         </div>
       )}
     </div>

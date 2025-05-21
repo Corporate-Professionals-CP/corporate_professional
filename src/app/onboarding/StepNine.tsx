@@ -18,8 +18,10 @@ const options = {
 
 const StepNine = ({
   setStep,
+  onChange,
 }: {
   setStep: Dispatch<SetStateAction<number>>;
+  onChange: (file: File) => void;
 }) => {
   const { trigger } = useSWRMutation(
     "/api/profiles/user_id/cv",
@@ -27,7 +29,8 @@ const StepNine = ({
     options
   );
   const handleFile = (file: File) => {
-    return;
+    onChange(file);
+    // [[store in state instead]]
     trigger(file);
   };
   const onDrop = useCallback((acceptedFiles: File[]) => {

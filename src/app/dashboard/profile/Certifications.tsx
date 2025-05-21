@@ -1,13 +1,29 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
-import { TWorkExperienceSchema, WorkExperienceSchema } from "./type";
+import {
+  TCertification,
+  TWorkExperienceSchema,
+  WorkExperienceSchema,
+} from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
+import useSWR, { mutate } from "swr";
+import httprequest from "@/utils/httpRequest";
+import useSWRMutation from "swr/mutation";
+import { errorMessage, successMessage } from "@/utils/toastalert";
+import CPspinnerLoader from "@/components/CPspinnerLoader";
 
 function Certifications() {
+  const { data = [], isLoading } = useSWR("/api/certification/me", () =>
+    httprequest
+      .get("/api/certification/me")
+      .then((res) => res.data as TCertification[])
+      .catch(() => [])
+  );
+
   const [addCertifications, setAddCertifications] = useState(false);
   return (
     <div>
@@ -24,8 +40,13 @@ function Certifications() {
       </div>
       {addCertifications ? (
         <AddNewCertification setAddCertifications={setAddCertifications} />
+      ) : isLoading ? (
+        <CPspinnerLoader size={40} />
       ) : (
-        <ListContact setAddCertifications={setAddCertifications} />
+        <ListContact
+          setAddCertifications={setAddCertifications}
+          certifications={data}
+        />
       )}
     </div>
   );
@@ -33,43 +54,77 @@ function Certifications() {
 
 const ListContact = ({
   setAddCertifications,
+  certifications,
 }: {
   setAddCertifications: React.Dispatch<React.SetStateAction<boolean>>;
+  certifications: TCertification[];
 }) => {
-  return (
-    <CPEmptyState
-      textIcon={"📜"}
-      btnText="Add a certificate you have"
-      action={() => setAddCertifications(true)}
-    />
-  );
-
-  return (
-    <div>
-      <CPtableListWorkExp
-        left="2023 - 2024"
-        title="Head of Strategy at Refresh Studio"
-        location="Remote"
-        list={[
-          "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-        ]}
+  if (certifications.length == 0) {
+    return (
+      <CPEmptyState
+        textIcon={"📜"}
+        btnText="Add a certificate you have"
+        action={() => setAddCertifications(true)}
       />
-    </div>
-  );
+    );
+  }
+
+  return certifications.map((item) => (
+    <CPtableListWorkExp
+      key={item.id}
+      left={`${item.issued_date} - ${item.expiration_date}`}
+      title={item.name}
+      location={item.organization}
+      link={item.media_url}
+      list={[item.description]}
+    />
+  ));
 };
+
+const submitCertification = async (
+  url: string,
+  { arg }: { arg: TWorkExperienceSchema }
+) => {
+  const response = await httprequest.post("/api/certification/", {
+    name: arg.title,
+    organization: arg.company,
+    url: arg.url,
+    description: arg.description,
+    media_url: arg.url,
+    issued_date: arg.from,
+    expiration_date: arg.to,
+  });
+  mutate("/api/certification/me");
+  return response.data;
+};
+
 function AddNewCertification({
   setAddCertifications,
 }: {
   setAddCertifications: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
+    handleSubmit,
     register,
     formState: { errors },
   } = useForm<TWorkExperienceSchema>({
     resolver: zodResolver(WorkExperienceSchema),
   });
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/certification",
+    submitCertification
+  );
+  const onSubmit = async (data: TWorkExperienceSchema) => {
+    try {
+      await trigger(data);
+      successMessage("Certification added");
+      setAddCertifications(false);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   return (
-    <section>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
@@ -146,9 +201,9 @@ function AddNewCertification({
         <button onClick={() => setAddCertifications(false)} className="p-3">
           Back
         </button>
-        <CPsmallButton type="submit" text="Save" />
+        <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
-    </section>
+    </form>
   );
 }
 

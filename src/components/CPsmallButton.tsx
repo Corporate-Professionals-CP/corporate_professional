@@ -1,13 +1,26 @@
+import Link from "next/link";
 import React, { ButtonHTMLAttributes } from "react";
 
 function CPsmallButton({
   text,
   loading = false,
+  isLink = undefined,
   ...props
 }: {
   text: string;
   loading?: boolean;
+  isLink?: string | undefined;
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
+  if (isLink) {
+    return (
+      <Link
+        href={isLink}
+        className={" py-3 px-6 rounded-full text-white font-medium bg-primary"}
+      >
+        {text}
+      </Link>
+    );
+  }
   return (
     <button
       {...props}

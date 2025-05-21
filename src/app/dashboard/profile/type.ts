@@ -32,3 +32,70 @@ export const WorkExperienceSchema = z.object({
 });
 
 export type TWorkExperienceSchema = z.infer<typeof WorkExperienceSchema>;
+
+export type TCertification = {
+  name: string;
+  organization: string;
+  url: string;
+  description: string;
+  media_url: string;
+  issued_date: string;
+  expiration_date: string;
+  id: string;
+  created_at: string;
+};
+
+export type TContact = {
+  id: string;
+  type: string;
+  platform_name: string;
+  username: string;
+  url: string;
+  created_at: string;
+};
+
+export type TWorkExperience = {
+  title: string;
+  company: string;
+  company_url: string;
+  location: string;
+  employment_type: string;
+  start_date: string;
+  end_date: string;
+  currently_working: boolean;
+  description: string;
+  achievements: string;
+  id: string;
+  created_at: string;
+};
+
+export type TVolunteering = {
+  role: string;
+  organization: string;
+  organization_url: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  currently_volunteering: boolean;
+  description: string;
+  id: string;
+  created_at: string;
+};
+
+export type TEducation = {
+  degree: string;
+  school: string;
+  location: string;
+  url: string;
+  description: string;
+  media_url: string;
+  from_date: string;
+  to_date: string;
+  id: string;
+  created_at: string;
+};
+
+export type TSkill = {
+  id: 0;
+  name: string;
+};

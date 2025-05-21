@@ -1,10 +1,17 @@
+"use client";
 import CPModal from "@/components/CPModal";
 import CPprofileImg from "@/components/CPprofileImg";
+import CPsearchFIlterDropDown from "@/components/CPsearchFIlterDropDown";
 import { SearchIcon } from "@/imagecomponents";
+import { useRouter } from "next/navigation";
 
 function DashboardModals() {
+  const router = useRouter();
+  const handleCloseModal = () => {
+    router.push("/dashboard");
+  };
   return (
-    <CPModal>
+    <CPModal backgroundAction={handleCloseModal}>
       <div className="p-[18]">
         <div className="flex items-center gap-[11] py-3 mb-4">
           <SearchIcon size={20} />
@@ -14,12 +21,96 @@ function DashboardModals() {
           />
         </div>
         <div className="flex flex-wrap gap-2 mb-9">
-          <CPsmallTab text={"Role"} />
-          <CPsmallTab text={"Location"} />
-          <CPsmallTab text={"Has worked at"} />
-          <CPsmallTab text={"Industry"} />
-          <CPsmallTab text={"Years of experience"} />
-          <CPsmallTab text={"Skill"} />
+          <CPsearchFIlterDropDown
+            tabText="Role"
+            items={[
+              { text: "Product Designer", val: "Product Designe", number: 237 },
+              {
+                text: "Senior Product Designer",
+                val: "Senior Product Designer",
+                number: 12,
+              },
+              {
+                text: "Graphics Designer",
+                val: "Graphics Designer",
+                number: 1542,
+              },
+              { text: "UX Designer", val: "UX Designer", number: 12 },
+              { text: "UI Designer", val: "UI Designer", number: 12 },
+              { text: "UI/UX Designer", val: "UI/UX Designer", number: 12 },
+              {
+                text: "Software Engineer",
+                val: "Software Engineer",
+                number: 309,
+              },
+            ]}
+            placeholder="Search roles"
+          />
+          <CPsearchFIlterDropDown
+            tabText="Location"
+            items={[
+              { text: "United States", val: "United States", number: 237 },
+              {
+                text: "California, United States",
+                val: "California, United States",
+                number: 12,
+              },
+              {
+                text: "New York, United States",
+                val: "New York, United States",
+                number: 1542,
+              },
+              { text: "United Kingdom", val: "United Kingdom", number: 12 },
+              { text: "Canada", val: "Canada", number: 765 },
+              { text: "London, England", val: "London, England", number: 289 },
+              { text: "Brazil", val: "Brazil", number: 309 },
+            ]}
+            placeholder="Search cities or countries"
+          />
+
+          <CPsearchFIlterDropDown
+            tabText="Has worked at"
+            items={[
+              { text: "Linkedin", val: "Linkedin", number: 227 },
+              { text: "Twitter", val: "Twitter", number: 227 },
+              { text: "X", val: "X", number: 227 },
+              { text: "Email", val: "email", number: 227 },
+            ]}
+            placeholder="Search roles"
+          />
+
+          <CPsearchFIlterDropDown
+            tabText="Industry"
+            items={[
+              { text: "Linkedin", val: "Linkedin", number: 227 },
+              { text: "Twitter", val: "Twitter", number: 227 },
+              { text: "X", val: "X", number: 227 },
+              { text: "Email", val: "email", number: 227 },
+            ]}
+            placeholder="Search roles"
+          />
+
+          <CPsearchFIlterDropDown
+            tabText="Years of experience"
+            items={[
+              { text: "Linkedin", val: "Linkedin", number: 227 },
+              { text: "Twitter", val: "Twitter", number: 227 },
+              { text: "X", val: "X", number: 227 },
+              { text: "Email", val: "email", number: 227 },
+            ]}
+            placeholder="Search roles"
+          />
+
+          <CPsearchFIlterDropDown
+            tabText="Skill"
+            items={[
+              { text: "Linkedin", val: "Linkedin", number: 227 },
+              { text: "Twitter", val: "Twitter", number: 227 },
+              { text: "X", val: "X", number: 227 },
+              { text: "Email", val: "email", number: 227 },
+            ]}
+            placeholder="Search roles"
+          />
         </div>
         <div className="mb-4">
           <h4 className="text-sm text-[#64748B] mb-2">Recently Viewed</h4>
@@ -49,14 +140,6 @@ function DashboardModals() {
     </CPModal>
   );
 }
-
-const CPsmallTab = ({ text }: { text: string }) => {
-  return (
-    <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full">
-      {text}
-    </div>
-  );
-};
 
 const CPprofileCard = () => {
   return (

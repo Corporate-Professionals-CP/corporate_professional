@@ -4,10 +4,26 @@ import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { TWorkExperienceSchema, WorkExperienceSchema } from "./type";
+import {
+  TWorkExperience,
+  TWorkExperienceSchema,
+  WorkExperienceSchema,
+} from "./type";
 import CPEmptyState from "@/components/CPEmptyState";
+import useSWR, { mutate } from "swr";
+import httprequest from "@/utils/httpRequest";
+import { CPspinnerLoader } from "@/components";
+import useSWRMutation from "swr/mutation";
+import { errorMessage, successMessage } from "@/utils/toastalert";
 
 const WorkExperience = () => {
+  const { data = [], isLoading } = useSWR("/api/work-experiences/", () =>
+    httprequest
+      .get("/api/work-experiences/")
+      .then((res) => res.data as TWorkExperience[])
+      .catch(() => [])
+  );
+
   const [addExperience, setAddExperience] = useState(false);
   return (
     <div>
@@ -24,8 +40,10 @@ const WorkExperience = () => {
       </div>
       {addExperience ? (
         <AddNewExperience setAddExperience={setAddExperience} />
+      ) : isLoading ? (
+        <CPspinnerLoader size={40} />
       ) : (
-        <ListContact setAddExperience={setAddExperience} />
+        <ListContact setAddExperience={setAddExperience} experiences={data} />
       )}
     </div>
   );
@@ -33,42 +51,80 @@ const WorkExperience = () => {
 
 const ListContact = ({
   setAddExperience,
+  experiences = [],
 }: {
   setAddExperience: React.Dispatch<React.SetStateAction<boolean>>;
+
+  experiences?: TWorkExperience[];
 }) => {
-  return (
-    <CPEmptyState
-      textIcon={"💼"}
-      btnText="Add workplace"
-      action={() => setAddExperience(true)}
-    />
-  );
-  return (
-    <div>
-      <CPtableListWorkExp
-        left="2023 - 2024"
-        title="Head of Strategy at Refresh Studio"
-        location="Remote"
-        list={[
-          "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-        ]}
+  if (experiences.length == 0) {
+    return (
+      <CPEmptyState
+        textIcon={"💼"}
+        btnText="Add workplace"
+        action={() => setAddExperience(true)}
       />
-    </div>
-  );
+    );
+  }
+  return experiences.map((exp) => (
+    <CPtableListWorkExp
+      key={exp.id}
+      left={`${exp.start_date} - ${exp.end_date}`}
+      title={exp.title}
+      location={exp.location}
+      list={[
+        "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
+      ]}
+    />
+  ));
 };
+
+const addexperience = async (
+  url: string,
+  { arg }: { arg: TWorkExperienceSchema }
+) => {
+  const response = await httprequest.post("/api/work-experiences/", {
+    title: arg.title,
+    company: arg.company,
+    company_url: arg.url,
+    location: arg.locatiom,
+    // employment_type: ,
+    start_date: arg.from,
+    end_date: arg.to,
+    // currently_working: false,
+    description: arg.description,
+    // achievements: string
+  });
+  return response.data;
+};
+
 function AddNewExperience({
   setAddExperience,
 }: {
   setAddExperience: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
+    handleSubmit,
     register,
     formState: { errors },
   } = useForm<TWorkExperienceSchema>({
     resolver: zodResolver(WorkExperienceSchema),
   });
+  const { trigger, isMutating } = useSWRMutation(
+    "/api/work-experiences/post",
+    addexperience
+  );
+  const onClick = (data: TWorkExperienceSchema) => {
+    try {
+      trigger(data);
+      mutate("/api/work-experiences/");
+      successMessage("Work Experience added successfully");
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   return (
-    <section>
+    <form onSubmit={handleSubmit(onClick)}>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
@@ -145,9 +201,9 @@ function AddNewExperience({
         <button className="p-3" onClick={() => setAddExperience(false)}>
           Back
         </button>
-        <CPsmallButton type="submit" text="Save" />
+        <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
-    </section>
+    </form>
   );
 }
 export default WorkExperience;

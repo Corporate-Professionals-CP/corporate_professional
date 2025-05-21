@@ -3,7 +3,12 @@ import CPsmallButton from "@/components/CPsmallButton";
 import CPstepSlide from "@/components/CPstepSlide";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { OnboardSchema, TOnboardSchema } from "./type";
+import {
+  OnboardSchema,
+  TOnboardSchema,
+  TVerifyEmail,
+  VerifyEmail,
+} from "./type";
 import { Dispatch, SetStateAction, useState } from "react";
 import CPModal from "@/components/CPModal";
 import useSWRMutation from "swr/mutation";
@@ -19,6 +24,7 @@ import StepEight from "./StepEight";
 import StepNine from "./StepNine";
 import StepTen from "./StepTen";
 import { errorMessage } from "@/utils/toastalert";
+import CPInput from "@/components/CPInput";
 
 const signupUser = async (url: string, { arg }: { arg: TOnboardSchema }) => {
   const data = {
@@ -35,16 +41,17 @@ const signupUser = async (url: string, { arg }: { arg: TOnboardSchema }) => {
     bio: arg.profession_journey,
     topics: arg.interests,
   };
-  await httprequest.post("/auth/signup", data);
-};
-const createOptions = (setSuccess: Dispatch<SetStateAction<boolean>>) => ({
-  onError: (err: any) => {
+
+  return await httprequest.post("/auth/signup", data);
+  // [[ALSO UPLOAD THE RESUMES UPLOADED TOO]]
+  try {
+    const formdata = new FormData();
+    formdata.append("file", arg.cvfile);
+    await httprequest.post("/api/profiles/user_id/cv", formdata);
+  } catch (err) {
     errorMessage(err);
-  },
-  onSuccess: () => {
-    setSuccess(true);
-  },
-});
+  }
+};
 
 function Form() {
   const {
@@ -53,15 +60,16 @@ function Form() {
     formState: { errors },
     watch,
     getValues,
+    setValue,
   } = useForm<TOnboardSchema>({
     resolver: zodResolver(OnboardSchema),
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(9);
   const [success, setSuccess] = useState(false);
+  const [emailmodal, setEmailModal] = useState(false);
   const { trigger: submit, isMutating } = useSWRMutation(
     "api/auth/signup",
-    signupUser,
-    createOptions(setSuccess)
+    signupUser
   );
 
   // useEffect
@@ -101,7 +109,12 @@ function Form() {
 
     if (valid && step == 10) {
       const values = getValues();
-      submit(values);
+      try {
+        submit(values);
+        setEmailModal(true);
+      } catch (err) {
+        errorMessage(err);
+      }
       return;
     }
     if (valid) {
@@ -153,7 +166,12 @@ function Form() {
             watch={watch}
           />
         )}
-        {step == 9 && <StepNine setStep={setStep} />}
+        {step == 9 && (
+          <StepNine
+            setStep={setStep}
+            onChange={(file: File) => setValue("cvfile", file)}
+          />
+        )}
         {step == 10 && (
           <StepTen
             register={register}
@@ -179,10 +197,50 @@ function Form() {
           />
         </div>
       </div>
+      {emailmodal && <VerifyEmailModal setSuccess={setSuccess} />}
       {success && <SuccessModal />}
     </section>
   );
 }
+
+const VerifyEmailModal = ({
+  setSuccess,
+}: {
+  setSuccess: Dispatch<SetStateAction<boolean>>;
+}) => {
+  // do everything here
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<TVerifyEmail>({ resolver: zodResolver(VerifyEmail) });
+  const onClick = (data: TVerifyEmail) => {
+    // [[DO VERIFICATION API CALL HERE]]
+    console.log(data);
+    setSuccess(true);
+  };
+  return (
+    <CPModal width={445}>
+      <form className="p-[18]" onSubmit={handleSubmit(onClick)}>
+        <h3 className="mb-4 text-lg font-medium text-[#050505]">
+          Verify your email ✨
+        </h3>
+        <p className="mb-6 text-[#64748B]">
+          You can complete your profile later to unlock more opportunities.
+        </p>
+        <CPInput
+          {...register("otp")}
+          error={errors.otp?.message}
+          placeholder="OTP"
+        />
+        <div className="flex justify-end gap-2 mt-12">
+          <button className="p-3">Resend OTP</button>
+          <CPsmallButton text="Submit" />
+        </div>
+      </form>
+    </CPModal>
+  );
+};
 
 const SuccessModal = () => {
   return (
@@ -196,7 +254,7 @@ const SuccessModal = () => {
         </p>
         <div className="flex justify-end gap-2 mt-12">
           {/* <button className="p-3">Back</button> */}
-          <CPsmallButton text="Preview profile" />
+          <CPsmallButton text="Preview profile" isLink="/profile" />
         </div>
       </div>
     </CPModal>

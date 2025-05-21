@@ -11,3 +11,4 @@ export { default as CameraIcon } from "./CameraIcon";
 export { default as SettingsIcon } from "./SettingsIcon";
 export { default as GeneralIcon } from "./GeneralIcon";
 export { default as LeftArrow } from "./LeftArrow";
+export { default as LinkIcon } from "./LinkIcon";
