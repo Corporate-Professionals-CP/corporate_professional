@@ -15,15 +15,15 @@ function CPpartners() {
       <p className="text-[#020617] text-center mb-10">
         Trusted and used by over 24 institutions
       </p>
-      <div className="flex gap-2 justify-between">
-        <Image src={slackimg} alt="partner" />
-        <Image src={stripeimg} alt="partner" />
-        <Image src={googleimg} alt="partner" />
-        <Image src={netfliximg} alt="partner" />
-        <Image src={nextimg} alt="partner" />
-        <Image src={adobeimg} alt="partner" />
-        <Image src={disneyimg} alt="partner" />
-        <Image src={microsoftimg} alt="partner" />
+      <div className="flex gap-16 justify-between overflow-x-scroll">
+        <Image src={slackimg} alt="partner" className="shrink-0" />
+        <Image src={stripeimg} alt="partner" className="shrink-0" />
+        <Image src={googleimg} alt="partner" className="shrink-0" />
+        <Image src={netfliximg} alt="partner" className="shrink-0" />
+        <Image src={nextimg} alt="partner" className="shrink-0" />
+        <Image src={adobeimg} alt="partner" className="shrink-0" />
+        <Image src={disneyimg} alt="partner" className="shrink-0" />
+        <Image src={microsoftimg} alt="partner" className="shrink-0" />
       </div>
     </div>
   );

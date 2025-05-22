@@ -12,6 +12,7 @@ const General = () => {
   const {
     register,
     formState: { errors },
+    setValue,
     watch,
   } = useForm<TProfileSchema>({
     resolver: zodResolver(ProfileSchema),
@@ -46,7 +47,9 @@ const General = () => {
             Which industry best describes your work?
           </label>
           <CPselect
-            {...register("industry")}
+            items={[]}
+            onChange={(val: string) => setValue("industry", val)}
+            value={watch("industry")}
             error={errors.industry?.message}
           />
         </div>
@@ -111,7 +114,9 @@ const General = () => {
             How experienced are you?
           </label>
           <CPselect
-            {...register("experience")}
+            items={[]}
+            onChange={(val: string) => setValue("experience", val)}
+            value={watch("experience")}
             error={errors.experience?.message}
           />
         </div>

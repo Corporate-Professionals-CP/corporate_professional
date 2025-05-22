@@ -12,6 +12,7 @@ import person4 from "./person4.jpg";
 import person5 from "./person5.jpg";
 import proddesign from "./proddesign.png";
 import fashPhoto from "./fashPhoto.png";
+import earth from "./earth.png";
 
 export {
   prof1,
@@ -28,4 +29,5 @@ export {
   person5,
   proddesign,
   fashPhoto,
+  earth,
 };

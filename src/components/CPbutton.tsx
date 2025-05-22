@@ -25,7 +25,7 @@ export const CPbuttonTwo = ({
 }: {
   className?: string;
   children?: ReactNode;
-}) => {
+} & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className}`}

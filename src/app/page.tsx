@@ -1,41 +1,40 @@
 "use client";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import CPheader from "@/components/CPheader";
-import image from "@/assets/Image.png";
-import image2 from "@/assets/Image2.png";
-import image3 from "@/assets/Image3.png";
-import image4 from "@/assets/Image4.png";
-import image5 from "@/assets/Image5.png";
 import { CPbuttonThree, CPbuttonTwo } from "@/components/CPbutton";
 import CPpartners from "@/components/CPpartners";
 import connectpeople from "@/assets/connectpeople.png";
-import earth from "@/assets/earth.png";
-import { useState } from "react";
+
+import bgimg from "@/assets/dashboardbg.svg";
 import {
   fashPhoto,
-  insight,
   person,
   person2,
   person3,
   person4,
   person5,
   proddesign,
-  prof1,
-  prof2,
-  prof3,
-  prof4,
-  prof5,
-  shake,
 } from "@/assets";
 import { MapIcon, PeopleIcon, StartIcon } from "@/imagecomponents";
 import HeartIcon from "@/imagecomponents/HeartIcon";
+import ProfessionalTabs from "./__chucks__/ProfessionalTabs";
+import NetWorking from "./__chucks__/Networking";
+import WhyJoin from "./__chucks__/WhyJoin";
+import Professional from "./__chucks__/Professional";
+import Footer from "./__chucks__/Footer";
 
 export default function Home() {
   return (
     <>
       <CPheader />
       <main>
-        <section className="flex flex-col items-center pt-[132]">
+        <section
+          className="flex flex-col items-center pt-[132]"
+          style={{
+            backgroundImage: `url(${bgimg.src})`,
+            backgroundPosition: "bottom center",
+          }}
+        >
           <ActiveMember />
           <h1 className="text-[#050505] text-5xl font-medium text-center">
             Empowering Professionals, <br />{" "}
@@ -63,22 +62,7 @@ export default function Home() {
           </div>
         </section>
         <CPpartners />
-        <section className="flex gap-5 items-end justify-center mb-20">
-          <div className="w-[460]">
-            <h3 className="text-primary ">Why Join Us?</h3>
-            <p className="text-[#050505 text-[32px] font-medium leading-[1.2]">
-              We are building the Largest Global Network of Corporate
-              Professionals
-            </p>
-          </div>
-          <div className="w-[460]">
-            <p className="text-[#334155] mb-6">
-              A space for connectivity, growth, and innovation in the corporate
-              sector.
-            </p>
-            <CPbuttonTwo style={{ width: 300 }}>Join us</CPbuttonTwo>
-          </div>
-        </section>
+        <WhyJoin />
         <section className="px-[75] mb-[150]">
           <Image
             src={connectpeople}
@@ -88,7 +72,7 @@ export default function Home() {
         </section>
         <NetWorking />
         <SuccesfulCareer />
-        <section className="bg-primary pt-[134] pb-[133] text-white text-center">
+        <section className="bg-primary pt-[134] pb-[133] text-white text-center px-6">
           <div className="max-w-[960] m-auto">
             <p className="mb-5">TC&P IN A NUTSHELL</p>
             <p className="text-[39px] mb-10">
@@ -120,79 +104,6 @@ export default function Home() {
   );
 }
 
-const Pellet = () => {
-  return (
-    <div className="py-2 px-[18] text-xs rounded-full text-[#020617] bg-white shrink-0 ">
-      Project Manager
-    </div>
-  );
-};
-
-const NetWorking = () => {
-  return (
-    <section className="max-w-[960] m-auto mb-[150]">
-      <h2 className="text-center font-medium text-[39px] text-[#050505] leading-[1.2] mb-10">
-        Our community goes beyond <br /> simple networking
-      </h2>
-      <div className="flex justify-between">
-        <div className="max-w-[460]">
-          <div className="bg-[#F8FAFC] mb-5 pb-10 rounded-2xl">
-            <div className="p-6">
-              <h4 className="font-medium text-[#020617] mb-2">
-                Unlock Opportunities
-              </h4>
-              <p className="text-[#475569">
-                Discover jobs, internships, and professional development
-                resources.
-              </p>
-            </div>
-            <div className="flex gap-4 mb-5 overflow-x-auto">
-              <Pellet /> <Pellet /> <Pellet /> <Pellet /> <Pellet /> <Pellet />
-              <Pellet />
-            </div>
-            <div className="flex gap-4 mb-8 overflow-x-auto">
-              <Pellet /> <Pellet /> <Pellet /> <Pellet />
-            </div>
-          </div>
-          <div className="bg-[#F8FAFC] rounded-2xl">
-            <div className="p-6">
-              <h4 className="font-medium text-[#020617] mb-2">
-                Gain Valuable Insights
-              </h4>
-              <p className="text-[#475569 mb-6">
-                Access mentorship, leadership training, and industry talks.
-              </p>
-              <Image src={insight} alt="insight" />
-            </div>
-          </div>
-        </div>
-        <div className="bg-primary text-white max-w-[460] rounded-2xl p-6">
-          <h4 className="mb-2">Expand Your Network</h4>
-          <p className="mb-6">
-            Connect with professionals who share your interests and goals
-            through structured networking opportunities
-          </p>
-          <Image src={shake} alt="expand network" className="rounded-lg" />
-        </div>
-      </div>
-      <div className="mt-5 bg-[#F8FAFC] p-6 rounded-2xl">
-        <h4 className="font-medium text-[#020617] mb-2">Expert-Led Programs</h4>
-        <p className="text-[#475569 mb-6">
-          Access workshops, courses, and events led by industry leaders who
-          share practical insights you won&apos;t find elsewhere.
-        </p>
-        <textarea
-          placeholder="mockup"
-          className="bg-white w-full h-40 p-4"
-        ></textarea>
-      </div>
-      <div className="flex justify-center mt-16">
-        <CPbuttonTwo style={{ width: 300 }}> Create Your Profile </CPbuttonTwo>
-      </div>
-    </section>
-  );
-};
-
 const SuccesfulCareer = () => {
   return (
     <section className="max-w-[960] m-auto mb-[150]">
@@ -220,90 +131,16 @@ const SuccesfulCareer = () => {
   );
 };
 
-const ProfessionalTabs = () => {
-  const [activetab, setActivetab] = useState("professional");
-  return (
-    <section className="pt-[155] max-w-[940] m-auto mb-[12">
-      <div className="p-2 rounded-full border-[#282A74] border flex justify-between mb-6 ">
-        <button
-          className={`w-[221] text-center ${
-            activetab == "professional"
-              ? "bg-[#282A74] text-white "
-              : "text-[#050505]"
-          }  rounded-full p-3`}
-        >
-          Professional Profiles
-        </button>
-        <button
-          className={`w-[221] text-center ${
-            activetab == "searchable"
-              ? "bg-[#282A74] text-white "
-              : "text-[#050505]"
-          } rounded-full p-3`}
-        >
-          Searchable Directory
-        </button>
-        <button
-          className={`w-[221] text-center ${
-            activetab == "job" ? "bg-[#282A74] text-white " : "text-[#050505]"
-          }  rounded-full p-3`}
-        >
-          Job & Content Feed
-        </button>
-        <button
-          className={`w-[221] text-center ${
-            activetab == "profiles"
-              ? "bg-[#282A74] text-white "
-              : "text-[#050505]"
-          }  rounded-full p-3`}
-        >
-          Professional Profiles
-        </button>
-      </div>
-      <div className="bg-[#F8FAFC] pt-10  px-[103] rounded-2xl">
-        <div className=" text-center mb-[72] flex flex-col items-center w-[460] m-auto">
-          <p className="mb-6">
-            Build a profile that showcases your skills, experience, and
-            achievements to the right people.
-          </p>
-          <CPbuttonTwo className="bg-primary"> Learn more</CPbuttonTwo>
-        </div>
-        <div className="w-full bg-white h-[290]"></div>
-      </div>
-    </section>
-  );
-};
-
-const Professional = () => {
-  return (
-    <section className="pt-[123] ">
-      <div className="max-w-[940] m-auto mb-[64]">
-        <h3 className="text-primary">How they use it</h3>
-        <p className="text-[#050505] font-medium text-[39px]">
-          Meet our Professionals
-        </p>
-      </div>
-      <div className="w-full h-[482] flex gap-5 overflow-x-scroll">
-        <Person active img={prof1} />
-        <Person img={prof2} />
-        <Person img={prof3} />
-        <Person img={prof4} />
-        <Person img={prof5} />
-      </div>
-    </section>
-  );
-};
-
 const Building = () => {
   return (
-    <section className="pt-[161] max-w-[940] m-auto mb-[12">
+    <section className="pt-[161] max-w-[988] m-auto mb-[12] px-6">
       <div className="max-w-[940] m-auto mb-[64]">
         <h3 className="text-primary mb-4">HOW IT WORKS</h3>
         <p className="text-[#050505] font-medium text-[39px] leading-[1.2]">
           Building Your <br /> Professional Presence
         </p>
       </div>
-      <div className="flex gap-[18]">
+      <div className="flex gap-[18] flex-wrap justify-center">
         <BuildingPart
           active
           no="1"
@@ -390,108 +227,6 @@ const FAQ = () => {
         </ul>
       </div>
     </section>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer>
-      <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-[#020617]  flex justify-center">
-        <div className="w-[857] flex flex-col items-center">
-          <div>Discover</div>
-          <h3 className="text-white text-[60px] leading-[1.2] text-center mb-7 mt-4">
-            Making connections in the corporate world easier
-          </h3>
-          <CPbuttonTwo className="bg-white " style={{ color: "#050505" }}>
-            Join us
-          </CPbuttonTwo>
-          <Image src={earth} alt="earth" className="w-full mt-[126]" />
-        </div>
-      </div>
-      <div className="bg-[#020617] flex justify-center gap-10 text-white p-[56]">
-        <div className="w-[450] h-[488] flex flex-col">
-          <p>
-            The Corporates and Professionals platform helps members grow through
-            expert programs, valuable resources, and meaningful networking.
-          </p>
-          <p className="flex-1">More about us</p>
-          <div className="flex justify-between">
-            <div></div>
-            <div>
-              © 2025 — Copyright <br />
-              All Rights reserved
-            </div>
-          </div>
-        </div>
-        <div className="w-[450] flex flex-col">
-          <div className="flex gap-10 flex-1">
-            <p>Home</p>
-            <p>Why us?</p>
-            <p>Features.</p>
-            <p>Contact.</p>
-          </div>
-          <div>
-            <div className="mb-12">
-              <h4 className="mb-4">Contact us</h4>
-              <p className="text-[#FFFFFFB2] text-sm">07479648276</p>
-              <p className="text-[#FFFFFFB2] text-sm">
-                info@corporatesandprofessionals.com
-              </p>
-            </div>
-            <div className="flex justify-between items-end">
-              <div>
-                <h4 className="mb-4">Location</h4>
-                <p className="text-[#FFFFFFB2] text-sm">London</p>
-                <p className="text-[#FFFFFFB2] text-sm">United Kingdom</p>
-              </div>
-              <div className="text-right">
-                <h4 className="mb-4">Languages</h4>
-
-                <p className="text-[#FFFFFFB2] text-sm flex gap-5">
-                  <span>En</span>
-                  <span>Es</span>
-                  <span>Fr</span>
-                  <span>De</span>
-                  <span>Ru</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-const Person = ({
-  active = false,
-  img,
-}: {
-  active?: boolean;
-  img: StaticImageData;
-}) => {
-  return (
-    <div className="w-[300] shrink-0">
-      <div className=" h-[300] p-2 bg-white rounded-lg mb-4">
-        <Image
-          src={img}
-          alt={"prof1"}
-          className="rounded-lg w-full object-cover"
-        />
-      </div>
-      {active && (
-        <div className="p-3 bg-white rounded-2xl">
-          <div className=" text-primary mb-10 ">
-            I connect with industry leaders, stay updated on trends, and find
-            mentorship to grow my career.
-          </div>
-          <div>
-            <p className="text-[#020617] mb-0.5">Aisha</p>
-            <p className="text-[#64748B] ">Marketing Manager</p>
-          </div>
-        </div>
-      )}
-    </div>
   );
 };
 

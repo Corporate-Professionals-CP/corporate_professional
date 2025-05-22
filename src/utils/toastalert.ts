@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export const errorMessage = (err) => {
+export const errorMessage = (err: unknown) => {
   console.log(err);
   toast("an errorOccured", { type: "error" });
 };

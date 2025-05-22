@@ -9,7 +9,7 @@ type CPselectType = {
   placeholder?: string;
   error?: string;
   items?: { text: string; val: string }[];
-  value: string;
+  value?: string;
   onChange?: (e: string) => void;
 };
 

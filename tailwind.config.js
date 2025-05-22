@@ -5,7 +5,13 @@ import { heroui } from "@heroui/theme";
 module.exports = {
   content: ["./node_modules/@heroui/theme/dist/components/modal.js"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        "max-sm": { max: "639px" },
+        "max-md": { max: "767px" },
+        "max-lg": { max: "1023px" },
+      },
+    },
   },
   darkMode: "class",
   plugins: [heroui()],
