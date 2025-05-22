@@ -61,7 +61,10 @@ const NetWorking = () => {
         ></textarea>
       </div>
       <div className="flex justify-center mt-16">
-        <CPbuttonTwo style={{ width: 300 }}> Create Your Profile </CPbuttonTwo>
+        <CPbuttonTwo style={{ width: 300 }} link="/onboarding">
+          {" "}
+          Create Your Profile{" "}
+        </CPbuttonTwo>
       </div>
     </section>
   );

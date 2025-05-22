@@ -19,7 +19,11 @@ const Footer = () => {
           <h3 className="text-white text-[60px] leading-[1.2] text-center mb-7 mt-4">
             Making connections in the corporate world easier
           </h3>
-          <CPbuttonTwo className="bg-white " style={{ color: "#050505" }}>
+          <CPbuttonTwo
+            className="bg-white text-[#050505]"
+            style={{ color: "#050505" }}
+            link="/onboarding"
+          >
             Join us
           </CPbuttonTwo>
           <Image src={earth} alt="earth" className="w-full mt-[126]" />

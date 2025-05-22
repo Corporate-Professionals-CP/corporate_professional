@@ -15,7 +15,9 @@ function WhyJoin() {
           A space for connectivity, growth, and innovation in the corporate
           sector.
         </p>
-        <CPbuttonTwo style={{ width: 300 }}>Join us</CPbuttonTwo>
+        <CPbuttonTwo style={{ width: 300 }} link="/onboarding">
+          Join us
+        </CPbuttonTwo>
       </div>
     </section>
   );

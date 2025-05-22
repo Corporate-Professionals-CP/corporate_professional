@@ -49,7 +49,7 @@ export default function Home() {
             build meaningful connections.
           </p>
           <div className="flex gap-3">
-            <CPbuttonTwo />
+            <CPbuttonTwo link="/onboarding" />
             <CPbuttonThree />
           </div>
           <div className="mt-[122] flex justify-center">

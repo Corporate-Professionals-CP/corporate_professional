@@ -28,7 +28,7 @@ function CPheader() {
           >
             Login
           </Link>
-          <CPbuttonTwo />
+          <CPbuttonTwo link="/onboarding" />
         </div>
       </nav>
     </div>

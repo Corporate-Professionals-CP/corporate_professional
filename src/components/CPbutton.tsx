@@ -1,4 +1,5 @@
 import { ArrowIcon } from "@/imagecomponents";
+import Link from "next/link";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
 function CPbutton({
@@ -21,11 +22,25 @@ function CPbutton({
 export const CPbuttonTwo = ({
   children = "Join Us",
   className = "",
+  link = "",
   ...props
 }: {
   className?: string;
+  link?: string;
   children?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  if (link) {
+    return (
+      <Link
+        href={link}
+        className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className}`}
+        style={props.style}
+      >
+        {children}
+        <ArrowIcon />
+      </Link>
+    );
+  }
   return (
     <button
       className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className}`}
