@@ -3,10 +3,11 @@ import httprequest from "@/utils/httpRequest";
 import { getData } from "@/utils/storage";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+// import useSWR from "swr";
 
 function useAuth() {
   const router = useRouter();
-
+  // const {}useSWR()
   useEffect(() => {
     // check if access token, add it to the header
     const access_token = getData("access_token");

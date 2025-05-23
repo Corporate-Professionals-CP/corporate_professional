@@ -2,8 +2,16 @@ import httprequest from "@/utils/httpRequest";
 import {
   TCertification,
   TCertificationSchema,
+  TContact,
+  TContactSchema,
+  TEducation,
+  TEducationSchema,
   TSkill,
   TSkillsSchema,
+  TVolunteering,
+  TVolunteerSchema,
+  TWorkExperience,
+  TWorkExperienceSchema,
 } from "./type";
 import { mutate } from "swr";
 
@@ -65,3 +73,173 @@ export const submitCertification = async (
   );
   return response.data;
 };
+
+export const getEducations = () => {
+  return httprequest
+    .get("/education/me")
+    .then((res) => res.data as TEducation[])
+    .catch(() => []);
+};
+
+export async function addEducation(
+  url: string,
+  { arg }: { arg: TEducationSchema }
+) {
+  const response = await httprequest.post("/education/", {
+    degree: arg.degree,
+    school: arg.school,
+    location: arg.location,
+    url: arg.url,
+    description: arg.description,
+    media_url: arg.url,
+    from_date: arg.from_date,
+    to_date: arg.to_date,
+  });
+  mutate(
+    "/education/me",
+    (current: TEducation[] = []) => [
+      ...current,
+      {
+        degree: arg.degree,
+        school: arg.school,
+        location: arg.location,
+        url: arg.url,
+        description: arg.description,
+        media_url: arg.url,
+        from_date: arg.from_date,
+        to_date: arg.to_date,
+        id: `${Date.now()}`,
+        created_at: `${Date.now()}`,
+      },
+    ],
+    true
+  );
+  return response.data;
+}
+
+export const getVolunteers = () => {
+  return httprequest
+    .get("/volunteering/")
+    .then((res) => res.data as TVolunteering[])
+    .catch(() => []);
+};
+
+export async function addvolunteer(
+  url: string,
+  { arg }: { arg: TVolunteerSchema }
+) {
+  const response = await httprequest.post("/volunteering/", {
+    role: arg.role,
+    organization: arg.organization,
+    organization_url: arg.organization_url,
+    location: arg.location,
+    start_date: arg.start_date,
+    end_date: arg.end_date,
+    // currently_volunteering: arg.currently_volunteering,
+    description: arg.description,
+  });
+  mutate(
+    "/volunteering/",
+    (current: TVolunteering[] = []) => [
+      ...current,
+      {
+        role: arg.role,
+        organization: arg.organization,
+        organization_url: arg.organization_url,
+        location: arg.location,
+        start_date: arg.start_date,
+        end_date: arg.end_date,
+        currently_volunteering: false,
+        description: arg.description,
+        id: `${Date.now()}`,
+        created_at: `${Date.now()}`,
+      },
+    ],
+    true
+  );
+  return response.data;
+}
+
+export const getWorkExperience = () => {
+  return httprequest
+    .get("/work-experiences/")
+    .then((res) => res.data.data as TWorkExperience[])
+    .catch(() => []);
+};
+
+export const addexperience = async (
+  url: string,
+  { arg }: { arg: TWorkExperienceSchema }
+) => {
+  const response = await httprequest.post("/work-experiences/", {
+    title: arg.title,
+    company: arg.company,
+    company_url: arg.url,
+    location: arg.location,
+    employment_type: "contract",
+    start_date: arg.from,
+    end_date: arg.to,
+    // currently_working: false,
+    description: arg.description,
+    // achievements: string
+  });
+  mutate(
+    "/work-experiences/",
+    (current: TWorkExperience[] = []) => [
+      ...current,
+      {
+        title: arg.title,
+        company: arg.company,
+        company_url: arg.url,
+        location: arg.location,
+        employment_type: "contract",
+        start_date: arg.from,
+        end_date: arg.to,
+        currently_working: false,
+        description: arg.description,
+        achievements: "",
+        id: `${Date.now()}`,
+        created_at: `${Date.now()}`,
+      },
+    ],
+    true
+  );
+  return response.data;
+};
+
+export const getContacts = () => {
+  return httprequest
+    .get("/contacts/")
+    .then((res) => res.data as TContact[])
+    .catch(() => []);
+};
+
+export async function addcontact(
+  url: string,
+  { arg }: { arg: TContactSchema }
+) {
+  const response = await httprequest.post(url, {
+    type: arg.type,
+    // platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
+    platform_name: arg.type,
+    username: arg.username,
+    url: arg.url,
+  });
+  mutate(
+    "/contacts/",
+    (current: TContact[] = []) => [
+      ...current,
+      {
+        type: arg.type,
+        // platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
+        platform_name: arg.type,
+        username: arg.username,
+        url: arg.url,
+        id: `${Date.now()}`,
+        created_at: `${Date.now()}`,
+      },
+    ],
+    true
+  );
+  return response.data;
+}

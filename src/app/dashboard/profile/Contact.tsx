@@ -13,14 +13,10 @@ import {
   CPInput,
 } from "@/components";
 import { errorMessage, successMessage } from "@/utils/toastalert";
+import { addcontact, getContacts } from "./functions";
 
 const Contact = () => {
-  const { data = [], isLoading } = useSWR("/contacts/", () =>
-    httprequest
-      .get("/contacts/")
-      .then((res) => res.data as TContact[])
-      .catch(() => [])
-  );
+  const { data = [], isLoading } = useSWR("/contacts/", getContacts);
 
   const [addlink, setAddLink] = useState(false);
   return (
@@ -71,17 +67,6 @@ const ListContact = ({
   ));
 };
 
-async function addcontact(url: string, { arg }: { arg: TContactSchema }) {
-  const response = await httprequest.post("/api/contacts/", {
-    type: arg.type,
-    platform_name: arg.type,
-    username: arg.username,
-    url: arg.url,
-  });
-
-  return response.data;
-}
-
 const AddNewContact = ({
   setAddLink,
 }: {
@@ -94,15 +79,12 @@ const AddNewContact = ({
     watch,
     handleSubmit,
   } = useForm<TContactSchema>({ resolver: zodResolver(ContactSchema) });
-  const { trigger, isMutating } = useSWRMutation(
-    "/api/contacts/post",
-    addcontact
-  );
-  const onClick = (val: TContactSchema) => {
+  const { trigger, isMutating } = useSWRMutation("/contacts/", addcontact);
+  const onClick = async (data: TContactSchema) => {
     try {
-      trigger(val);
-      mutate("/api/contacts/");
+      await trigger(data);
       successMessage("Contact added successfully");
+      setAddLink(false);
     } catch (err) {
       errorMessage(err);
     }
@@ -110,24 +92,29 @@ const AddNewContact = ({
   return (
     <form onSubmit={handleSubmit(onClick)}>
       <div>
-        <label className="mb-2 text-sm text-[#475569]">Type</label>
         <div className="flex gap-2">
-          <CPselect
-            items={[
-              { text: "Linkedin", val: "Linkedin" },
-              { text: "Twitter", val: "Twitter" },
-              { text: "X", val: "X" },
-              { text: "Email", val: "email" },
-            ]}
-            onChange={(val: string) => setValue("type", val)}
-            value={watch("type")}
-            error={errors.type?.message}
-          />
-          <CPInput
-            placeholder="username"
-            error={errors.username?.message}
-            {...register("username")}
-          />
+          <div className="flex-1">
+            <label className="mb-2 text-sm text-[#475569]">Type</label>
+            <CPselect
+              items={[
+                { text: "Linkedin", val: "linkedin" },
+                { text: "X", val: "X" },
+                { text: "Email", val: "email" },
+                { text: "Custom", val: "custom" },
+              ]}
+              onChange={(val: string) => setValue("type", val)}
+              value={watch("type")}
+              error={errors.type?.message}
+            />
+          </div>
+          <div className="flex-1">
+            <label className="mb-2 text-sm text-[#475569]">Username</label>
+            <CPInput
+              placeholder="username"
+              error={errors.username?.message}
+              {...register("username")}
+            />
+          </div>
         </div>
       </div>
       <div>
@@ -142,7 +129,12 @@ const AddNewContact = ({
         <button onClick={() => setAddLink(false)} className="p-3">
           Back
         </button>
-        <CPsmallButton type="submit" text="Save" loading={isMutating} />
+        <CPsmallButton
+          type="submit"
+          text="Save"
+          loading={isMutating}
+          onClick={() => console.log(errors)}
+        />
       </div>
     </form>
   );
@@ -152,7 +144,7 @@ const CPcontact = ({ contact }: { contact: TContact }) => {
   const handleDelete = async () => {
     try {
       await httprequest.delete(`/api/contacts/${contact.id}`);
-      mutate("/api/contacts");
+      mutate("/contacts");
       successMessage("contact deleted successfully");
     } catch (err) {
       errorMessage(err);

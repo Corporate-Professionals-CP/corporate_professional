@@ -18,7 +18,7 @@ function LeftSection() {
     <section className="w-[420] py-4 p-8 flex justify-end">
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
-          <Link href="/dashboard">
+          <Link href="/dashboard/profile">
             <HomeIcon
               color={pathname == "/dashboard" ? "#7074ff" : "#020617"}
             />

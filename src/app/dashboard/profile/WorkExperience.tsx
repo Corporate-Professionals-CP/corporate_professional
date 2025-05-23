@@ -10,18 +10,16 @@ import {
   WorkExperienceSchema,
 } from "./type";
 import CPEmptyState from "@/components/CPEmptyState";
-import useSWR, { mutate } from "swr";
-import httprequest from "@/utils/httpRequest";
+import useSWR from "swr";
 import { CPspinnerLoader } from "@/components";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
+import { addexperience, getWorkExperience } from "./functions";
 
 const WorkExperience = () => {
-  const { data = [], isLoading } = useSWR("/api/work-experiences/", () =>
-    httprequest
-      .get("/api/work-experiences/")
-      .then((res) => res.data as TWorkExperience[])
-      .catch(() => [])
+  const { data = [], isLoading } = useSWR(
+    "/work-experiences/",
+    getWorkExperience
   );
 
   const [addExperience, setAddExperience] = useState(false);
@@ -66,6 +64,7 @@ const ListContact = ({
       />
     );
   }
+
   return experiences.map((exp) => (
     <CPtableListWorkExp
       key={exp.id}
@@ -77,25 +76,6 @@ const ListContact = ({
       ]}
     />
   ));
-};
-
-const addexperience = async (
-  url: string,
-  { arg }: { arg: TWorkExperienceSchema }
-) => {
-  const response = await httprequest.post("/api/work-experiences/", {
-    title: arg.title,
-    company: arg.company,
-    company_url: arg.url,
-    location: arg.locatiom,
-    // employment_type: ,
-    start_date: arg.from,
-    end_date: arg.to,
-    // currently_working: false,
-    description: arg.description,
-    // achievements: string
-  });
-  return response.data;
 };
 
 function AddNewExperience({
@@ -111,14 +91,14 @@ function AddNewExperience({
     resolver: zodResolver(WorkExperienceSchema),
   });
   const { trigger, isMutating } = useSWRMutation(
-    "/api/work-experiences/post",
+    "/work-experiences/",
     addexperience
   );
-  const onClick = (data: TWorkExperienceSchema) => {
+  const onClick = async (data: TWorkExperienceSchema) => {
     try {
-      trigger(data);
-      mutate("/api/work-experiences/");
+      await trigger(data);
       successMessage("Work Experience added successfully");
+      setAddExperience(false);
     } catch (err) {
       errorMessage(err);
     }
@@ -129,6 +109,7 @@ function AddNewExperience({
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
             error={errors.from?.message}
             {...register("from")}
@@ -137,6 +118,7 @@ function AddNewExperience({
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">To</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
             error={errors.to?.message}
             {...register("to")}
@@ -166,16 +148,16 @@ function AddNewExperience({
           <label className="text-[#475569] text-sm mb-2">Location</label>
           <CPInput
             placeholder="Where was it"
-            error={errors.locatiom?.message}
-            {...register("url")}
+            error={errors.location?.message}
+            {...register("location")}
           />
         </div>
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">URL</label>
           <CPInput
             placeholder="https://example.com"
-            // error={errors.username?.message}
-            // {...register("username")}
+            error={errors.url?.message}
+            {...register("url")}
           />
         </div>
       </div>
@@ -189,14 +171,14 @@ function AddNewExperience({
           {...register("description")}
         />
       </div>
-      <div className="mb-5">
+      {/* <div className="mb-5">
         <label className="text-[#475569] text-sm mb-2">Attachments</label>
         <CPInput
           type="textarea"
           className="block bg-[#F8FAFC] w-full p-4"
           placeholder="No attachments yet"
         />
-      </div>
+      </div> */}
       <div className="flex justify-end gap-2 mt-12">
         <button className="p-3" onClick={() => setAddExperience(false)}>
           Back

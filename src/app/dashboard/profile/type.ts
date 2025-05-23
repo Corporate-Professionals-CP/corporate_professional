@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// PROFILE SCHEMA
 export const ProfileSchema = z.object({
   full_name: z.string().min(10),
   job_title: z.string().min(1),
@@ -13,26 +14,44 @@ export const ProfileSchema = z.object({
 });
 export type TProfileSchema = z.infer<typeof ProfileSchema>;
 
+// CONTACT SCHEMA
 export const ContactSchema = z.object({
-  type: z.string(),
+  type: z.string().min(2),
   url: z.string().min(2),
   username: z.string().min(2),
+  // platform_name: z.string().min(0),
 });
 
 export type TContactSchema = z.infer<typeof ContactSchema>;
 
+// WORK-EXPERIENCE SCHEMA
 export const WorkExperienceSchema = z.object({
-  from: z.date(),
-  to: z.date(),
+  from: z.string(),
+  to: z.string(),
   title: z.string().min(1),
   company: z.string().min(1),
-  locatiom: z.string().min(1),
-  url: z.string().min(1),
+  location: z.string().min(1),
+  url: z.string().min(0),
   description: z.string().min(10),
 });
 
 export type TWorkExperienceSchema = z.infer<typeof WorkExperienceSchema>;
 
+// VOLUNTEERING SCHEMA
+export const VolunteerSchema = z.object({
+  start_date: z.string({ required_error: "Issue date is required" }),
+  end_date: z.string({ required_error: "Expiry date is required" }),
+  role: z.string().min(1, "Name is required"),
+  organization: z.string().min(1, "Organization is required"),
+  organization_url: z.string().min(0),
+  description: z.string().min(10, "Description is required"),
+  location: z.string().min(1),
+  // currently_volunteering: z.boolean().default(false),
+});
+
+export type TVolunteerSchema = z.infer<typeof VolunteerSchema>;
+
+// CERTIFICATION SCHEMA
 export const CertificationSchema = z.object({
   issued_date: z.string({ required_error: "Issue date is required" }),
   expiration_date: z.string({ required_error: "Expiry date is required" }),
@@ -44,6 +63,20 @@ export const CertificationSchema = z.object({
 
 export type TCertificationSchema = z.infer<typeof CertificationSchema>;
 
+// EDUCATION SCHEMA
+export const EducationSchema = z.object({
+  from_date: z.string({ required_error: "Issue date is required" }),
+  to_date: z.string({ required_error: "Expiry date is required" }),
+  degree: z.string().min(1, "Name is required"),
+  school: z.string().min(1, "Organization is required"),
+  location: z.string().min(1, "Organization is required"),
+  url: z.string().min(0),
+  description: z.string().min(10, "Description is required"),
+});
+
+export type TEducationSchema = z.infer<typeof EducationSchema>;
+
+// SKILLS SCHEMA
 export const SkillsSchema = z.object({
   skill: z.string().min(2).max(15),
 });

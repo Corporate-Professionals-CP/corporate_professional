@@ -11,6 +11,7 @@ import Education from "./Education";
 import Certifications from "./Certifications";
 import Skills from "./Skills";
 import CPModal from "@/components/CPModal";
+import { useRouter } from "next/navigation";
 function ProfileModal() {
   const [tab, setTab] = useState<
     | "general"
@@ -21,8 +22,12 @@ function ProfileModal() {
     | "certification"
     | "skills"
   >("general");
+  const router = useRouter();
+  const handleCloseModal = () => {
+    router.push("/dashboard");
+  };
   return (
-    <CPModal>
+    <CPModal backgroundAction={handleCloseModal}>
       <div className="flex text-[#020617] p-2">
         <div className="flex flex-col gap-8 bg-[#F8FAFC] px-4 py-8">
           <button>

@@ -1,28 +1,19 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
-import {
-  TEducation,
-  TWorkExperienceSchema,
-  WorkExperienceSchema,
-} from "./type";
+import { EducationSchema, TEducation, TEducationSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
-import httprequest from "@/utils/httpRequest";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { CPspinnerLoader } from "@/components";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
+import { addEducation, getEducations } from "./functions";
 
 function Education() {
-  const { data = [], isLoading } = useSWR("/education/me", () =>
-    httprequest
-      .get("/education/me")
-      .then((res) => res.data as TEducation[])
-      .catch(() => [])
-  );
+  const { data = [], isLoading } = useSWR("/education/me", getEducations);
   const [addEduction, setAddEduction] = useState(false);
   return (
     <div>
@@ -77,24 +68,6 @@ const ListContact = ({
   ));
 };
 
-async function addEducation(
-  url: string,
-  { arg }: { arg: TWorkExperienceSchema }
-) {
-  const response = await httprequest.post("/api/education/", {
-    degree: arg.company,
-    school: arg.company,
-    location: arg.locatiom,
-    url: arg.url,
-    description: arg.description,
-    media_url: arg.url,
-    from_date: arg.from,
-    to_date: arg.to,
-  });
-
-  return response.data;
-}
-
 function AddNewEduction({
   setAddEduction,
 }: {
@@ -104,18 +77,15 @@ function AddNewEduction({
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<TWorkExperienceSchema>({
-    resolver: zodResolver(WorkExperienceSchema),
+  } = useForm<TEducationSchema>({
+    resolver: zodResolver(EducationSchema),
   });
-  const { trigger, isMutating } = useSWRMutation(
-    "/api/contacts/post",
-    addEducation
-  );
-  const onclick = (data: TWorkExperienceSchema) => {
+  const { trigger, isMutating } = useSWRMutation("/education/", addEducation);
+  const onclick = async (data: TEducationSchema) => {
     try {
-      trigger(data);
+      await trigger(data);
       successMessage("Education added successfully");
-      mutate("/api/education/me");
+      setAddEduction(false);
     } catch (err) {
       errorMessage(err);
     }
@@ -126,35 +96,41 @@ function AddNewEduction({
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">From</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
-            error={errors.from?.message}
-            {...register("from")}
+            error={errors.from_date?.message}
+            {...register("from_date")}
           />
         </div>
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">To</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
-            error={errors.to?.message}
-            {...register("to")}
+            error={errors.to_date?.message}
+            {...register("to_date")}
           />
         </div>
       </div>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">Title</label>
+          <label className="text-[#475569] text-sm mb-2">
+            Degree or certification
+          </label>
           <CPInput
-            placeholder="Product designer etc"
-            error={errors.title?.message}
-            {...register("title")}
+            placeholder="Bachelor of design"
+            error={errors.degree?.message}
+            {...register("degree")}
           />
         </div>
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">Company</label>
+          <label className="text-[#475569] text-sm mb-2">
+            School or institution*
+          </label>
           <CPInput
-            placeholder="The noti company"
-            error={errors.company?.message}
-            {...register("company")}
+            placeholder="University"
+            error={errors.school?.message}
+            {...register("school")}
           />
         </div>
       </div>
@@ -163,16 +139,16 @@ function AddNewEduction({
           <label className="text-[#475569] text-sm mb-2">Location</label>
           <CPInput
             placeholder="Where was it"
-            error={errors.locatiom?.message}
-            {...register("url")}
+            error={errors.location?.message}
+            {...register("location")}
           />
         </div>
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">URL</label>
           <CPInput
             placeholder="https://example.com"
-            // error={errors.username?.message}
-            // {...register("username")}
+            error={errors.url?.message}
+            {...register("url")}
           />
         </div>
       </div>
@@ -186,14 +162,14 @@ function AddNewEduction({
           {...register("description")}
         />
       </div>
-      <div className="mb-5">
+      {/* <div className="mb-5">
         <label className="text-[#475569] text-sm mb-2">Attachments</label>
         <CPInput
           type="textarea"
           className="block bg-[#F8FAFC] w-full p-4"
           placeholder="No attachments yet"
         />
-      </div>
+      </div> */}
       <div className="flex justify-end gap-2 mt-12">
         <button onClick={() => setAddEduction(false)} className="p-3">
           Back
