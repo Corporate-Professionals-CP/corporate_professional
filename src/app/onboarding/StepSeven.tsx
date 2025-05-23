@@ -22,8 +22,8 @@ const StepSeven = ({
       />
 
       {[
-        { key: "Public 🌍", value: "public" },
-        { key: "Private 🔒", value: "private" },
+        { key: "Public 🌍", value: "Public" },
+        { key: "Private 🔒", value: "Private" },
       ].map((data) => (
         <CPCustomSelect
           key={data.key}

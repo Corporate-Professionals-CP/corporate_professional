@@ -1,27 +1,25 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import React, { useState } from "react";
 import {
+  CertificationSchema,
   TCertification,
-  TWorkExperienceSchema,
-  WorkExperienceSchema,
+  TCertificationSchema,
 } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
-import useSWR, { mutate } from "swr";
-import httprequest from "@/utils/httpRequest";
+import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import CPspinnerLoader from "@/components/CPspinnerLoader";
+import { getCertifications, submitCertification } from "./functions";
 
 function Certifications() {
-  const { data = [], isLoading } = useSWR("/api/certification/me", () =>
-    httprequest
-      .get("/api/certification/me")
-      .then((res) => res.data as TCertification[])
-      .catch(() => [])
+  const { data = [], isLoading } = useSWR(
+    "certification/me",
+    getCertifications
   );
 
   const [addCertifications, setAddCertifications] = useState(false);
@@ -81,23 +79,6 @@ const ListContact = ({
   ));
 };
 
-const submitCertification = async (
-  url: string,
-  { arg }: { arg: TWorkExperienceSchema }
-) => {
-  const response = await httprequest.post("/api/certification/", {
-    name: arg.title,
-    organization: arg.company,
-    url: arg.url,
-    description: arg.description,
-    media_url: arg.url,
-    issued_date: arg.from,
-    expiration_date: arg.to,
-  });
-  mutate("/api/certification/me");
-  return response.data;
-};
-
 function AddNewCertification({
   setAddCertifications,
 }: {
@@ -107,14 +88,14 @@ function AddNewCertification({
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<TWorkExperienceSchema>({
-    resolver: zodResolver(WorkExperienceSchema),
+  } = useForm<TCertificationSchema>({
+    resolver: zodResolver(CertificationSchema),
   });
   const { trigger, isMutating } = useSWRMutation(
-    "/api/certification",
+    "/certification/",
     submitCertification
   );
-  const onSubmit = async (data: TWorkExperienceSchema) => {
+  const onSubmit = async (data: TCertificationSchema) => {
     try {
       await trigger(data);
       successMessage("Certification added");
@@ -127,55 +108,49 @@ function AddNewCertification({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">From</label>
+          <label className="text-[#475569] text-sm mb-2">Issue</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
-            error={errors.from?.message}
-            {...register("from")}
+            error={errors.issued_date?.message}
+            {...register("issued_date")}
           />
         </div>
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">To</label>
+          <label className="text-[#475569] text-sm mb-2">Expires</label>
           <CPInput
+            type="date"
             placeholder="22/05/2025"
-            error={errors.to?.message}
-            {...register("to")}
+            error={errors.expiration_date?.message}
+            {...register("expiration_date")}
           />
         </div>
       </div>
       <div className="flex gap-2 mb-5">
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">Title</label>
+          <label className="text-[#475569] text-sm mb-2">Name</label>
           <CPInput
-            placeholder="Product designer etc"
-            error={errors.title?.message}
-            {...register("title")}
+            placeholder="My certificate"
+            error={errors.name?.message}
+            {...register("name")}
           />
         </div>
         <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">Company</label>
+          <label className="text-[#475569] text-sm mb-2">Organization</label>
           <CPInput
-            placeholder="The noti company"
-            error={errors.company?.message}
-            {...register("company")}
+            placeholder="Issuing organization"
+            error={errors.organization?.message}
+            {...register("organization")}
           />
         </div>
       </div>
       <div className="flex gap-2 mb-5">
-        <div className="flex-1">
-          <label className="text-[#475569] text-sm mb-2">Location</label>
-          <CPInput
-            placeholder="Where was it"
-            error={errors.locatiom?.message}
-            {...register("url")}
-          />
-        </div>
         <div className="flex-1">
           <label className="text-[#475569] text-sm mb-2">URL</label>
           <CPInput
             placeholder="https://example.com"
-            // error={errors.username?.message}
-            // {...register("username")}
+            error={errors.url?.message}
+            {...register("url")}
           />
         </div>
       </div>
@@ -189,14 +164,14 @@ function AddNewCertification({
           {...register("description")}
         />
       </div>
-      <div className="mb-5">
+      {/* <div className="mb-5">
         <label className="text-[#475569] text-sm mb-2">Attachments</label>
         <CPInput
           type="textarea"
           className="block bg-[#F8FAFC] w-full p-4"
           placeholder="No attachments yet"
         />
-      </div>
+      </div> */}
       <div className="flex justify-end gap-2 mt-12">
         <button onClick={() => setAddCertifications(false)} className="p-3">
           Back

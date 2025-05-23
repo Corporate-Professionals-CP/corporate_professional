@@ -33,6 +33,23 @@ export const WorkExperienceSchema = z.object({
 
 export type TWorkExperienceSchema = z.infer<typeof WorkExperienceSchema>;
 
+export const CertificationSchema = z.object({
+  issued_date: z.string({ required_error: "Issue date is required" }),
+  expiration_date: z.string({ required_error: "Expiry date is required" }),
+  name: z.string().min(1, "Name is required"),
+  organization: z.string().min(1, "Organization is required"),
+  url: z.string().min(0),
+  description: z.string().min(10, "Description is required"),
+});
+
+export type TCertificationSchema = z.infer<typeof CertificationSchema>;
+
+export const SkillsSchema = z.object({
+  skill: z.string().min(2).max(15),
+});
+
+export type TSkillsSchema = z.infer<typeof SkillsSchema>;
+
 export type TCertification = {
   name: string;
   organization: string;
@@ -96,6 +113,6 @@ export type TEducation = {
 };
 
 export type TSkill = {
-  id: 0;
+  id: number;
   name: string;
 };

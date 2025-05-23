@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 // import useUser from "@/statestore/useUser";
 import { loginUser } from "./functions";
+import Link from "next/link";
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -87,7 +88,9 @@ export default function Login() {
           <CPbutton type="submit" loading={isMutating} />
           <p className="text-center text-sm text-[#64748B]">
             Don’t have an account?{" "}
-            <span className="text-[#020617]">Sign up</span>
+            <Link href={"/onboarding"} className="text-[#020617]">
+              Sign up
+            </Link>
           </p>
           <div className="flex items-center my-6">
             <span className="flex-1 h-px bg-[#E2E8F0]"></span>

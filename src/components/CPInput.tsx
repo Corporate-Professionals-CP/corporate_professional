@@ -1,5 +1,5 @@
 type CPInputType = {
-  type?: "textarea" | "text" | "password" | "email";
+  type?: "textarea" | "text" | "password" | "email" | "date";
   placeholder?: string;
   className?: string;
   error?: string;

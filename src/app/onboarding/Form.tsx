@@ -12,7 +12,6 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import CPModal from "@/components/CPModal";
 import useSWRMutation from "swr/mutation";
-import httprequest from "@/utils/httpRequest";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
@@ -25,33 +24,7 @@ import StepNine from "./StepNine";
 import StepTen from "./StepTen";
 import { errorMessage } from "@/utils/toastalert";
 import CPInput from "@/components/CPInput";
-
-const signupUser = async (url: string, { arg }: { arg: TOnboardSchema }) => {
-  const data = {
-    full_name: arg.fullName,
-    email: arg.email,
-    phone: arg.phone,
-    job_title: arg.role,
-    industry: arg.industry,
-    years_of_experience: arg.experience,
-    recruiter_tag: arg.recruiter == "true",
-    password: arg.password,
-    password_confirmation: arg.password,
-    visibility: arg.profile,
-    bio: arg.profession_journey,
-    topics: arg.interests,
-  };
-
-  return await httprequest.post("/auth/signup", data);
-  // [[ALSO UPLOAD THE RESUMES UPLOADED TOO]]
-  try {
-    const formdata = new FormData();
-    formdata.append("file", arg.cvfile);
-    await httprequest.post("/api/profiles/user_id/cv", formdata);
-  } catch (err) {
-    errorMessage(err);
-  }
-};
+import { signupUser } from "./functions";
 
 function Form() {
   const {
@@ -64,15 +37,13 @@ function Form() {
   } = useForm<TOnboardSchema>({
     resolver: zodResolver(OnboardSchema),
   });
-  const [step, setStep] = useState(9);
+  const [step, setStep] = useState(1);
   const [success, setSuccess] = useState(false);
   const [emailmodal, setEmailModal] = useState(false);
   const { trigger: submit, isMutating } = useSWRMutation(
     "api/auth/signup",
     signupUser
   );
-
-  // useEffect
 
   const handleNext = async () => {
     let valid = false;
@@ -110,7 +81,7 @@ function Form() {
     if (valid && step == 10) {
       const values = getValues();
       try {
-        submit(values);
+        await submit(values);
         setEmailModal(true);
       } catch (err) {
         errorMessage(err);
