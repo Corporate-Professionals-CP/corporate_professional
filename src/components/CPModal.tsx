@@ -5,11 +5,13 @@ function CPModal({
   children,
   width = 840,
   height,
+  minHeight,
   backgroundAction = () => {},
 }: {
   children: ReactNode;
   width?: number;
   height?: number;
+  minHeight?: number;
   backgroundAction?: () => void;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -38,6 +40,7 @@ function CPModal({
         style={{
           width: width,
           height: height ? height : "auto",
+          minHeight: minHeight ? minHeight : "unset",
         }}
         ref={modalRef}
       >

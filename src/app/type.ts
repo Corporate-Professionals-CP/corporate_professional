@@ -71,6 +71,14 @@ export type TUser = {
   sex: string | undefined;
 };
 
+export type TUserProfile = {
+  id: string;
+  full_name: string;
+  job_title: string;
+  company: string;
+  industry: string;
+  is_recruiter: boolean;
+};
 export const CommentSchema = z.object({
   comment: z.string().min(1),
 });

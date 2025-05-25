@@ -3,14 +3,22 @@ import React, { useEffect, useRef, useState } from "react";
 
 type CPselectType = {
   className?: string;
-
+  value?: string;
   placeholder?: string;
-  items?: { text: string; val: string; number: number }[];
+  items?: { text: string; val: string; number?: number }[];
   onChange?: (e: string) => void;
   tabText: string;
+  prefix?: string;
 };
 
-function CPsearchFIlterDropDown({ items, placeholder, tabText }: CPselectType) {
+function CPsearchFIlterDropDown({
+  items,
+  placeholder,
+  tabText,
+  value = "",
+  prefix = "",
+  onChange = () => {},
+}: CPselectType) {
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,7 +40,7 @@ function CPsearchFIlterDropDown({ items, placeholder, tabText }: CPselectType) {
     <>
       <div className="relative" ref={dropdownRef}>
         <div onClick={() => setOpen((s) => !s)}>
-          <CPsmallTab text={tabText} />
+          <CPsmallTab text={tabText} value={value} prefix={prefix} />
         </div>
         {open && (
           <div className="min-w-[300] min-h-[200] bg-white absolute top-16 shadow-dropdown rounded-lg p-1">
@@ -47,7 +55,7 @@ function CPsearchFIlterDropDown({ items, placeholder, tabText }: CPselectType) {
                 className="px-2 py-3 text-[#64748B] text-sm hover:bg-[#F8FAFC] cursor-pointer flex items-center justify-between gap-1"
                 // {...props}
                 onClick={() => {
-                  // onChange(item.val); // notify React Hook Form
+                  onChange(item.val); // notify React Hook Form
                   setOpen(false);
                 }}
               >
@@ -64,9 +72,24 @@ function CPsearchFIlterDropDown({ items, placeholder, tabText }: CPselectType) {
 
 export default CPsearchFIlterDropDown;
 
-const CPsmallTab = ({ text }: { text: string }) => {
+const CPsmallTab = ({
+  text,
+  value,
+  prefix,
+}: {
+  text: string;
+  value: string;
+  prefix: string;
+}) => {
+  if (value) {
+    return (
+      <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis bg-[#7074FF1A]">
+        {prefix || text}: {value}
+      </div>
+    );
+  }
   return (
-    <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer">
+    <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">
       {text}
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 
 function CPEmptyState({
   textIcon = "💼",
-  btnText = "Empty",
+  btnText = "",
   action = () => {},
 }: {
   textIcon?: string;
@@ -14,12 +14,14 @@ function CPEmptyState({
       <div className="w-[144] h-[144] bg-[#7074FF1A] grid place-content-center rounded-full text-5xl">
         {textIcon}
       </div>
-      <button
-        className="rounded-lg px-3 py-2 bg-[#F8FAFC] cursor-pointer"
-        onClick={action}
-      >
-        {btnText}
-      </button>
+      {btnText && (
+        <button
+          className="rounded-lg px-3 py-2 bg-[#F8FAFC] cursor-pointer"
+          onClick={action}
+        >
+          {btnText}
+        </button>
+      )}
     </div>
   );
 }
