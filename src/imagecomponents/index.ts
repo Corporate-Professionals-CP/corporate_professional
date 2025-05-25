@@ -18,3 +18,4 @@ export { default as LinkedinIcon } from "./LinkedinIcon";
 export { default as TwitterIcon } from "./TwitterIcon";
 export { default as YoutubeIcon } from "./YoutubeIcon";
 export { default as CloseIcon } from "./CloseIcon";
+export { default as HamburgerLinkIcon } from "./HamburgerLinkIcon";

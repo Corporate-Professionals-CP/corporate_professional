@@ -7,16 +7,46 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ProfileSchema, TProfileSchema } from "./type";
 import CPformError from "@/components/CPformError";
+import useUser from "@/statestore/useUser";
+import useSWRMutation from "swr/mutation";
+import { updateProfile } from "./functions";
+import { errorMessage, successMessage } from "@/utils/toastalert";
 
 const General = () => {
+  const { user, setUser } = useUser((state) => state);
   const {
+    handleSubmit,
     register,
     formState: { errors },
     setValue,
     watch,
   } = useForm<TProfileSchema>({
     resolver: zodResolver(ProfileSchema),
+    defaultValues: {
+      full_name: user?.full_name,
+      job_title: user?.job_title,
+      industry: user?.industry,
+      location: user?.location,
+      pronouns: user?.sex,
+      recruiter_tag: user?.recruiter_tag ? "yes" : "no",
+      visibility: user?.visibility,
+      experience: user?.years_of_experience,
+      bio: user?.bio,
+    },
   });
+  const { trigger, isMutating } = useSWRMutation(
+    `profiles/${user?.id}`,
+    updateProfile
+  );
+  const onClick = async (data: TProfileSchema) => {
+    try {
+      const response = await trigger(data);
+      setUser(response);
+      successMessage("Profile updated succesful");
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   return (
     <div>
       <div className="flex items-center gap-4 mb-8">
@@ -25,7 +55,7 @@ const General = () => {
           Update image
         </p>
       </div>
-      <form>
+      <form onSubmit={handleSubmit(onClick)}>
         <div className="mb-5">
           <label className="mb-2 text-sm text-[#475569]">Name</label>
           <CPInput
@@ -98,13 +128,13 @@ const General = () => {
               text="Public"
               {...register("visibility")}
               watchvalue={watch("visibility")}
-              value="public"
+              value="Public"
             />
             <CPSwitchbox
               text="Private"
               {...register("visibility")}
               watchvalue={watch("visibility")}
-              value="private"
+              value="Private"
             />
           </div>
           <CPformError error={errors.visibility?.message} />
@@ -114,7 +144,12 @@ const General = () => {
             How experienced are you?
           </label>
           <CPselect
-            items={[]}
+            items={[
+              { text: "⏳ 0-2", val: "0-2 years" },
+              { text: "🏆 3-5", val: "3-5 years" },
+              { text: "🚀 6-10", val: "6-10 years" },
+              { text: "👑 10+ ", val: "10+ years" },
+            ]}
             onChange={(val: string) => setValue("experience", val)}
             value={watch("experience")}
             error={errors.experience?.message}
@@ -131,7 +166,7 @@ const General = () => {
         </div>
         <div className="flex justify-end gap-2 mt-12">
           <button className="p-3">Back</button>
-          <CPsmallButton text="Done" />
+          <CPsmallButton text="Done" type="submit" loading={isMutating} />
         </div>
       </form>
     </div>

@@ -1,17 +1,14 @@
+import { TUser } from "@/app/type";
 import { create } from "zustand";
 
 type UserState = {
-  bears: number;
-  increasePopulation: () => void;
-  removeAllBears: () => void;
-  updateBears: (newBears: number) => void;
+  user: TUser | null;
+  setUser: (data: TUser) => void;
 };
 
 const useUser = create<UserState>((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-  updateBears: (newBears) => set({ bears: newBears }),
+  user: null,
+  setUser: (data: TUser) => set({ user: data }),
 }));
 
 export default useUser;

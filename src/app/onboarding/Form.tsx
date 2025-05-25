@@ -41,7 +41,7 @@ function Form() {
   const [success, setSuccess] = useState(false);
   const [emailmodal, setEmailModal] = useState(false);
   const { trigger: submit, isMutating } = useSWRMutation(
-    "api/auth/signup",
+    "/auth/signup",
     signupUser
   );
 

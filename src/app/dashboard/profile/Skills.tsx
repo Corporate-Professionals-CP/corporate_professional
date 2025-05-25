@@ -11,7 +11,7 @@ import { CPspinnerLoader } from "@/components";
 import useSWRMutation from "swr/mutation";
 import { addskills } from "./functions";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import { CloseIcon } from "@/imagecomponents";
+import CPpillet from "@/components/CPpillet";
 
 function Skills() {
   const { data = [], isLoading } = useSWR("skill/", () =>
@@ -64,13 +64,7 @@ const ListContact = ({
   return (
     <div className="flex gap-3 flex-wrap ">
       {skills.map((skill) => (
-        <div
-          key={skill.id}
-          className="text-xs py-2 px-3 gap-2 bg-[#F8FAFC] rounded-full  flex items-center"
-        >
-          <span> {skill.name}</span>
-          <CloseIcon />
-        </div>
+        <CPpillet key={skill.id} name={skill.name} />
       ))}
     </div>
   );

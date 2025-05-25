@@ -7,7 +7,7 @@ function CPsmallButton({
   isLink = undefined,
   ...props
 }: {
-  text: string;
+  text?: string;
   loading?: boolean;
   isLink?: string | undefined;
 } & ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -18,6 +18,7 @@ function CPsmallButton({
         className={" py-3 px-6 rounded-full text-white font-medium bg-primary"}
       >
         {text}
+        {props.children}
       </Link>
     );
   }
@@ -29,6 +30,7 @@ function CPsmallButton({
       }`}
     >
       {text}
+      {props.children}
     </button>
   );
 }

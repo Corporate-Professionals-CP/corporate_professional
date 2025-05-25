@@ -1,13 +1,15 @@
+import { TPost } from "@/app/type";
 import React from "react";
 
-function CPpostCardBody() {
+function CPpostCardBody({ post }: { post: TPost }) {
   return (
     <div className="mb-[36]">
-      <p className=" text-[#020617] text-sm leading-5">
-        The job market today is tougher than ever. Companies prioritize low-cost
-        hiring over talent, conducting brief phone interviews and making snap
-        decisions without truly assessing candidates.{" "}
-      </p>
+      {post.title && (
+        <h1 className="text-[#020617] text-[20px] mb-3 font-medium">
+          {post.title}
+        </h1>
+      )}
+      <p className=" text-[#020617] text-sm leading-5">{post.content}</p>
     </div>
   );
 }

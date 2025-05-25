@@ -1,22 +1,85 @@
+"use client";
+import {
+  bookmarkToPost,
+  ReactToPost,
+  removeBookmarkToPost,
+  RemoveToPost,
+} from "@/app/functions";
 import { BookmarkIcon } from "@/imagecomponents";
 import CommentIcon from "@/imagecomponents/CommentIcon";
 import LoveIcon from "@/imagecomponents/LoveIcon";
 import RetweetIcon from "@/imagecomponents/RetweetIcon";
 import ShareIcon from "@/imagecomponents/ShareIcon";
+import { errorMessage } from "@/utils/toastalert";
 
-import React from "react";
+import React, { useState } from "react";
 
-function CPpostCardFooter() {
+type TCPpostCardFooter = {
+  total_comments: number;
+  total_reactions: number;
+  is_bookmarked: boolean;
+  // reactions_breakdown:{like:number, love:number: insightful:number, funny:number, congratulations: number};
+  // is_repost: boolean;
+  post_id: string;
+  is_liked?: boolean;
+  setShowComments: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function CPpostCardFooter({
+  total_comments,
+  total_reactions,
+  is_bookmarked,
+  post_id,
+  is_liked = false,
+  setShowComments = () => {},
+}: // reactions_breakdown,
+// is_repost,
+
+TCPpostCardFooter) {
+  const [heart, setHeart] = useState(is_liked);
+  const [bookmark, setBookMark] = useState(is_bookmarked);
+  const onClickLike = async () => {
+    const prevHeart = heart;
+    setHeart((s) => !s);
+    try {
+      if (prevHeart) {
+        await RemoveToPost(post_id);
+      } else {
+        await ReactToPost(post_id);
+      }
+    } catch (err) {
+      errorMessage(err, "React to post failed");
+      setHeart((s) => !s);
+    }
+  };
+  const onClickBookMark = async () => {
+    const prevBook = bookmark;
+    setBookMark((s) => !s);
+    try {
+      if (prevBook) {
+        await removeBookmarkToPost(post_id);
+      } else {
+        await bookmarkToPost(post_id);
+      }
+    } catch (err) {
+      errorMessage(err, "Bookmark failed");
+      setBookMark((s) => !s);
+    }
+  };
   return (
     <div className="flex items-center">
       <div className="flex items-center flex-1 gap-[18]">
         <div className="flex items-center gap-2">
-          <LoveIcon />
-          <span className="text-[#020617] text-xs">10K</span>
+          <button onClick={onClickLike}>
+            <LoveIcon active={heart} />
+          </button>
+          <span className="text-[#020617] text-xs">{total_reactions}</span>
         </div>
         <div className="flex items-center gap-2">
-          <CommentIcon />
-          <span className="text-[#020617] text-xs">10K</span>
+          <button onClick={() => setShowComments((s) => !s)}>
+            <CommentIcon />
+          </button>
+          <span className="text-[#020617] text-xs">{total_comments}</span>
         </div>
         <div className="flex items-center gap-2">
           <RetweetIcon />
@@ -24,7 +87,9 @@ function CPpostCardFooter() {
         </div>
       </div>
       <div className="flex items-center gap-[18]">
-        <BookmarkIcon size="20" />
+        <button onClick={onClickBookMark}>
+          <BookmarkIcon size="20" active={bookmark} />
+        </button>
         <ShareIcon />
       </div>
     </div>

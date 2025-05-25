@@ -19,9 +19,7 @@ function LeftSection() {
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
           <Link href="/dashboard/profile">
-            <HomeIcon
-              color={pathname == "/dashboard" ? "#7074ff" : "#020617"}
-            />
+            <HomeIcon active={pathname == "/dashboard"} />
           </Link>
           <Link href="/dashboard/search">
             <SearchIcon
@@ -35,15 +33,12 @@ function LeftSection() {
           </Link>
           <Link href="/dashboard/bookmark">
             <BookmarkIcon
+              active={pathname == "/dashboard/bookmark"}
               color={pathname == "/dashboard/bookmark" ? "#7074ff" : "#020617"}
             />
           </Link>
           <Link href="/dashboard/notification">
-            <NotificationIcon
-              color={
-                pathname == "/dashboard/notification" ? "#7074ff" : "#020617"
-              }
-            />
+            <NotificationIcon active={pathname == "/dashboard/notification"} />
           </Link>
         </div>
         <div></div>

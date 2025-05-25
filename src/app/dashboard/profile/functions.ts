@@ -6,6 +6,7 @@ import {
   TContactSchema,
   TEducation,
   TEducationSchema,
+  TProfileSchema,
   TSkill,
   TSkillsSchema,
   TVolunteering,
@@ -243,3 +244,36 @@ export async function addcontact(
   );
   return response.data;
 }
+
+export const updateProfile = async (
+  url: string,
+  { arg }: { arg: TProfileSchema }
+) => {
+  const formdata = {
+    full_name: arg.full_name,
+    // email: p2DL-x@RwjfioUbKpzfUDnrPoVCI.wuu,
+    // phone: 08168890192,
+    // company: arg.,
+    job_title: arg.job_title,
+    bio: arg.bio,
+    industry: arg.industry,
+    years_of_experience: arg.experience,
+    location: arg.location,
+    // education: arg.ed,
+    // age: -59018639,
+    sex: arg.pronouns,
+    // status: velit mollit cillum,
+    // certifications: esse aliqua dolor tempor,
+    // linkedin_profile: http://nlVUmwSdhuHAaeeuQxkmVQ.nsgvQ5aYKp1C.lk+6LlHUaLVZTZthUw4LaQ-Z+p,
+    visibility: arg.visibility,
+    recruiter_tag: arg.recruiter_tag == "yes",
+    // is_admin: false,
+    // topics: [
+    //   proident sed nostrud mollit,
+    //   do laboris eu
+    // ],
+    // is_active: false
+  };
+  const response = await httprequest.put(url, formdata);
+  return response.data;
+};

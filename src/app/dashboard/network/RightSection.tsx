@@ -1,4 +1,5 @@
 import CPprofileCardSmall from "@/components/CPprofileCardSmall";
+import Link from "next/link";
 
 function RightSection() {
   return (
@@ -11,13 +12,23 @@ function RightSection() {
         </div>
 
         <ul className="p-2 flex-1">
-          <li className="flex justify-between items-center px-2 py-3 text-[#64748B] text-sm ">
-            <span>Connections</span>
-            <span>120</span>
+          <li>
+            <Link
+              className="flex justify-between items-center px-2 py-3 text-[#64748B] text-sm"
+              href={"/dashboard/network/connection"}
+            >
+              <span>Connections</span>
+              <span>120</span>
+            </Link>
           </li>
-          <li className="flex justify-between items-center px-2 py-3 text-[#64748B] text-sm ">
-            <span>Pending requests</span>
-            <span>9</span>
+          <li>
+            <Link
+              className="flex justify-between items-center px-2 py-3 text-[#64748B] text-sm"
+              href={"/dashboard/network/pending"}
+            >
+              <span>Pending requests</span>
+              <span>9</span>
+            </Link>
           </li>
         </ul>
         <div>

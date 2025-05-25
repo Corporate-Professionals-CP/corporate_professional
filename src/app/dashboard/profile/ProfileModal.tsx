@@ -1,10 +1,13 @@
 "use client";
-
 import React, { useState } from "react";
 import General from "./General";
 import Contact from "./Contact";
 import WorkExperience from "./WorkExperience";
-import { GeneralIcon, SettingsIcon } from "@/imagecomponents";
+import {
+  GeneralIcon,
+  HamburgerLinkIcon,
+  SettingsIcon,
+} from "@/imagecomponents";
 import ProfileIcon from "@/imagecomponents/ProfileIcon";
 import Volunteering from "./Volunteering";
 import Education from "./Education";
@@ -78,7 +81,8 @@ const Item = ({ text, onClick }: { text: string; onClick: () => void }) => {
       className="text-sm py-3 px-4.5 flex items-center justify-between text-[#475569] cursor-pointer"
       onClick={onClick}
     >
-      {text}
+      <span>{text}</span>
+      <HamburgerLinkIcon />
     </li>
   );
 };
