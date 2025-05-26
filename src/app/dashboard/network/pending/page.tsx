@@ -5,8 +5,8 @@ import { LeftArrow } from "@/imagecomponents";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
-import { fetchPendingNetwork } from "../function";
-import { CPspinnerLoader } from "@/components";
+import { fetchPendingNetwork, fetchSentPendingNetwork } from "../function";
+import { CPEmptyState, CPspinnerLoader } from "@/components";
 
 function page() {
   return <MiddleSection />;
@@ -15,29 +15,53 @@ function page() {
 export default page;
 
 function MiddleSection() {
-  const { data, isLoading } = useSWR("/network/pending", fetchPendingNetwork);
+  const { data: pendingConnection = [], isLoading } = useSWR(
+    "/network/pending",
+    fetchPendingNetwork
+  );
+  const { data: sentConnection = [], isLoading: isSentLoading } = useSWR(
+    "/network/sent-pending",
+    fetchSentPendingNetwork
+  );
   return (
     <>
-      <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-[#020617] font-medium flex items-center gap-6">
+      <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
         <Link href={"/dashboard/network"}>
           <LeftArrow />
         </Link>
         <span className="text-lg">Pending requests</span>
       </div>
-      {isLoading ? (
+      {isLoading || isSentLoading ? (
         <CPspinnerLoader />
       ) : (
         <div className="p-[18]">
           <div className="flex justify-between items-center">
-            <p className="text-[#020617] font-medium text-sm">
-              Pending requests (9)
+            <p className="text-slate font-medium text-sm">
+              Pending requests ({pendingConnection.length})
             </p>
           </div>
           <div>
-            <CPprofileCard isUser />
-            <CPprofileCard isUser />
-            <CPprofileCard isUser />
-            <CPprofileCard isUser />
+            {pendingConnection.length == 0 ? (
+              <CPEmptyState textIcon="🛜" />
+            ) : (
+              pendingConnection.map((item) => (
+                <CPprofileCard key={item.id} profile={item} />
+              ))
+            )}
+          </div>
+          <div className="flex justify-between items-center">
+            <p className="text-slate font-medium text-sm">
+              Sent pending requests ({sentConnection.length})
+            </p>
+          </div>
+          <div>
+            {sentConnection.length == 0 ? (
+              <CPEmptyState textIcon="🛜" />
+            ) : (
+              sentConnection.map((item) => (
+                <CPprofileCard isUser key={item.id} profile={item} />
+              ))
+            )}
           </div>
         </div>
       )}

@@ -22,7 +22,10 @@ function CPpostCard({ post }: { post: TPost }) {
   return (
     <div className="border-b border-[#E2E8F0] p-6">
       <div className=" flex gap-4 items-start mb-3">
-        <CPprofileImg />
+        <CPprofileImg
+          url={post.user?.profile_image_url}
+          full_name={post.user?.full_name}
+        />
         <div className="flex-1">
           <CPpostCardHeader
             name={post.user?.full_name}
@@ -110,13 +113,11 @@ const CPpostComment = ({ comment }: { comment: TComment }) => {
     <div className="flex items-start gap-3 mb-3">
       <CPprofileImg size={35} />
       <div className="flex-1">
-        <p className="font-medium text-sm text-[#020617]">
+        <p className="font-medium text-sm text-slate">
           {comment.user.full_name}
         </p>
         <p className="text-[#64748B] text-sm ">{comment.user.job_title}</p>
-        <p className=" text-[#020617] text-sm leading-5  mt-1">
-          {comment.content}
-        </p>
+        <p className=" text-slate text-sm leading-5  mt-1">{comment.content}</p>
       </div>
     </div>
   );

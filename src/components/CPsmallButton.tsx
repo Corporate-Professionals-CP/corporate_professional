@@ -28,6 +28,7 @@ function CPsmallButton({
       className={` py-3 px-6 rounded-full text-white font-medium ${
         loading ? "bg-[#b5b7ff]" : "bg-primary"
       }`}
+      disabled={loading}
     >
       {text}
       {props.children}

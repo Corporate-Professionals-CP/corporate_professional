@@ -14,7 +14,7 @@ const CPprofileCardSmall = () => {
         </p>
       </div>
       <div>
-        <button className="text-sm font-medium text-[#020617] py-2 px-3 rounded-[5px] border border-[#E2E8F0]">
+        <button className="text-sm font-medium text-slate py-2 px-3 rounded-[5px] border border-[#E2E8F0]">
           Connect
         </button>
       </div>

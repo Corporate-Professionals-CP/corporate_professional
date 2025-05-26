@@ -46,7 +46,7 @@ function CPsearchFIlterDropDown({
           <div className="min-w-[300] min-h-[200] bg-white absolute top-16 shadow-dropdown rounded-lg p-1">
             <div className="flex border-b border-[#F1F5F9] items-center justify-between">
               <input className="flex-1 py-3 px-2" placeholder={placeholder} />
-              <button className="p-2 text-sm text-[#020617]">Done</button>
+              <button className="p-2 text-sm text-slate">Done</button>
             </div>
             <p className="text-xs text-[#64748B] p-2">Suggestions</p>
             {items?.map((item) => (

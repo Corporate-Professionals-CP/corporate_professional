@@ -73,17 +73,17 @@ TCPpostCardFooter) {
           <button onClick={onClickLike}>
             <LoveIcon active={heart} />
           </button>
-          <span className="text-[#020617] text-xs">{total_reactions}</span>
+          <span className="text-slate text-xs">{total_reactions}</span>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowComments((s) => !s)}>
             <CommentIcon />
           </button>
-          <span className="text-[#020617] text-xs">{total_comments}</span>
+          <span className="text-slate text-xs">{total_comments}</span>
         </div>
         <div className="flex items-center gap-2">
           <RetweetIcon />
-          <span className="text-[#020617] text-xs">10K</span>
+          <span className="text-slate text-xs">10K</span>
         </div>
       </div>
       <div className="flex items-center gap-[18]">

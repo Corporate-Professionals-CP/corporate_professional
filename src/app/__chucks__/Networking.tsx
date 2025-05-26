@@ -12,7 +12,7 @@ const NetWorking = () => {
         <div className="max-w-[460] max-md:max-w-full">
           <div className="bg-[#F8FAFC] mb-5 pb-10 rounded-2xl">
             <div className="p-6">
-              <h4 className="font-medium text-[#020617] mb-2">
+              <h4 className="font-medium text-slate mb-2">
                 Unlock Opportunities
               </h4>
               <p className="text-[#475569">
@@ -30,7 +30,7 @@ const NetWorking = () => {
           </div>
           <div className="bg-[#F8FAFC] rounded-2xl">
             <div className="p-6">
-              <h4 className="font-medium text-[#020617] mb-2">
+              <h4 className="font-medium text-slate mb-2">
                 Gain Valuable Insights
               </h4>
               <p className="text-[#475569 mb-6">
@@ -50,7 +50,7 @@ const NetWorking = () => {
         </div>
       </div>
       <div className="mt-5 bg-[#F8FAFC] p-6 rounded-2xl">
-        <h4 className="font-medium text-[#020617] mb-2">Expert-Led Programs</h4>
+        <h4 className="font-medium text-slate mb-2">Expert-Led Programs</h4>
         <p className="text-[#475569 mb-6">
           Access workshops, courses, and events led by industry leaders who
           share practical insights you won&apos;t find elsewhere.
@@ -72,7 +72,7 @@ const NetWorking = () => {
 
 const Pellet = () => {
   return (
-    <div className="py-2 px-[18] text-xs rounded-full text-[#020617] bg-white shrink-0 ">
+    <div className="py-2 px-[18] text-xs rounded-full text-slate bg-white shrink-0 ">
       Project Manager
     </div>
   );

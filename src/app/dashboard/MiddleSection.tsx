@@ -57,7 +57,7 @@ const Tab = ({
 }) => {
   return (
     <div
-      className="px-5 pt-5 gap-5 w-1/2 text-center text-[#020617] font-medium flex flex-col items-center  cursor-pointer"
+      className="px-5 pt-5 gap-5 w-1/2 text-center text-slate font-medium flex flex-col items-center  cursor-pointer"
       onClick={() => setSelectTab(tabnumber)}
     >
       <span>{text}</span>

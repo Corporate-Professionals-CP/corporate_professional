@@ -69,6 +69,7 @@ export type TUser = {
   is_admin: boolean;
   updated_at: string;
   sex: string | undefined;
+  profile_image_url: string;
 };
 
 export type TUserProfile = {
@@ -84,3 +85,54 @@ export const CommentSchema = z.object({
 });
 
 export type TCommentSchema = z.infer<typeof CommentSchema>;
+
+export type TSuggestedNetwork = {
+  id: string;
+  full_name: string;
+  headline: string;
+  location: string;
+  pronouns: string;
+  industry: string;
+  years_of_experience: string;
+  profile_image_url: string;
+  avatar_text: string;
+  recruiter_tag: boolean;
+  created_at: string;
+  job_title: string;
+};
+
+export type TNetwork = {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  status: string;
+  created_at: string;
+  sender: {
+    id: string;
+    full_name: string;
+    headline: string;
+    location: string;
+    pronouns: string;
+    industry: string;
+    years_of_experience: string;
+    profile_image_url: string;
+    avatar_text: string;
+    recruiter_tag: boolean;
+    created_at: string;
+    job_title: string;
+  };
+  receiver: {
+    id: string;
+    full_name: string;
+    headline: string;
+    location: string;
+    pronouns: string;
+    industry: string;
+    years_of_experience: string;
+    profile_image_url: string;
+    avatar_text: string;
+    recruiter_tag: boolean;
+    created_at: string;
+    job_title: string;
+  };
+};

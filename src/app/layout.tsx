@@ -15,8 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${helvneue.className}  antialiased`}>{children}</body>
-      <ToastContainer />
+      <body className={` ${helvneue.className}  antialiased`}>
+        {children}
+
+        <ToastContainer />
+      </body>
     </html>
   );
 }

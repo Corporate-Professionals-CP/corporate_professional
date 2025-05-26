@@ -12,7 +12,7 @@ import Image from "next/image";
 function CPpartners() {
   return (
     <div className="px-20 py-24 mb-[72]">
-      <p className="text-[#020617] text-center mb-10">
+      <p className="text-slate text-center mb-10">
         Trusted and used by over 24 institutions
       </p>
       <div className="flex gap-16 justify-between overflow-x-scroll">

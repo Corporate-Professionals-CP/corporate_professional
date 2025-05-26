@@ -15,6 +15,7 @@ import {
   TWorkExperienceSchema,
 } from "./type";
 import { mutate } from "swr";
+import { TUser } from "@/app/type";
 
 export const addskills = async (
   url: string,
@@ -275,5 +276,15 @@ export const updateProfile = async (
     // is_active: false
   };
   const response = await httprequest.put(url, formdata);
-  return response.data;
+  return response.data as TUser;
+};
+
+export const updateProfilePicture = async (
+  url: string,
+  { arg }: { arg: { file: File } }
+) => {
+  const formData = new FormData();
+  formData.append("file", arg.file);
+  const response = await httprequest.post(url, formData);
+  return response.data as TUser;
 };

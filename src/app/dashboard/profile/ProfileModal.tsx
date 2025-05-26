@@ -31,7 +31,7 @@ function ProfileModal() {
   };
   return (
     <CPModal backgroundAction={handleCloseModal}>
-      <div className="flex text-[#020617] p-2">
+      <div className="flex text-slate p-2">
         <div className="flex flex-col gap-8 bg-[#F8FAFC] px-4 py-8">
           <button>
             <ProfileIcon />

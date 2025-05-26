@@ -25,14 +25,19 @@ import { errorMessage, successMessage } from "@/utils/toastalert";
 // import useUser from "@/statestore/useUser";
 import { loginUser } from "./functions";
 import Link from "next/link";
+import VerifyEmailModal from "../VerifyEmailModal";
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [emailmodal, setEmailModal] = useState(false);
+
   // const state = useUser((state) => state.updateBears);
   const router = useRouter();
   const { trigger, isMutating } = useSWRMutation("auth/login", loginUser);
 
   const {
+    watch,
     register,
     handleSubmit,
     formState: { errors },
@@ -44,8 +49,16 @@ export default function Login() {
       await trigger(data);
       successMessage("Login Successful");
       router.push("/dashboard");
-    } catch (err) {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+    } catch (err: any) {
       console.log(err);
+      if (
+        err?.response?.data.detail &&
+        err?.response?.data.detail?.includes("verify")
+      ) {
+        setEmailModal(true);
+      }
+      // push to Verify, or Verify modal
       errorMessage(err);
     }
   };
@@ -88,7 +101,7 @@ export default function Login() {
           <CPbutton type="submit" loading={isMutating} />
           <p className="text-center text-sm text-[#64748B]">
             Don’t have an account?{" "}
-            <Link href={"/onboarding"} className="text-[#020617]">
+            <Link href={"/onboarding"} className="text-slate">
               Sign up
             </Link>
           </p>
@@ -105,6 +118,8 @@ export default function Login() {
         </div>
       </div>
       <CPtermsAndPrivacy />
+      {emailmodal && <VerifyEmailModal email={watch("email")} token={""} />}
+
       {modalOpen && <FormPasswordModel setModalOpen={setModalOpen} />}
     </main>
   );
@@ -172,8 +187,8 @@ function FormPasswordModel({
           <h3 className="mb-4 text-lg font-medium">Check your inbox! 🍄</h3>
           <p className=" text-[#64748B] mb-24">
             Open the link sent to{" "}
-            <span className="text-[#020617]">danielanozie@icloud.com</span> in
-            this browser.
+            <span className="text-slate">danielanozie@icloud.com</span> in this
+            browser.
           </p>
           <div className="flex justify-end gap-2 mt-12">
             <button className="p-3">Back</button>
@@ -237,7 +252,7 @@ function ForgotPasswordPassInput() {
         Your new password must be different from your previously used passwords
       </p>
       <div>
-        <div className="flex justify-between items-center mb-2 text-[#020617] text-sm">
+        <div className="flex justify-between items-center mb-2 text-slate text-sm">
           <p>Create new password</p>
           <p className="text-xs">Good</p>
         </div>

@@ -49,7 +49,7 @@ const StepNine = ({
 
       <label
         className="
-        border-primary outline-2 outline-[#7074FF40] outline-offset-1  border  flex justify-between  mb-2 py-[14px] px-[16px] w-full bg-[#F8FAFC] rounded-[8px] text-sm text-[#020617]"
+        border-primary outline-2 outline-[#7074FF40] outline-offset-1  border  flex justify-between  mb-2 py-[14px] px-[16px] w-full bg-[#F8FAFC] rounded-[8px] text-sm text-slate"
       >
         <input
           type="file"
@@ -69,10 +69,10 @@ const StepNine = ({
       >
         <input {...getInputProps()} />
         <UploadIcon />
-        <p className="text-[#020617] text-sm mb-2 mt-4">
+        <p className="text-slate text-sm mb-2 mt-4">
           Drop your file here to upload
         </p>
-        <p className="text-[#020617] text-sm mb-6">
+        <p className="text-slate text-sm mb-6">
           File types: .docx, .doc, .pdf, .txt, .odt or .rtf.{" "}
         </p>
         <div className="self-end">

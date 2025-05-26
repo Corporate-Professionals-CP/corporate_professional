@@ -13,7 +13,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer>
-      <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-[#020617]  flex justify-center">
+      <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-slate  flex justify-center">
         <div className="w-[857] flex flex-col items-center">
           <div>Discover</div>
           <h3 className="text-white text-[60px] leading-[1.2] text-center mb-7 mt-4">
@@ -29,7 +29,7 @@ const Footer = () => {
           <Image src={earth} alt="earth" className="w-full mt-[126]" />
         </div>
       </div>
-      <div className="bg-[#020617] flex justify-center gap-10 text-white p-[56] max-md:flex-col max-md:px-6">
+      <div className="bg-slate flex justify-center gap-10 text-white p-[56] max-md:flex-col max-md:px-6">
         <div className="w-[450] h-[488] flex flex-col max-md:h-auto max-md:gap-[80] max-md:w-auto">
           <Image
             src={"/logo-white-full.svg"}

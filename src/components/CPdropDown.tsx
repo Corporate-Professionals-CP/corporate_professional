@@ -35,7 +35,7 @@ function CPdropDown({
         <div className="p-1 rounded-lg min-w-[187] absolute shadow-dropdown right-0 top-8 bg-white">
           {items.map((item) => (
             <p
-              className="text-[#020617] text-sm py-3 px-2 hover:bg-[#F8FAFC]"
+              className="text-slate text-sm py-3 px-2 hover:bg-[#F8FAFC]"
               onClick={item.onclick}
               key={item.name}
             >

@@ -13,7 +13,7 @@ function CPpostCardHeader({
   return (
     <div className="flex justify-between mb-4">
       <div>
-        <p className="font-medium text-sm text-[#020617]">
+        <p className="font-medium text-sm text-slate">
           {name}
           <span className="text-xs text-[#94A3B8] font-normal">
             {" "}

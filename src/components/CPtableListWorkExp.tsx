@@ -18,7 +18,7 @@ function CPtableListWorkExp({
     <div className=" flex gap-2">
       <p className="w-[180] text-[#64748B] text-sm">{left}</p>
       <div className="flex-1">
-        <h6 className="text-[#020617] text-sm mb-2 flex items-center gap-1">
+        <h6 className="text-slate text-sm mb-2 flex items-center gap-1">
           <span>{title}</span>
           {link && (
             <a href={link} target="_blank">

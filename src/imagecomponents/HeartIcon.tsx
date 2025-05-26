@@ -2,26 +2,20 @@ import React from "react";
 
 function HeartIcon() {
   return (
-    <svg
-      width="46"
-      height="42"
-      viewBox="0 0 46 42"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width={46} height={42} fill="none">
       <path
-        d="M22.7834 7.77532C17.6734 3.2157 11.6443 1.5503 7.2576 4.08294C1.0398 7.67272 0.476422 18.3375 5.99927 27.9034C9.63031 34.1925 14.988 38.4408 19.9995 39.5932"
         stroke="#7074FF"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={4}
+        d="M22.783 7.775c-5.11-4.56-11.139-6.225-15.525-3.692C1.04 7.673.476 18.337 5.999 27.903c3.631 6.29 8.989 10.538 14 11.69"
       />
       <path
-        d="M17.2571 14.9034C11.7343 24.4692 12.2976 35.134 18.5154 38.7239C24.7332 42.3137 34.2509 37.4692 39.7738 27.9034C45.2966 18.3375 44.7332 7.67272 38.5154 4.08294C32.2976 0.493093 22.7799 5.3376 17.2571 14.9034Z"
         stroke="#7074FF"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={4}
+        d="M17.257 14.903c-5.523 9.566-4.96 20.231 1.258 23.82 6.218 3.59 15.736-1.254 21.259-10.82s4.96-20.23-1.259-23.82C32.298.493 22.78 5.338 17.257 14.903Z"
       />
     </svg>
   );

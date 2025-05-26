@@ -106,7 +106,7 @@ function AddNewSkills({
           {...register("skill")}
         />
         <p className="text-xs text-[#64748B]">
-          <span className="text-[#020617]">Suggested:</span> UI/UX Design,
+          <span className="text-slate">Suggested:</span> UI/UX Design,
           Wireframing & Prototyping, Design Systems, Interaction Design, Visual
           Design
         </p>

@@ -5,7 +5,16 @@ export const OnboardSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(5, "phone must contain at least 5 character(s)"),
   profession_journey: z.string().min(10),
-  password: z.string().min(5),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" })
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter",
+    })
+    .regex(/\d/, { message: "Password must contain at least one number" })
+    .regex(/[^A-Za-z0-9]/, {
+      message: "Password must contain at least one special character",
+    }),
   role: z.string().min(1),
   industry: z.string().min(1, "Industry is required"),
   experience: z.string().min(1, "Experience is required"),

@@ -42,7 +42,7 @@ function CPselect({
   return (
     <div className="w-full relative" ref={dropdownRef}>
       <div
-        className={`w-full min-h-[45] relative bg-[#F8FAFC] px-4 py-3.5 text-sm text-[#020617] rounded-lg ${className}`}
+        className={`w-full min-h-[45] relative bg-[#F8FAFC] px-4 py-3.5 text-sm text-slate rounded-lg ${className}`}
         onClick={() => setOpen((s) => !s)}
       >
         {items?.find((v) => v.val == value)?.text || (
@@ -60,7 +60,7 @@ function CPselect({
           {items?.map((item) => (
             <div
               key={item.val}
-              className="px-2 py-3 text-[#020617] text-sm hover:bg-[#F8FAFC] cursor-pointer block"
+              className="px-2 py-3 text-slate text-sm hover:bg-[#F8FAFC] cursor-pointer block"
               // {...props}
               onClick={() => {
                 onChange(item.val); // notify React Hook Form

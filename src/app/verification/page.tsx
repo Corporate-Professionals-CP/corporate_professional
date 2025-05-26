@@ -68,8 +68,7 @@ export default function Verification() {
           </div>
           <CPbutton type="submit" loading={isMutating} />
           <p className="text-center text-sm text-[#64748B]">
-            Don’t have an account?{" "}
-            <span className="text-[#020617]">Sign up</span>
+            Don’t have an account? <span className="text-slate">Sign up</span>
           </p>
         </form>
       </div>

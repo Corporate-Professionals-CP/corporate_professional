@@ -45,7 +45,7 @@ const Person = ({
             mentorship to grow my career.
           </div>
           <div>
-            <p className="text-[#020617] mb-0.5">Aisha</p>
+            <p className="text-slate mb-0.5">Aisha</p>
             <p className="text-[#64748B] ">Marketing Manager</p>
           </div>
         </div>

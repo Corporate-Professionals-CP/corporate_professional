@@ -1,11 +1,12 @@
 "use client";
-import CPprofileNetworkCard from "@/components/CPprofileNetworkCard";
+
 import { LeftArrow, SearchIcon } from "@/imagecomponents";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
-import { fetConnections } from "../function";
-import { CPspinnerLoader } from "@/components";
+import { fetchConnections } from "../function";
+import { CPEmptyState, CPspinnerLoader } from "@/components";
+import CPprofileConnectionCard from "@/components/CPprofileConnectionCard";
 
 function page() {
   return <MiddleSection />;
@@ -14,10 +15,13 @@ function page() {
 export default page;
 
 function MiddleSection() {
-  const { data, isLoading } = useSWR("/network/my-connections", fetConnections);
+  const { data = [], isLoading } = useSWR(
+    "/network/my-connections",
+    fetchConnections
+  );
   return (
     <>
-      <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-[#020617] font-medium flex items-center gap-6">
+      <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
         <Link href={"/dashboard/network"}>
           <LeftArrow />
         </Link>
@@ -34,16 +38,19 @@ function MiddleSection() {
       ) : (
         <div className="p-[18]">
           <div className="flex justify-between items-center">
-            <p className="text-[#020617] font-medium text-sm">
-              120 Connections
+            <p className="text-slate font-medium text-sm">
+              {data.length} Connections
             </p>
           </div>
 
           <div>
-            <CPprofileNetworkCard />
-            <CPprofileNetworkCard />
-            <CPprofileNetworkCard />
-            <CPprofileNetworkCard />
+            {data.length == 0 ? (
+              <CPEmptyState textIcon="🛜" />
+            ) : (
+              data.map((item) => (
+                <CPprofileConnectionCard key={item.id} profile={item} />
+              ))
+            )}
           </div>
         </div>
       )}

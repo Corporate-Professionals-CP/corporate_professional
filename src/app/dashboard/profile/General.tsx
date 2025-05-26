@@ -9,8 +9,9 @@ import { ProfileSchema, TProfileSchema } from "./type";
 import CPformError from "@/components/CPformError";
 import useUser from "@/statestore/useUser";
 import useSWRMutation from "swr/mutation";
-import { updateProfile } from "./functions";
+import { updateProfile, updateProfilePicture } from "./functions";
 import { errorMessage, successMessage } from "@/utils/toastalert";
+import { useRef, useState } from "react";
 
 const General = () => {
   const { user, setUser } = useUser((state) => state);
@@ -49,12 +50,7 @@ const General = () => {
   };
   return (
     <div>
-      <div className="flex items-center gap-4 mb-8">
-        <CPprofileImg size={63} />
-        <p className="font-medium text-sm bg-[#F8FAFC] px-3 py-2 rounded-lg ">
-          Update image
-        </p>
-      </div>
+      <UpdateImage />
       <form onSubmit={handleSubmit(onClick)}>
         <div className="mb-5">
           <label className="mb-2 text-sm text-[#475569]">Name</label>
@@ -173,4 +169,57 @@ const General = () => {
   );
 };
 
+function UpdateImage() {
+  const { user, setUser } = useUser((state) => state);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/profiles/${user?.id}/profile-image`,
+    updateProfilePicture
+  );
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    try {
+      const response = await trigger({ file: file });
+      setUser(response);
+      successMessage("Profile picture updated");
+    } catch (err) {
+      console.error(err);
+      errorMessage(err, "Unable to update profile picture");
+    }
+  };
+  return (
+    <div className="flex items-center gap-4 mb-8">
+      <label>
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+
+        <CPprofileImg size={63} url={previewUrl || null} />
+      </label>
+      <button
+        onClick={handleUpload}
+        className="font-medium text-sm bg-[#F8FAFC] px-3 py-2 rounded-lg hover:bg-[#E2E8F0]"
+        disabled={isMutating || !file}
+      >
+        {isMutating ? "Uploading..." : "Update Image"}
+      </button>
+    </div>
+  );
+}
 export default General;

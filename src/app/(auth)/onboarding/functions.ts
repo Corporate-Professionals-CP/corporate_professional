@@ -21,7 +21,8 @@ export const signupUser = async (
     topics: arg.interests,
   };
   console.log(data);
-  return await httprequest.post("/auth/signup", data);
+  const response = await httprequest.post("/auth/signup", data);
+  return response.data;
   // [[ALSO UPLOAD THE RESUMES UPLOADED TOO]]
   try {
     const formdata = new FormData();
@@ -30,4 +31,16 @@ export const signupUser = async (
   } catch (err) {
     errorMessage(err);
   }
+};
+
+export const verifyEmail = async (
+  url: string,
+  { arg }: { arg: { otp: string; email: string; token: string } }
+) => {
+  const response = await httprequest.post(url, {
+    otp: arg.otp,
+    email: arg.email,
+    token: arg.email,
+  });
+  return response.data;
 };

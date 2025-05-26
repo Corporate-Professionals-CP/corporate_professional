@@ -126,7 +126,7 @@ const CPtableList = ({ left, right }: { left: string; right: string }) => {
   return (
     <div className=" flex gap-2">
       <p className="w-[180] text-[#64748B] text-sm">{left}</p>
-      <p className="flex-1 text-[#020617] text-sm">{right}</p>
+      <p className="flex-1 text-slate text-sm">{right}</p>
     </div>
   );
 };

@@ -3,14 +3,8 @@ import CPsmallButton from "@/components/CPsmallButton";
 import CPstepSlide from "@/components/CPstepSlide";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  OnboardSchema,
-  TOnboardSchema,
-  TVerifyEmail,
-  VerifyEmail,
-} from "./type";
-import { Dispatch, SetStateAction, useState } from "react";
-import CPModal from "@/components/CPModal";
+import { OnboardSchema, TOnboardSchema } from "./type";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -23,8 +17,9 @@ import StepEight from "./StepEight";
 import StepNine from "./StepNine";
 import StepTen from "./StepTen";
 import { errorMessage } from "@/utils/toastalert";
-import CPInput from "@/components/CPInput";
 import { signupUser } from "./functions";
+
+import VerifyEmailModal from "../VerifyEmailModal";
 
 function Form() {
   const {
@@ -38,8 +33,9 @@ function Form() {
     resolver: zodResolver(OnboardSchema),
   });
   const [step, setStep] = useState(1);
-  const [success, setSuccess] = useState(false);
+
   const [emailmodal, setEmailModal] = useState(false);
+  const [token, setToken] = useState("");
   const { trigger: submit, isMutating } = useSWRMutation(
     "/auth/signup",
     signupUser
@@ -81,7 +77,8 @@ function Form() {
     if (valid && step == 10) {
       const values = getValues();
       try {
-        await submit(values);
+        const response = await submit(values);
+        setToken(response.access_token);
         setEmailModal(true);
       } catch (err) {
         errorMessage(err);
@@ -95,7 +92,7 @@ function Form() {
   return (
     <section className="bg-white flex-1 rounded-2xl flex justify-center pt-[103]">
       <div className="w-[520]">
-        <CPstepSlide />
+        <CPstepSlide currentstep={step} />
         {step == 1 && <StepOne register={register} error={errors} />}
         {step == 2 && (
           <StepTwo
@@ -104,7 +101,11 @@ function Form() {
           />
         )}
         {step == 3 && (
-          <StepThree register={register} error={errors.password?.message} />
+          <StepThree
+            register={register}
+            error={errors.password?.message}
+            watch={watch}
+          />
         )}
         {step == 4 && (
           <StepFour register={register} error={errors.role?.message} />
@@ -168,68 +169,9 @@ function Form() {
           />
         </div>
       </div>
-      {emailmodal && <VerifyEmailModal setSuccess={setSuccess} />}
-      {success && <SuccessModal />}
+      {emailmodal && <VerifyEmailModal email={watch("email")} token={token} />}
     </section>
   );
 }
-
-const VerifyEmailModal = ({
-  setSuccess,
-}: {
-  setSuccess: Dispatch<SetStateAction<boolean>>;
-}) => {
-  // do everything here
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<TVerifyEmail>({ resolver: zodResolver(VerifyEmail) });
-  const onClick = (data: TVerifyEmail) => {
-    // [[DO VERIFICATION API CALL HERE]]
-    console.log(data);
-    setSuccess(true);
-  };
-  return (
-    <CPModal width={445}>
-      <form className="p-[18]" onSubmit={handleSubmit(onClick)}>
-        <h3 className="mb-4 text-lg font-medium text-[#050505]">
-          Verify your email ✨
-        </h3>
-        <p className="mb-6 text-[#64748B]">
-          You can complete your profile later to unlock more opportunities.
-        </p>
-        <CPInput
-          {...register("otp")}
-          error={errors.otp?.message}
-          placeholder="OTP"
-        />
-        <div className="flex justify-end gap-2 mt-12">
-          <button className="p-3">Resend OTP</button>
-          <CPsmallButton text="Submit" />
-        </div>
-      </form>
-    </CPModal>
-  );
-};
-
-const SuccessModal = () => {
-  return (
-    <CPModal width={445}>
-      <div className="p-[18]">
-        <h3 className="mb-4 text-lg font-medium text-[#050505]">
-          You&apos;re all set! Here’s what’s next ✨
-        </h3>
-        <p className="mb-6 text-[#64748B]">
-          You can complete your profile later to unlock more opportunities.
-        </p>
-        <div className="flex justify-end gap-2 mt-12">
-          {/* <button className="p-3">Back</button> */}
-          <CPsmallButton text="Preview profile" isLink="/profile" />
-        </div>
-      </div>
-    </CPModal>
-  );
-};
 
 export default Form;
