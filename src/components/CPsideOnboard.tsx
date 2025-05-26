@@ -25,7 +25,7 @@ function CPsideOnboard() {
           <ListItem text="Professional Details" />
           <ListItem text="Profile Preferences" />
           <ListItem text="Engagement & Feed Curation" />
-          <ListItem text="Special symbols (*, &, @ etc.)" />
+          {/* <ListItem text="Special symbols (*, &, @ etc.)" /> */}
         </ul>
       </div>
       <div className="w-[358]">

@@ -7,7 +7,7 @@ const Professional = () => {
     <section className="pt-[123]">
       <div className="max-w-[984] m-auto mb-[64] px-6">
         <h3 className="text-primary">How they use it</h3>
-        <p className="text-[#050505] font-medium text-[39px]">
+        <p className="text-[#050505] font-medium text-[39px] max-sm:text-[24px]">
           Meet our Professionals
         </p>
       </div>
@@ -39,7 +39,7 @@ const Person = ({
         />
       </div>
       {active && (
-        <div className="p-3 bg-white rounded-2xl">
+        <div className="p-3 bg-white rounded-2xl careershadow">
           <div className=" text-primary mb-10 ">
             I connect with industry leaders, stay updated on trends, and find
             mentorship to grow my career.

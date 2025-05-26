@@ -9,20 +9,25 @@ import {
 } from "@/imagecomponents";
 import Image from "next/image";
 import React from "react";
+import logosign from "@/assets/logosign.svg";
 
 const Footer = () => {
   return (
     <footer>
-      <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-slate  flex justify-center">
+      <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-slate  flex justify-center px-6">
         <div className="w-[857] flex flex-col items-center">
-          <div>Discover</div>
-          <h3 className="text-white text-[60px] leading-[1.2] text-center mb-7 mt-4">
+          <div className="text-white flex items-center gap-4">
+            <span>DISCOVER</span>
+            <Image src={logosign} alt="logo sign" />
+          </div>
+          <h3 className="text-white text-[60px] leading-[1.2] text-center mb-7 mt-4 max-sm:text-[24px] font-medium">
             Making connections in the corporate world easier
           </h3>
           <CPbuttonTwo
             className="bg-white text-[#050505]"
             style={{ color: "#050505" }}
             link="/onboarding"
+            arrowColor="#050505"
           >
             Join us
           </CPbuttonTwo>
@@ -30,20 +35,20 @@ const Footer = () => {
         </div>
       </div>
       <div className="bg-slate flex justify-center gap-10 text-white p-[56] max-md:flex-col max-md:px-6">
-        <div className="w-[450] h-[488] flex flex-col max-md:h-auto max-md:gap-[80] max-md:w-auto">
+        <div className="w-[450] h-[488] flex flex-col max-md:h-auto  max-md:w-auto">
           <Image
             src={"/logo-white-full.svg"}
             width={150}
             height={30}
             alt="log"
-            className="mb-8"
+            className="mb-8 max-sm:mb-8"
           />
           <p className="text-[#FFFFFFB2] text-sm mb-4">
             The Corporates and Professionals platform helps members grow through
             expert programs, valuable resources, and meaningful networking.
           </p>
           <p className="flex-1 text-white text-xs">More about us</p>
-          <div className="flex justify-between">
+          <div className="flex justify-between max-md:mt-[80px]">
             <div className="grid grid-cols-2 gap-[10] ">
               <Social Icon={<YoutubeIcon />} />
               <Social Icon={<LinkedinIcon />} />
@@ -57,8 +62,8 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="w-[450] flex flex-col max-md:w-auto">
-          <div className="flex gap-10 flex-1">
+        <div className="w-[450] flex flex-col max-md:w-auto max-md:gap-[123px]">
+          <div className="flex gap-10 flex-1 max-sm:gap-6">
             <p>Home</p>
             <p>Why us?</p>
             <p>Features.</p>

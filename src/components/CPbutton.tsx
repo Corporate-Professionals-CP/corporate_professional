@@ -23,10 +23,12 @@ export const CPbuttonTwo = ({
   children = "Join Us",
   className = "",
   link = "",
+  arrowColor = "#fff",
   ...props
 }: {
   className?: string;
   link?: string;
+  arrowColor?: string;
   children?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   if (link) {
@@ -37,7 +39,7 @@ export const CPbuttonTwo = ({
         style={props.style}
       >
         {children}
-        <ArrowIcon />
+        <ArrowIcon color={arrowColor} />
       </Link>
     );
   }
