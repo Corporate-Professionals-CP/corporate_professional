@@ -36,6 +36,19 @@ body {
   }
 }
 
+.blurbackground {
+  background-image: url(../assets/dashboardbg.svg);
+  background-position: bottom center;
+
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 640px) {
+  .blurbackground {
+    background-position: center 400px;
+  }
+}
+
 .spinner {
   position: relative;
   width: 100px;

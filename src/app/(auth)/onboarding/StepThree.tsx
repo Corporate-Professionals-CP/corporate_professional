@@ -5,10 +5,11 @@ import { TOnboardSchema } from "./type";
 import CPInput from "@/components/CPInput";
 
 const getPasswordStrength = (password: string) => {
+  if (!password) return "weak";
   const hasUpperCase = /[A-Z]/.test(password);
   const hasNumber = /\d/.test(password);
   const hasSymbol = /[^A-Za-z0-9]/.test(password);
-  const isLongEnough = password.length >= 6;
+  const isLongEnough = password?.length >= 6;
 
   const passedChecks = [
     hasUpperCase,

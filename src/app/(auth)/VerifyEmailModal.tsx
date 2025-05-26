@@ -8,6 +8,7 @@ import { verifyEmail } from "./onboarding/functions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import SuccessModal from "./SuccessModal";
+import useUser from "@/statestore/useUser";
 
 const VerifyEmailModal = ({
   email,
@@ -17,6 +18,7 @@ const VerifyEmailModal = ({
   token: string;
 }) => {
   const [success, setSuccess] = useState(false);
+  const setUser = useUser((state) => state.setUser);
   // do everything here
   const { trigger, isMutating } = useSWRMutation(
     "/auth/verify-email",
@@ -30,16 +32,14 @@ const VerifyEmailModal = ({
 
   const onClick = async (data: TVerifyEmail) => {
     try {
-      await trigger({ ...data, email, token });
+      const response = await trigger({ ...data, email, token });
+      setUser(response);
       setSuccess(true);
     } catch (err) {
       errorMessage(err);
     }
   };
 
-  if (success) {
-    return <SuccessModal />;
-  }
   return (
     <CPModal width={445}>
       {success ? (

@@ -4,14 +4,14 @@ import { prof1, prof2, prof3, prof4, prof5 } from "@/assets";
 
 const Professional = () => {
   return (
-    <section className="pt-[123] ">
-      <div className="max-w-[940] m-auto mb-[64]">
+    <section className="pt-[123]">
+      <div className="max-w-[984] m-auto mb-[64] px-6">
         <h3 className="text-primary">How they use it</h3>
         <p className="text-[#050505] font-medium text-[39px]">
           Meet our Professionals
         </p>
       </div>
-      <div className="w-full h-[482] flex gap-5 overflow-x-scroll">
+      <div className="w-full  flex gap-5 overflow-x-scroll">
         <Person active img={prof1} />
         <Person img={prof2} />
         <Person img={prof3} />

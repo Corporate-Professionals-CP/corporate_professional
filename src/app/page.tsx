@@ -5,7 +5,7 @@ import { CPbuttonThree, CPbuttonTwo } from "@/components/CPbutton";
 import CPpartners from "@/components/CPpartners";
 import connectpeople from "@/assets/connectpeople.png";
 
-import bgimg from "@/assets/dashboardbg.svg";
+// import bgimg from "@/assets/dashboardbg.svg";
 import {
   fashPhoto,
   person,
@@ -28,46 +28,14 @@ export default function Home() {
     <>
       <CPheader />
       <main>
-        <section
-          className="flex flex-col items-center pt-[132]"
-          style={{
-            backgroundImage: `url(${bgimg.src})`,
-            backgroundPosition: "bottom center",
-          }}
-        >
-          <ActiveMember />
-          <h1 className="text-[#050505] text-5xl font-medium text-center">
-            Empowering Professionals, <br />{" "}
-            <div className="text-white bg-primary rounded-lg p-2 relative -z-1 -rotate-2 -translate-[3px]">
-              <div className="rotate-2 translate-[3px]">
-                Connecting Opportunities
-              </div>
-            </div>
-          </h1>
-          <p className="max-w-[460] text-center text-[#334155] text-lg mt-5 mb-8">
-            Join a global network of corporate professionals. Learn, grow, and
-            build meaningful connections.
-          </p>
-          <div className="flex gap-3">
-            <CPbuttonTwo link="/onboarding" />
-            <CPbuttonThree />
-          </div>
-          <div className="mt-[122] flex justify-center">
-            <Image src={fashPhoto} alt="fash photo" className="w-[288]" />
-            <Image
-              src={proddesign}
-              alt="fash photo"
-              className="w-[288] -ml-[125px] -translate-y-3.5"
-            />
-          </div>
-        </section>
+        <Empowering />
         <CPpartners />
         <WhyJoin />
         <section className="px-[75] mb-[150]">
           <Image
             src={connectpeople}
             alt="connect"
-            className="w-full object-cover"
+            // className="w-full object-cover"
           />
         </section>
         <NetWorking />
@@ -103,7 +71,39 @@ export default function Home() {
     </>
   );
 }
-
+const Empowering = () => {
+  return (
+    <section className="pt-[132] blurbackground pb-24">
+      <div className="flex flex-col items-center  px-6">
+        <ActiveMember />
+        <h1 className="text-[#050505] text-5xl font-medium text-center max-sm:text-[32px]">
+          Empowering Professionals, <br />{" "}
+          <div className="text-white bg-primary rounded-lg p-2 relative -z-1 -rotate-2 -translate-[3px]">
+            <div className="rotate-2 translate-[3px] max-sm:mx-2.5">
+              Connecting Opportunities
+            </div>
+          </div>
+        </h1>
+        <p className="max-w-[460] text-center text-[#334155] text-lg mt-5 mb-8">
+          Join a global network of corporate professionals. Learn, grow, and
+          build meaningful connections.
+        </p>
+        <div className="flex gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
+          <CPbuttonTwo link="/onboarding" />
+          <CPbuttonThree />
+        </div>
+      </div>
+      <div className="mt-[122] flex justify-center overflow-x-hidden">
+        <Image src={fashPhoto} alt="fash photo" className="w-[288]" />
+        <Image
+          src={proddesign}
+          alt="fash photo"
+          className="w-[288] -ml-[125px] -translate-y-3.5"
+        />
+      </div>
+    </section>
+  );
+};
 const SuccesfulCareer = () => {
   return (
     <section className="max-w-[960] m-auto mb-[150]">
@@ -180,11 +180,11 @@ const BuildingPart = ({
 }) => {
   return (
     <div
-      className={`w-[221] px-[16] py-[24] ${
+      className={`w-[221] px-[16] py-[24] max-sm:w-full ${
         active ? "bg-primary" : "bg-[#F8FAFC]"
       } rounded-2xl ${active ? "text-white" : "#475569"} `}
     >
-      <div className="w-[40] h-[40] rounded-[8] bg-[#282A74] text-white flex justify-center items-center mb-[78]">
+      <div className="w-[40] h-[40] rounded-[8] bg-[#282A74] text-white flex justify-center items-center mb-[78] ">
         {no}
       </div>
       <p
@@ -232,7 +232,7 @@ const FAQ = () => {
 
 const ActiveMember = () => {
   return (
-    <div className="flex items-center gap-2 mb-2">
+    <div className="flex items-center gap-2 mb-2 max-sm:flex-col">
       <div className="flex items-center gap-[-2]">
         <Image
           src={person}

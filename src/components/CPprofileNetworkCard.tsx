@@ -30,6 +30,7 @@ function CPprofileNetworkCard({ profile }: { profile: TSuggestedNetwork }) {
         <button
           disabled={isMutating}
           onClick={() => trigger({ user_id: profile.id })}
+          className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]"
         >
           Connect
         </button>

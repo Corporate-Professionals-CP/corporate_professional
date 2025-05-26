@@ -1,12 +1,12 @@
 import Image from "next/image";
 import CPtermsAndPrivacy from "./CPtermsAndPrivacy";
-import logotwo from "@/assets/logotwo.svg";
+
 import CPprofileImg from "./CPprofileImg";
 function CPsideOnboard() {
   return (
     <section className="text-white p-4 flex flex-col h-full w-[432]">
       <Image
-        src={logotwo}
+        src={"/logo-white-full.svg"}
         width={120}
         height={37}
         alt="log"
