@@ -90,8 +90,8 @@ function Form() {
     }
   };
   return (
-    <section className="bg-white flex-1 rounded-2xl flex justify-center pt-[103]">
-      <div className="w-[520]">
+    <section className="bg-white flex-1 rounded-2xl flex justify-center pt-[103] px-6 pb-6">
+      <div className="max-w-[520] w-full">
         <CPstepSlide currentstep={step} />
         {step == 1 && <StepOne register={register} error={errors} />}
         {step == 2 && (

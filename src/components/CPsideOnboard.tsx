@@ -4,7 +4,7 @@ import CPtermsAndPrivacy from "./CPtermsAndPrivacy";
 import CPprofileImg from "./CPprofileImg";
 function CPsideOnboard() {
   return (
-    <section className="text-white p-4 flex flex-col h-full w-[432]">
+    <section className="text-white p-4 flex flex-col h-full w-[432] max-lg:w-[300]">
       <Image
         src={"/logo-white-full.svg"}
         width={120}
@@ -28,7 +28,7 @@ function CPsideOnboard() {
           {/* <ListItem text="Special symbols (*, &, @ etc.)" /> */}
         </ul>
       </div>
-      <div className="w-[358]">
+      <div className="max-w-[358] max-md:mt-6">
         <p className="text-lg mb-[40] tracking-[-0.25px]">
           &quot;I connect with industry leaders, stay updated on trends, and
           find mentorship to grow my career.
