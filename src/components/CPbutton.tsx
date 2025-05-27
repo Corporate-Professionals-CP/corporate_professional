@@ -1,6 +1,7 @@
 import { ArrowIcon } from "@/imagecomponents";
 import Link from "next/link";
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import CPspinnerLoader from "./CPspinnerLoader";
 
 function CPbutton({
   loading = false,
@@ -8,12 +9,13 @@ function CPbutton({
 }: { loading?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className={`rounded-full p-[15] text-center block w-full  text-white mb-4 text-sm ${
+      className={`rounded-full p-[15] text-center  w-full  text-white mb-4 text-sm flex items-center gap-1 justify-center ${
         loading ? "bg-[#b5b7ff]" : "bg-primary"
       }`}
       disabled={loading}
       {...props}
     >
+      {loading && <CPspinnerLoader size={15} color="#ffffff" />}
       {props.children ? props.children : "Continue"}
     </button>
   );

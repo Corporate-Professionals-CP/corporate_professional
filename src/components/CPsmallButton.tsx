@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { ButtonHTMLAttributes } from "react";
+import CPspinnerLoader from "./CPspinnerLoader";
 
 function CPsmallButton({
   text,
@@ -25,11 +26,13 @@ function CPsmallButton({
   return (
     <button
       {...props}
-      className={` py-3 px-6 rounded-full text-white font-medium ${
+      className={` py-3 px-6 rounded-full text-white font-medium flex items-center gap-1 ${
         loading ? "bg-[#b5b7ff]" : "bg-primary"
       }`}
       disabled={loading}
     >
+      {loading && <CPspinnerLoader size={15} color="#ffffff" />}
+
       {text}
       {props.children}
     </button>
