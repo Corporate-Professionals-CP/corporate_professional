@@ -7,40 +7,43 @@ import { fetchFeeds, fetchFeedsNetwork } from "./functions";
 import { CPspinnerLoader } from "@/components";
 
 import CreatePostModal from "./CreatePostModal";
+import MIddleSectionContainer from "./MIddleSectionContainer";
 
 function MiddleSection() {
   const [selectTab, setSelectTab] = useState(0);
   const [createmodal, setCreatemodal] = useState(false);
 
   return (
-    <section className="w-[600] border border-[#E2E8F0] ">
-      <div className="flex">
-        <Tab
-          text="Highlights"
-          setSelectTab={setSelectTab}
-          tabnumber={0}
-          selectTab={selectTab}
-        />
-        <Tab
-          text="My Network"
-          setSelectTab={setSelectTab}
-          tabnumber={1}
-          selectTab={selectTab}
-        />
-      </div>
-      <div className="border-y border-[#E2E8F0] flex p-6 gap-4 items-center">
-        <CPprofileImg size={48} />
-        <p
-          className=" text-[#94A3B8] flex-1 px-2 py-2 min-h-[40]"
-          onClick={() => setCreatemodal(true)}
-        >
-          What’s on your mind...?
-        </p>
-      </div>
-      {selectTab == 0 && <Feeds />}
-      {selectTab == 1 && <Networks />}
-      {createmodal && <CreatePostModal setCreatemodal={setCreatemodal} />}
-    </section>
+    <MIddleSectionContainer>
+      <>
+        <div className="flex">
+          <Tab
+            text="Highlights"
+            setSelectTab={setSelectTab}
+            tabnumber={0}
+            selectTab={selectTab}
+          />
+          <Tab
+            text="My Network"
+            setSelectTab={setSelectTab}
+            tabnumber={1}
+            selectTab={selectTab}
+          />
+        </div>
+        <div className="border-y border-[#E2E8F0] flex p-6 gap-4 items-center">
+          <CPprofileImg size={48} />
+          <p
+            className=" text-[#94A3B8] flex-1 px-2 py-2 min-h-[40]"
+            onClick={() => setCreatemodal(true)}
+          >
+            What’s on your mind...?
+          </p>
+        </div>
+        {selectTab == 0 && <Feeds />}
+        {selectTab == 1 && <Networks />}
+        {createmodal && <CreatePostModal setCreatemodal={setCreatemodal} />}
+      </>
+    </MIddleSectionContainer>
   );
 }
 

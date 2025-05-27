@@ -1,10 +1,10 @@
 "use client";
 import { CPInput, CPModal, CPsmallButton } from "@/components";
-import { errorMessage } from "@/utils/toastalert";
+import { errorMessage, successMessage } from "@/utils/toastalert";
 import { TVerifyEmail, VerifyEmail } from "./onboarding/type";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
-import { verifyEmail } from "./onboarding/functions";
+import { resendVerifyEmail, verifyEmail } from "./onboarding/functions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import SuccessModal from "./SuccessModal";
@@ -24,6 +24,10 @@ const VerifyEmailModal = ({
     "/auth/verify-email",
     verifyEmail
   );
+  const { trigger: triggerReset, isMutating: loadingResend } = useSWRMutation(
+    "/auth/resend-verification",
+    resendVerifyEmail
+  );
   const {
     handleSubmit,
     register,
@@ -35,6 +39,14 @@ const VerifyEmailModal = ({
       const response = await trigger({ ...data, email, token });
       setUser(response);
       setSuccess(true);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
+  const onClickResend = async () => {
+    try {
+      await triggerReset({ email, token });
+      successMessage(`otp sent to ${email}`);
     } catch (err) {
       errorMessage(err);
     }
@@ -58,7 +70,14 @@ const VerifyEmailModal = ({
             placeholder="OTP"
           />
           <div className="flex justify-end gap-2 mt-12">
-            <button className="p-3">Resend OTP</button>
+            <button
+              className="p-3"
+              type="button"
+              onClick={onClickResend}
+              disabled={loadingResend}
+            >
+              {loadingResend ? "loading" : "Resend OTP"}
+            </button>
             <CPsmallButton text="Submit" loading={isMutating} />
           </div>
         </form>

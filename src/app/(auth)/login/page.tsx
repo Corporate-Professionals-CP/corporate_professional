@@ -26,6 +26,8 @@ import { errorMessage, successMessage } from "@/utils/toastalert";
 import { loginUser } from "./functions";
 import Link from "next/link";
 import VerifyEmailModal from "../VerifyEmailModal";
+import GoogleIcon from "@/imagecomponents/GoogleIcon";
+import AppleIcon from "@/imagecomponents/AppleIcon";
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -54,17 +56,18 @@ export default function Login() {
       console.log(err);
       if (
         err?.response?.data.detail &&
-        err?.response?.data.detail?.includes("verify")
+        err?.response?.data.detail?.includes("verif")
       ) {
         setEmailModal(true);
       }
+      // Account not verified. Please check your email
       // push to Verify, or Verify modal
       errorMessage(err);
     }
   };
   return (
     <main
-      className="flex flex-col justify-between items-center h-screen pt-[50]  pb-[24]"
+      className="flex flex-col justify-between items-center h-screen pt-[50]  pb-6 px-6"
       style={{
         backgroundImage: `url(${bgimg.src})`,
         backgroundPosition: "center",
@@ -77,7 +80,7 @@ export default function Login() {
         alt="log"
         className="self-start ml-[100]"
       />
-      <div className="bg-white p-[18] rounded-2xl w-[445px] shadow-[0px_12px_16px_-4px_#1018280A]">
+      <div className="bg-white p-[18] rounded-2xl max-w-[445px] w-full careershadow">
         <form className="" onSubmit={handleSubmit(onSubmit)}>
           <h3 className="mb-6 text-lg font-medium">Login to your account ✨</h3>
           <CPInput
@@ -113,8 +116,8 @@ export default function Login() {
         </form>
 
         <div>
-          <CPsocialLoginButton text="Login with Google" />
-          <CPsocialLoginButton text="Login with Apple" />
+          <CPsocialLoginButton Icon={<GoogleIcon />} text="Login with Google" />
+          <CPsocialLoginButton Icon={<AppleIcon />} text="Login with Apple" />
         </div>
       </div>
       <CPtermsAndPrivacy />

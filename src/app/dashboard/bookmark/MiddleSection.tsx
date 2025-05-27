@@ -6,12 +6,13 @@ import useSWR from "swr";
 
 import { fetchBookmarkdata } from "./functions";
 import { CPspinnerLoader } from "@/components";
+import MIddleSectionContainer from "../MIddleSectionContainer";
 
 function MiddleSection() {
   const { data, isLoading } = useSWR("/bookmarks/bookmarks", fetchBookmarkdata);
 
   return (
-    <section className="w-[600] border border-[#E2E8F0] ">
+    <MIddleSectionContainer>
       <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
         <LeftArrow />
         <span>Bookmarks</span>
@@ -34,7 +35,7 @@ function MiddleSection() {
           ))
         )}
       </div>
-    </section>
+    </MIddleSectionContainer>
   );
 }
 

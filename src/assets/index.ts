@@ -13,6 +13,10 @@ import person5 from "./person5.jpg";
 import proddesign from "./proddesign.png";
 import fashPhoto from "./fashPhoto.png";
 import earth from "./earth.png";
+import cplogo from "./cplogo.svg";
+import logotwo from "./logotwo.svg";
+import logosign from "./logosign.svg";
+import logosignblue from "./logosignblue.svg";
 
 export {
   prof1,
@@ -30,4 +34,8 @@ export {
   proddesign,
   fashPhoto,
   earth,
+  cplogo,
+  logotwo,
+  logosign,
+  logosignblue,
 };

@@ -44,3 +44,14 @@ export const verifyEmail = async (
   });
   return response.data;
 };
+
+export const resendVerifyEmail = async (
+  url: string,
+  { arg }: { arg: { email: string; token: string } }
+) => {
+  const response = await httprequest.post(url, {
+    email: arg.email,
+    token: arg.email,
+  });
+  return response.data;
+};

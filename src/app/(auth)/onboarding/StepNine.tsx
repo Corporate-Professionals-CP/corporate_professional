@@ -1,20 +1,25 @@
 import CPText from "@/components/CPText";
+import { DocIcon } from "@/imagecomponents";
 import UploadIcon from "@/imagecomponents/UploadIcon";
-import httprequest from "@/utils/httpRequest";
-import React, { Dispatch, SetStateAction, useCallback } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import useSWRMutation from "swr/mutation";
 
-const uploadFile = async (url: string, { arg }: { arg: File }) => {
-  await httprequest.post("/api/profiles/user_id/cv", {
-    file: arg,
-  });
-};
+// const uploadFile = async (url: string, { arg }: { arg: File }) => {
+//   await httprequest.post("/api/profiles/user_id/cv", {
+//     file: arg,
+//   });
+// };
 
-const options = {
-  onError: () => {},
-  onSuccess: () => {},
-};
+// const options = {
+//   onError: () => {},
+//   onSuccess: () => {},
+// };
+
+// const { trigger } = useSWRMutation(
+//   "/api/profiles/user_id/cv",
+//   uploadFile,
+//   options
+// );
 
 const StepNine = ({
   setStep,
@@ -23,19 +28,15 @@ const StepNine = ({
   setStep: Dispatch<SetStateAction<number>>;
   onChange: (file: File) => void;
 }) => {
-  const { trigger } = useSWRMutation(
-    "/api/profiles/user_id/cv",
-    uploadFile,
-    options
-  );
+  const [localstate, setLocalstate] = useState<File | null>(null);
   const handleFile = (file: File) => {
     onChange(file);
+    setLocalstate(file);
     // [[store in state instead]]
-    trigger(file);
   };
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
-    console.log(acceptedFiles, "drag");
+
     handleFile(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -61,7 +62,7 @@ const StepNine = ({
         />
         <p>Upload now</p>
       </label>
-      <div
+      {/* <div
         className={`${
           isDragActive ? "bg-[#7074FF40]" : "bg-[#F8FAFC]"
         } p-4 flex flex-col items-start mb-4`}
@@ -78,9 +79,44 @@ const StepNine = ({
         <div className="self-end">
           <p>Choose your CV file</p>
         </div>
+      </div> */}
+      <div
+        className={`${
+          isDragActive ? "bg-[#7074FF40]" : "bg-[#F8FAFC]"
+        } p-4 flex flex-col items-start mb-4`}
+        {...getRootProps()}
+      >
+        <input {...getInputProps()} />
+        {localstate ? (
+          <div className="w-full ">
+            <p className="text-[#020617] text-sm mb-2">Selected CV:</p>
+            <p className="text-sm text-[#334155] truncate flex gap-2 items-center">
+              <DocIcon />
+              {localstate.name}
+            </p>
+            <p className=" text-right w-full mt-7 text-primary font-medium text-sm">
+              Update Cv
+            </p>
+          </div>
+        ) : (
+          <>
+            <UploadIcon />
+            <p className="text-slate text-sm mb-2 mt-4">
+              Drop your file here to upload
+            </p>
+            <p className="text-slate text-sm mb-6">
+              File types: .docx, .doc, .pdf, .txt, .odt or .rtf.
+            </p>
+
+            <div className="self-end">
+              <p className="text-slate text-sm">Choose your CV file</p>
+            </div>
+          </>
+        )}
       </div>
+
       <button
-        className="bg-[#F8FAFC] text-[#334155] text-sm   py-[14px] px-[16px] rounded-[8px]"
+        className="bg-[#F8FAFC] text-[#334155] text-sm   py-[14px] px-[16px] rounded-[8px] w-full text-left"
         onClick={() => setStep((s) => s + 1)}
       >
         Skip for now

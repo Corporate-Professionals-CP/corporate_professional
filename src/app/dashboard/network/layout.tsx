@@ -1,5 +1,6 @@
 import React from "react";
 import RightSection from "./RightSection";
+import MIddleSectionContainer from "../MIddleSectionContainer";
 
 function Layout({
   children,
@@ -8,7 +9,7 @@ function Layout({
 }>) {
   return (
     <>
-      <section className="w-[600] border border-[#E2E8F0] ">{children}</section>
+      <MIddleSectionContainer>{children}</MIddleSectionContainer>
       <RightSection />
     </>
   );

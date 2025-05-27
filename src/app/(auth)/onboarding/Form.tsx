@@ -163,7 +163,7 @@ function Form() {
             Back
           </button>
           <CPsmallButton
-            text="Next"
+            text={step == 10 ? "Finish" : "Next"}
             onClick={handleNext}
             loading={isMutating}
           />

@@ -12,7 +12,7 @@ const SuccessModal = () => {
       </p>
       <div className="flex justify-end gap-2 mt-12">
         {/* <button className="p-3">Back</button> */}
-        <CPsmallButton text="Preview profile" isLink="/profile" />
+        <CPsmallButton text="Preview profile" isLink="/dashboard" />
       </div>
     </div>
   );

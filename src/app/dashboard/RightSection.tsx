@@ -1,10 +1,11 @@
 import Cpdiscoverability from "@/components/Cpdiscoverability";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPSupportCard from "@/components/CPSupportCard";
+import RightSectionContainer from "./RightSectionContainer";
 
 function RightSection() {
   return (
-    <section className="w-[420]  p-4">
+    <RightSectionContainer>
       <div className="p-4 rounded-2xl shadow-[0px_12px_16px_-4px_#1018280A,0px_4px_6px_-2px_#10182808]">
         <div className="flex justify-between items-start mb-6">
           <h3 className="font-medium text-lg">Account setup</h3>
@@ -28,7 +29,7 @@ function RightSection() {
         </div>
         <CPSupportCard />
       </div>
-    </section>
+    </RightSectionContainer>
   );
 }
 
