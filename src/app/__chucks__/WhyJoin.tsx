@@ -3,7 +3,10 @@ import React from "react";
 
 function WhyJoin() {
   return (
-    <section className="flex gap-5 items-end justify-center mb-20 px-6 max-md:flex-col max-md:items-stretch">
+    <section
+      id="why-join"
+      className="flex gap-5 items-end justify-center mb-20 px-6 max-md:flex-col max-md:items-stretch"
+    >
       <div className="w-[460] max-md:w-full">
         <h3 className="text-primary ">Why Join Us?</h3>
         <p className="text-[#050505 text-[32px] font-medium leading-[1.2] max-sm:text-[24px]">

@@ -4,7 +4,10 @@ import HeartIcon from "@/imagecomponents/HeartIcon";
 
 const SuccesfulCareer = () => {
   return (
-    <section className="max-w-[1008] m-auto mb-[150] px-6 max-sm:mb-[77px] ">
+    <section
+      id="successful-career"
+      className="max-w-[1008] m-auto mb-[150] px-6 max-sm:mb-[77px] "
+    >
       <h2 className="text-center font-medium text-[39px] text-[#050505] leading-[1.2] mb-6 max-sm:text-[24px]">
         What is behind every <br /> successful career?
       </h2>

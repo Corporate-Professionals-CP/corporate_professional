@@ -11,7 +11,7 @@ import useUser from "@/statestore/useUser";
 import useSWRMutation from "swr/mutation";
 import { updateProfile, updateProfilePicture } from "./functions";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const General = () => {
   const { user, setUser } = useUser((state) => state);
@@ -21,20 +21,27 @@ const General = () => {
     formState: { errors },
     setValue,
     watch,
+    reset,
   } = useForm<TProfileSchema>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues: {
-      full_name: user?.full_name,
-      job_title: user?.job_title,
-      industry: user?.industry,
-      location: user?.location,
-      pronouns: user?.sex,
-      recruiter_tag: user?.recruiter_tag ? "yes" : "no",
-      visibility: user?.visibility,
-      experience: user?.years_of_experience,
-      bio: user?.bio,
-    },
   });
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        full_name: user.full_name || "",
+        job_title: user.job_title || "",
+        industry: user.industry || "",
+        location: user.location || "",
+        pronouns: user.sex || "",
+        recruiter_tag: user.recruiter_tag ? "yes" : "no",
+        visibility: user.visibility || "",
+        experience: user.years_of_experience || "",
+        bio: user.bio || "",
+      });
+    }
+  }, [user, reset]);
+
   const { trigger, isMutating } = useSWRMutation(
     `profiles/${user?.id}`,
     updateProfile
@@ -173,8 +180,11 @@ function UpdateImage() {
   const { user, setUser } = useUser((state) => state);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>("");
 
+  useEffect(() => {
+    setPreviewUrl(user?.profile_image_url);
+  }, [user]);
   const { trigger, isMutating } = useSWRMutation(
     `/profiles/${user?.id}/profile-image`,
     updateProfilePicture
@@ -211,7 +221,11 @@ function UpdateImage() {
           onChange={handleFileChange}
         />
 
-        <CPprofileImg size={63} url={previewUrl || null} />
+        <CPprofileImg
+          size={63}
+          url={previewUrl || null}
+          full_name={user?.full_name}
+        />
       </label>
       <button
         onClick={handleUpload}

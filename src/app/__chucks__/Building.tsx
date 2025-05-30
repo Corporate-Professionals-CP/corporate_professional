@@ -2,7 +2,10 @@ import React from "react";
 
 const Building = () => {
   return (
-    <section className="pt-[161] max-w-[988] m-auto mb-[12] px-6">
+    <section
+      id="build-profile"
+      className="pt-[161] max-w-[988] m-auto mb-[12] px-6"
+    >
       <div className="max-w-[940] m-auto mb-[64]">
         <h3 className="text-primary mb-4">HOW IT WORKS</h3>
         <p className="text-[#050505] font-medium text-[39px] leading-[1.2]">

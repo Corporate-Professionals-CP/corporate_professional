@@ -1,4 +1,14 @@
 import { z } from "zod";
+import {
+  TContact,
+  TEducation,
+  TSkill,
+  TWorkExperience,
+} from "./dashboard/profile/type";
+export type TSection = {
+  completed: boolean;
+  weight: number;
+};
 export type TPost = {
   title: string;
   content: string;
@@ -53,15 +63,28 @@ export type TUser = {
   years_of_experience: string;
   location: string;
   visibility: string;
-  topics: string;
-  education: string;
+  topics: string[];
   recruiter_tag: boolean;
   id: string;
   age: string | undefined;
-  skills: {
-    id: string | number;
-    name: string;
-  }[];
+  work_experience: TWorkExperience[];
+  education: TEducation[];
+  contact: TContact[];
+  skills: TSkill[];
+  sections: {
+    full_name: TSection;
+    email: TSection;
+    industry: TSection;
+    location: TSection;
+    working_experinece: TSection;
+    job_title: TSection;
+    skills: TSection;
+    education: TSection;
+    years_of_experience: TSection;
+    certifications: TSection;
+    bio: TSection;
+  };
+  missing_fields: string[];
   profile_completion: number;
   created_at: string;
   is_active: boolean;
@@ -70,6 +93,7 @@ export type TUser = {
   updated_at: string;
   sex: string | undefined;
   profile_image_url: string;
+  cv_url: null;
 };
 
 export type TUserProfile = {

@@ -11,7 +11,7 @@ import Image from "next/image";
 
 function CPpartners() {
   return (
-    <div className="px-20 mb-[168] max-sm:mb-[57] ">
+    <div id="patners" className="px-20 mb-[168] max-sm:mb-[57] ">
       <p className="text-slate text-center mb-10">
         Trusted and used by over 24 institutions
       </p>

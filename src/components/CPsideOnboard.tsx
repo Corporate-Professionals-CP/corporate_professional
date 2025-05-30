@@ -2,16 +2,19 @@ import Image from "next/image";
 import CPtermsAndPrivacy from "./CPtermsAndPrivacy";
 
 import CPprofileImg from "./CPprofileImg";
+import Link from "next/link";
 function CPsideOnboard() {
   return (
     <section className="text-white p-4 flex flex-col h-full w-[432] max-lg:w-[300]">
-      <Image
-        src={"/logo-white-full.svg"}
-        width={120}
-        height={37}
-        alt="log"
-        className="self-start mb-[68]"
-      />
+      <Link href={"/"}>
+        <Image
+          src={"/logo-white-full.svg"}
+          width={120}
+          height={37}
+          alt="log"
+          className="self-start mb-[68]"
+        />
+      </Link>
       <div className="flex-1">
         <p className="text-[#E6F6FF] text-sm mb-2">Get started</p>
         <h3 className="font-medium text-2xl mb-4">
@@ -37,10 +40,10 @@ function CPsideOnboard() {
           <CPprofileImg size={40} />
           <div>
             <p className="text-[#F8FAFC] m-[2]">Aisha</p>
-            <p className="text-[#94A3B8]">Marketing Manager</p>
+            <p className="text-[#FFFFFFB3]">Marketing Manager</p>
           </div>
         </div>
-        <CPtermsAndPrivacy className="text-[#94A3B8]" />
+        <CPtermsAndPrivacy className="text-[#FFFFFFB3]" />
       </div>
     </section>
   );

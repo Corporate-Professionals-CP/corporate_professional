@@ -10,10 +10,11 @@ import {
 import Image from "next/image";
 import React from "react";
 import logosign from "@/assets/logosign.svg";
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer>
+    <footer id="footer">
       <div className="pt-[64] bg-gradient-to-b from-[#282A74] to-slate  flex justify-center px-6">
         <div className="w-[857] flex flex-col items-center">
           <div className="text-white flex items-center gap-4">
@@ -48,7 +49,7 @@ const Footer = () => {
             expert programs, valuable resources, and meaningful networking.
           </p>
           <p className="flex-1 text-white text-xs">More about us</p>
-          <div className="flex justify-between max-md:mt-[80px]">
+          <div className="flex justify-between items-end max-md:mt-[80px] ">
             <div className="grid grid-cols-2 gap-[10] ">
               <Social Icon={<YoutubeIcon />} />
               <Social Icon={<LinkedinIcon />} />
@@ -64,10 +65,18 @@ const Footer = () => {
         </div>
         <div className="w-[450] flex flex-col max-md:w-auto max-md:gap-[123px]">
           <div className="flex gap-10 flex-1 max-sm:gap-6">
-            <p>Home</p>
-            <p>Why us?</p>
-            <p>Features.</p>
-            <p>Contact.</p>
+            <p>
+              <Link href="#home">Home</Link>
+            </p>
+            <p>
+              <Link href="#why-join">Why us?</Link>
+            </p>
+            <p>
+              <Link href="#networking">Features.</Link>
+            </p>
+            <p>
+              <Link href="#footer">Contact.</Link>
+            </p>
           </div>
           <div>
             <div className="mb-12">

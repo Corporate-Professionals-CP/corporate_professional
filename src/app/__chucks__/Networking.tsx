@@ -4,7 +4,10 @@ import { insight, shake } from "@/assets";
 
 const NetWorking = () => {
   return (
-    <section className="max-w-[1008] m-auto mb-[150] px-6 max-sm:mb-[68px]">
+    <section
+      id="networking"
+      className="max-w-[1008] m-auto mb-[150] px-6 max-sm:mb-[68px]"
+    >
       <h2 className="text-center font-medium text-[39px] text-[#050505] leading-[1.2] mb-10 max-sm:text-[24px]">
         Our community goes beyond <br /> simple networking
       </h2>

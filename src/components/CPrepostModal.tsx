@@ -76,6 +76,7 @@ const CPrepostModal = ({
                   name={post.user?.full_name}
                   job_title={post.job_title}
                   created_at={post.created_at}
+                  userid={post.user?.id}
                 />
                 <CPpostCardBody post={post} />
               </div>

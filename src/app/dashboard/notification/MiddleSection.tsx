@@ -20,7 +20,7 @@ function MiddleSection() {
       {isLoading ? (
         <NotificationSkeleton />
       ) : data.length == 0 ? (
-        <CPEmptyState textIcon="🔔" />
+        <CPEmptyState textIcon="🔔" btnText="No Notification" />
       ) : (
         data.map((item) => <div key={item.id}>{item.message}</div>)
       )}

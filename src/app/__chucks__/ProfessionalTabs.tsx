@@ -34,7 +34,10 @@ const ProfessionalTabs = () => {
 
   return (
     <>
-      <section className="pt-[155] max-w-[988] m-auto mb-[12] px-6">
+      <section
+        id="profiles"
+        className="pt-[155] max-w-[988] m-auto mb-[12] px-6"
+      >
         <div className="p-2 rounded-full border-[#282A74] border flex justify-between mb-6 max-md:hidden ">
           <button
             className={`w-[221] text-center ${

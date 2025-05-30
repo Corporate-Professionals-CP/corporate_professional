@@ -13,13 +13,14 @@ import { useParams } from "next/navigation"; // for App Router (Next.js 13+)
 import { getUserProfile } from "./functions";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 import Skeleton from "react-loading-skeleton";
+import { TUser } from "@/app/type";
 
 function MiddleSection() {
   const params = useParams();
   const userId = params?.userId as string;
   const { data, isLoading } = useSWR(`/profiles/${userId}`, getUserProfile);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <MIddleSectionContainer>
         <div>
@@ -36,7 +37,7 @@ function MiddleSection() {
         <CPdashboardBack className="m-0" style={{ marginBottom: 0 }} />
         <div className="p-6">
           <div className="mb-10">
-            <CPprofileCard />
+            <CPprofileCard user={data} />
           </div>
           <div className="mb-12">
             <h5 className="text-[#050505] mb-2">About</h5>
@@ -44,16 +45,22 @@ function MiddleSection() {
           </div>
           <div className="mb-12">
             <h5 className="text-[#050505] mb-2">Contact</h5>
+
             <div className="flex flex-col gap-2">
-              <CPtableList left="Email" right="danielanozie@icloud.com" />
-              <CPtableList left="Linkedin" right="Link" />
+              {data.contact.map((item) => (
+                <CPtableList
+                  key={item.id}
+                  left={item.platform_name}
+                  right={item.username}
+                />
+              ))}
             </div>
           </div>
           <div className="mb-12">
             <h5 className="text-[#050505] mb-5">Professional Details</h5>
             <div className="flex flex-col gap-2">
-              <CPtableList left="Industry" right="Technology & IT" />
-              <CPtableList left="Experience" right="6+ years " />
+              <CPtableList left="Industry" right={data.industry} />
+              <CPtableList left="Experience" right={data.years_of_experience} />
             </div>
           </div>
           <div className="mb-12">
@@ -128,20 +135,18 @@ function MiddleSection() {
   );
 }
 
-const CPprofileCard = () => {
+const CPprofileCard = ({ user }: { user: TUser }) => {
   return (
     <div className="flex gap-5 items-center ">
-      <CPprofileImg />
+      <CPprofileImg full_name={user.full_name} url={user.profile_image_url} />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
-          <span className="text-[#050505] ">Femi Johnson</span>
+          <span className="text-[#050505] ">{user.full_name}</span>
           <span className="text-primary font-medium py-1 px-2 bg-[#F8FAFC] rounded-full">
-            Talent
+            {user.recruiter_tag ? "Recruiter" : "Talent"}
           </span>
         </p>
-        <p className="text-[#64748B] text-sm">
-          Creative Director at the noti company
-        </p>
+        <p className="text-[#64748B] text-sm">{user.job_title}</p>
       </div>
       <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
         Connect

@@ -13,7 +13,7 @@ import {
 
 const Empowering = () => {
   return (
-    <section className="pt-[132] blurbackground pb-24">
+    <section id="empowering" className="pt-[132] blurbackground pb-24">
       <div className="flex flex-col items-center  px-6">
         <ActiveMember />
         <h1 className="text-[#050505] text-5xl font-medium text-center max-sm:text-[32px]">

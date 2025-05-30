@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import CPsmallButton from "./CPsmallButton";
 import { errorMessage } from "@/utils/toastalert";
 import CPrepostModal from "./CPrepostModal";
-// import CPInput from "./CPInput";
 
 function CPpostCard({ post }: { post: TPost }) {
   // display different UI for a repost
@@ -31,6 +30,7 @@ function CPpostCard({ post }: { post: TPost }) {
         <div className="flex-1">
           <CPpostCardHeader
             name={post.user?.full_name}
+            userid={post.user?.id}
             job_title={post.job_title}
             created_at={post.created_at}
           />
@@ -116,7 +116,11 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
 const CPpostComment = ({ comment }: { comment: TComment }) => {
   return (
     <div className="flex items-start gap-3 mb-3">
-      <CPprofileImg size={35} />
+      <CPprofileImg
+        url={comment.user?.profile_image_url}
+        full_name={comment.user?.full_name}
+        size={35}
+      />
       <div className="flex-1">
         <p className="font-medium text-sm text-slate">
           {comment.user.full_name}

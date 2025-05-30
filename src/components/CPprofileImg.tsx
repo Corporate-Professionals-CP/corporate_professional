@@ -31,27 +31,35 @@ function CPprofileImg({
   useEffect(() => {
     // Normalize path
 
-    let tempurl = url;
     if (full_name) {
       setInitials(getInitial(full_name));
+      const tempurl = url;
+
+      if (
+        tempurl &&
+        (tempurl.startsWith("http") ||
+          tempurl.startsWith("/") ||
+          tempurl.startsWith("blob"))
+      ) {
+        setValidSrc(tempurl);
+        setHasError(false);
+      } else {
+        setHasError(true);
+      }
     } else {
       setInitials(getInitial(user?.full_name));
-    }
-
-    if (!tempurl) {
-      tempurl = user?.profile_image_url;
-    }
-
-    if (
-      tempurl &&
-      (tempurl.startsWith("http") ||
-        tempurl.startsWith("/") ||
-        tempurl.startsWith("blob"))
-    ) {
-      setValidSrc(tempurl);
-      setHasError(false);
-    } else {
-      setHasError(true);
+      const tempurl = user?.profile_image_url;
+      if (
+        tempurl &&
+        (tempurl.startsWith("http") ||
+          tempurl.startsWith("/") ||
+          tempurl.startsWith("blob"))
+      ) {
+        setValidSrc(tempurl);
+        setHasError(false);
+      } else {
+        setHasError(true);
+      }
     }
   }, [url, full_name, user]);
 

@@ -12,7 +12,7 @@ function CPheader() {
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   return (
-    <div className="border-b border-[#E2E8F0]">
+    <div className="border-b border-[#E2E8F0]" id="home">
       <nav
         className="flex py-5 max-w-[820] mx-auto justify-between items-center px-2.5 max-md:hidden
     "
@@ -22,10 +22,18 @@ function CPheader() {
             <Image src={cplogo} alt="logo" />
           </li>
           <div className="flex gap-3 items-center ">
-            <li className="p-2">Home</li>
-            <li className="p-2">Why us?</li>
-            <li className="p-2">Feaure</li>
-            <li className="p-2">How it works</li>
+            <li className="p-2">
+              <Link href="#home">Home</Link>
+            </li>
+            <li className="p-2">
+              <Link href="#why-join">Why us?</Link>
+            </li>
+            <li className="p-2">
+              <Link href="#networking">Features</Link>
+            </li>
+            <li className="p-2">
+              <Link href="#profiles">How it works</Link>
+            </li>
           </div>
         </ul>
         <div className="flex gap-2 max-md:hidden ">
@@ -44,6 +52,12 @@ function CPheader() {
       >
         <Image src={logosignblue} alt="logo" />
         <div className="flex">
+          <Link
+            href={"/login"}
+            className="px-6 py-3 font-medium  text-sm text-[#050505]"
+          >
+            Login
+          </Link>
           <CPbuttonTwo link="/onboarding" />
           <button
             onClick={toggleMenu}
@@ -55,16 +69,16 @@ function CPheader() {
         {isOpen && (
           <div className="md:hidden px-4 pb-4 absolute top-16 right-6">
             <div className="mt-2 bg-white rounded-xl shadow-md py-2 space-y-2 pl-8 text-right">
-              <Link href="#" className="block px-4 py-2 text-sm">
+              <Link href="#home" className="block px-4 py-2 text-sm">
                 Home
               </Link>
-              <Link href="#" className="block px-4 py-2 text-sm">
+              <Link href="#why-join" className="block px-4 py-2 text-sm">
                 Why us?
               </Link>
-              <Link href="#" className="block px-4 py-2 text-sm">
+              <Link href="#networking" className="block px-4 py-2 text-sm">
                 Features
               </Link>
-              <Link href="#" className="block px-4 py-2 text-sm">
+              <Link href="#profiles" className="block px-4 py-2 text-sm">
                 How it works
               </Link>
             </div>
