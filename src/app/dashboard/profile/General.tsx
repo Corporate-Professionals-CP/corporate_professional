@@ -176,7 +176,7 @@ function UpdateImage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { trigger, isMutating } = useSWRMutation(
-    `/api/profiles/${user?.id}/profile-image`,
+    `/profiles/${user?.id}/profile-image`,
     updateProfilePicture
   );
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +199,7 @@ function UpdateImage() {
       errorMessage(err, "Unable to update profile picture");
     }
   };
+
   return (
     <div className="flex items-center gap-4 mb-8">
       <label>

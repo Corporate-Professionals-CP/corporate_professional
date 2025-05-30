@@ -4,10 +4,9 @@ import CPprofileImg from "@/components/CPprofileImg";
 import { Dispatch, SetStateAction, useState } from "react";
 import useSWR from "swr";
 import { fetchFeeds, fetchFeedsNetwork } from "./functions";
-import { CPspinnerLoader } from "@/components";
-
 import CreatePostModal from "./CreatePostModal";
 import MIddleSectionContainer from "./MIddleSectionContainer";
+import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
 
 function MiddleSection() {
   const [selectTab, setSelectTab] = useState(0);
@@ -79,7 +78,7 @@ const Feeds = () => {
   return (
     <div>
       {isLoading ? (
-        <CPspinnerLoader />
+        <FeedsSkeleton />
       ) : (
         data?.map((post) => <CPpostCard key={post.id} post={post} />)
       )}
@@ -92,10 +91,20 @@ const Networks = () => {
   return (
     <div>
       {isLoading ? (
-        <CPspinnerLoader />
+        <FeedsSkeleton />
       ) : (
         data?.map((post) => <CPpostCard key={post.id} post={post} />)
       )}
+    </div>
+  );
+};
+
+const FeedsSkeleton = () => {
+  return (
+    <div>
+      <CPpostCardSkeleton />
+      <CPpostCardSkeleton />
+      <CPpostCardSkeleton />
     </div>
   );
 };

@@ -5,21 +5,15 @@ import { useForm } from "react-hook-form";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
-import httprequest from "@/utils/httpRequest";
 import useSWR from "swr";
-import { CPspinnerLoader } from "@/components";
 import useSWRMutation from "swr/mutation";
-import { addskills } from "./functions";
+import { addskills, deleteskills, getskills } from "./functions";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import CPpillet from "@/components/CPpillet";
+import Skeleton from "react-loading-skeleton";
 
 function Skills() {
-  const { data = [], isLoading } = useSWR("skill/", () =>
-    httprequest
-      .get("skill/")
-      .then((res) => res.data as TSkill[])
-      .catch(() => [])
-  );
+  const { data = [], isLoading } = useSWR("/skill/", getskills);
   const [addSkills, setAddSkills] = useState(false);
   return (
     <div>
@@ -37,7 +31,7 @@ function Skills() {
       {addSkills ? (
         <AddNewSkills setAddSkills={setAddSkills} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <SkillSkeleton />
       ) : (
         <ListContact setAddSkills={setAddSkills} skills={data} />
       )}
@@ -52,6 +46,17 @@ const ListContact = ({
   setAddSkills: React.Dispatch<React.SetStateAction<boolean>>;
   skills?: TSkill[];
 }) => {
+  const { trigger } = useSWRMutation(`/skill/`, deleteskills);
+  const handleDelete = async (id: number) => {
+    // trigger modal
+    try {
+      await trigger({ id: id });
+      successMessage("Skill deleted successfully");
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
+
   if (skills.length == 0) {
     return (
       <CPEmptyState
@@ -62,11 +67,17 @@ const ListContact = ({
     );
   }
   return (
-    <div className="flex gap-3 flex-wrap ">
-      {skills.map((skill) => (
-        <CPpillet key={skill.id} name={skill.name} />
-      ))}
-    </div>
+    <>
+      <div className="flex gap-3 flex-wrap ">
+        {skills.map((skill) => (
+          <CPpillet
+            key={skill.id}
+            name={skill.name}
+            action={() => handleDelete(skill.id)}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 function AddNewSkills({
@@ -87,7 +98,6 @@ function AddNewSkills({
     try {
       await trigger(data);
       successMessage("Skill uploadded succesfully");
-
       reset();
     } catch (err) {
       errorMessage(err);
@@ -119,6 +129,21 @@ function AddNewSkills({
         <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
     </form>
+  );
+}
+
+function SkillSkeleton() {
+  return (
+    <div className="flex gap-3 flex-wrap">
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+      <Skeleton width={80} height={30} style={{ borderRadius: "1000px" }} />
+    </div>
   );
 }
 

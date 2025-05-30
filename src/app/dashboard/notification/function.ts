@@ -4,6 +4,6 @@ import { TNotification } from "./type";
 export const fetchNotification = (url: string) => {
   return httprequest
     .get(url)
-    .then((res) => res.data as TNotification[])
+    .then((res) => res.data.notifications as TNotification[])
     .catch(() => []);
 };

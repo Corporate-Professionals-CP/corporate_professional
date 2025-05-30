@@ -1,8 +1,3 @@
-- CV completion
-- user profile
-- one profile
-- change meta data
-
 Login
 Signup
 Feeds (suggested and network)
@@ -20,7 +15,11 @@ Adding Contact
 What is left
 
 - navigating to a User's profile screen
-- Testing the Verify Email
 - Changing Profile Image
 - Notification UI
 - Some responsiveness on the Landing page
+- CV completion
+- user profile
+- one profile
+- change meta data
+- different render to posts

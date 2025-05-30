@@ -1,12 +1,10 @@
 "use client";
 import CPprofileCard from "@/components/CPprofileCard";
-
-import { LeftArrow } from "@/imagecomponents";
-import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 import { fetchPendingNetwork, fetchSentPendingNetwork } from "../function";
-import { CPEmptyState, CPspinnerLoader } from "@/components";
+import { CPdashboardBack, CPEmptyState } from "@/components";
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 
 function page() {
   return <MiddleSection />;
@@ -25,46 +23,61 @@ function MiddleSection() {
   );
   return (
     <>
-      <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
-        <Link href={"/dashboard/network"}>
-          <LeftArrow />
-        </Link>
-        <span className="text-lg">Pending requests</span>
+      <CPdashboardBack title="Pending requests" link="/dashboard/network" />
+
+      <div className="p-[18]">
+        {isLoading ? (
+          <NetworkPendingSkeleton />
+        ) : (
+          <>
+            <div className="flex justify-between items-center">
+              <p className="text-slate font-medium text-sm">
+                Pending requests ({pendingConnection.length})
+              </p>
+            </div>
+            <div>
+              {pendingConnection.length == 0 ? (
+                <CPEmptyState textIcon="🛜" btnText="No Connection" />
+              ) : (
+                pendingConnection.map((item) => (
+                  <CPprofileCard key={item.id} profile={item} />
+                ))
+              )}
+            </div>
+          </>
+        )}
+        {isSentLoading ? (
+          <NetworkPendingSkeleton />
+        ) : (
+          <>
+            <div className="flex justify-between items-center">
+              <p className="text-slate font-medium text-sm">
+                Sent pending requests ({sentConnection.length})
+              </p>
+            </div>
+            <div>
+              {sentConnection.length == 0 ? (
+                <CPEmptyState textIcon="🛜" />
+              ) : (
+                sentConnection.map((item) => (
+                  <CPprofileCard isUser key={item.id} profile={item} />
+                ))
+              )}
+            </div>
+          </>
+        )}
       </div>
-      {isLoading || isSentLoading ? (
-        <CPspinnerLoader />
-      ) : (
-        <div className="p-[18]">
-          <div className="flex justify-between items-center">
-            <p className="text-slate font-medium text-sm">
-              Pending requests ({pendingConnection.length})
-            </p>
-          </div>
-          <div>
-            {pendingConnection.length == 0 ? (
-              <CPEmptyState textIcon="🛜" />
-            ) : (
-              pendingConnection.map((item) => (
-                <CPprofileCard key={item.id} profile={item} />
-              ))
-            )}
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-slate font-medium text-sm">
-              Sent pending requests ({sentConnection.length})
-            </p>
-          </div>
-          <div>
-            {sentConnection.length == 0 ? (
-              <CPEmptyState textIcon="🛜" />
-            ) : (
-              sentConnection.map((item) => (
-                <CPprofileCard isUser key={item.id} profile={item} />
-              ))
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }
+
+const NetworkPendingSkeleton = () => {
+  return (
+    <div>
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+    </div>
+  );
+};

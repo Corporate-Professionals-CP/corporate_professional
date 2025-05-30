@@ -7,15 +7,17 @@ function CPtableListWorkExp({
   location,
   list,
   link,
+  onDelete = () => {},
 }: {
   left?: string;
   title?: string;
   location?: string;
   list?: string[];
   link?: string;
+  onDelete?: () => void;
 }) {
   return (
-    <div className=" flex gap-2">
+    <div className=" flex gap-2 mb-10">
       <p className="w-[180] text-[#64748B] text-sm">{left}</p>
       <div className="flex-1">
         <h6 className="text-slate text-sm mb-2 flex items-center gap-1">
@@ -38,6 +40,14 @@ function CPtableListWorkExp({
             );
           })}
         </ul>
+        <div className="flex items-center gap-3">
+          <button
+            className="text-xs text-[#64748B] cursor-pointer"
+            onClick={onDelete}
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   );

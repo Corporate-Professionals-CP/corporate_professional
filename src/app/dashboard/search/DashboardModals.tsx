@@ -7,14 +7,11 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import { searchDirectory } from "./functions";
-import {
-  CPEmptyState,
-  CPpostCard,
-  CPsmallButton,
-  CPspinnerLoader,
-} from "@/components";
+import { CPEmptyState, CPpostCard, CPsmallButton } from "@/components";
 import { TSearchParams } from "./type";
 import { errorMessage } from "@/utils/toastalert";
+import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 
 function DashboardModals() {
   const router = useRouter();
@@ -156,7 +153,7 @@ function DashboardModals() {
           />
         </div>
         {isMutating ? (
-          <CPspinnerLoader />
+          <SearchSkeleton />
         ) : !data?.length ? (
           <CPEmptyState textIcon="🔍" />
         ) : (
@@ -192,4 +189,16 @@ const CPprofileCard = () => {
     </div>
   );
 };
+
+const SearchSkeleton = () => {
+  return (
+    <div>
+      <CPprofileCardSkeleton />
+      <CPpostCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPpostCardSkeleton />
+    </div>
+  );
+};
+
 export default DashboardModals;

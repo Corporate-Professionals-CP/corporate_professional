@@ -21,6 +21,7 @@
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.56.3",
+    "react-loading-skeleton": "^3.5.0",
     "react-toastify": "^11.0.5",
     "swr": "^2.3.3",
     "zod": "^3.24.4",

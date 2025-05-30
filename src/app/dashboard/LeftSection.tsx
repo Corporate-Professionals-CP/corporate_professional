@@ -15,7 +15,7 @@ function LeftSection() {
   useAuth();
   const pathname = usePathname();
   return (
-    <section className="w-[420] py-4 p-8 flex justify-end">
+    <section className="w-[420] py-4 p-8 flex justify-end shrink ">
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
           <Link href="/dashboard/profile">

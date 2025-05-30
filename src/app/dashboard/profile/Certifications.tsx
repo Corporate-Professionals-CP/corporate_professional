@@ -13,12 +13,17 @@ import CPEmptyState from "@/components/CPEmptyState";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import CPspinnerLoader from "@/components/CPspinnerLoader";
-import { getCertifications, submitCertification } from "./functions";
+import {
+  deleteCertification,
+  getCertifications,
+  submitCertification,
+} from "./functions";
+import { CPeducationSkeleton } from "@/components";
+import CPdeleteModal from "@/components/CPdeleteModal";
 
 function Certifications() {
   const { data = [], isLoading } = useSWR(
-    "certification/me",
+    "/certification/me",
     getCertifications
   );
 
@@ -39,7 +44,7 @@ function Certifications() {
       {addCertifications ? (
         <AddNewCertification setAddCertifications={setAddCertifications} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <CertificationSkeleton />
       ) : (
         <ListContact
           setAddCertifications={setAddCertifications}
@@ -57,6 +62,21 @@ const ListContact = ({
   setAddCertifications: React.Dispatch<React.SetStateAction<boolean>>;
   certifications: TCertification[];
 }) => {
+  const [deletemodal, setdeletemodal] = useState(false);
+  const [activeId, setActiveId] = useState("");
+  const { trigger, isMutating } = useSWRMutation(
+    `/certification/${activeId}`,
+    deleteCertification
+  );
+  const handleDelete = async () => {
+    try {
+      await trigger({ id: activeId });
+      successMessage("Certification deleted successfully");
+      setdeletemodal(false);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
   if (certifications.length == 0) {
     return (
       <CPEmptyState
@@ -67,16 +87,32 @@ const ListContact = ({
     );
   }
 
-  return certifications.map((item) => (
-    <CPtableListWorkExp
-      key={item.id}
-      left={`${item.issued_date} - ${item.expiration_date}`}
-      title={item.name}
-      location={item.organization}
-      link={item.media_url}
-      list={[item.description]}
-    />
-  ));
+  return (
+    <>
+      {certifications.map((item) => (
+        <CPtableListWorkExp
+          key={item.id}
+          left={`${item.issued_date} - ${item.expiration_date}`}
+          title={item.name}
+          location={item.organization}
+          link={item.media_url}
+          list={[item.description]}
+          onDelete={() => {
+            setdeletemodal(true);
+
+            setActiveId(item.id);
+          }}
+        />
+      ))}
+      {deletemodal && (
+        <CPdeleteModal
+          onClose={() => setdeletemodal(false)}
+          onDelete={handleDelete}
+          isLoading={isMutating}
+        />
+      )}
+    </>
+  );
 };
 
 function AddNewCertification({
@@ -179,6 +215,15 @@ function AddNewCertification({
         <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
     </form>
+  );
+}
+
+function CertificationSkeleton() {
+  return (
+    <>
+      <CPeducationSkeleton />;
+      <CPeducationSkeleton />;
+    </>
   );
 }
 

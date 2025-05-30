@@ -5,7 +5,13 @@ export const errorMessage = (err: any, message?: string) => {
   if (message) {
     return toast(message, { type: "error" });
   }
-  const msg = err?.response?.data.detail || "an errorOccured";
+  let msg = err?.response?.data?.detail;
+  if (typeof msg !== "string") {
+    msg = err?.response?.data?.message;
+  }
+  if (typeof msg !== "string") {
+    msg = "an errorOccured";
+  }
   toast(msg, { type: "error" });
 };
 

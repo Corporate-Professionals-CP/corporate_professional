@@ -8,10 +8,11 @@ import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
 
 import useSWR from "swr";
-import { CPspinnerLoader } from "@/components";
+import { CPeducationSkeleton } from "@/components";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import useSWRMutation from "swr/mutation";
-import { addvolunteer, getVolunteers } from "./functions";
+import { addvolunteer, deleteVolunteering, getVolunteers } from "./functions";
+import CPdeleteModal from "@/components/CPdeleteModal";
 
 function Volunteering() {
   const { data = [], isLoading } = useSWR("/volunteering/", getVolunteers);
@@ -33,7 +34,7 @@ function Volunteering() {
       {addVolunteering ? (
         <AddNewVolunteer setAddVolunteering={setAddVolunteering} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <VolunteeringSkeleton />
       ) : (
         <ListContact
           setAddVolunteering={setAddVolunteering}
@@ -51,6 +52,23 @@ const ListContact = ({
   setAddVolunteering: React.Dispatch<React.SetStateAction<boolean>>;
   volunteers?: TVolunteering[];
 }) => {
+  const [deletemodal, setdeletemodal] = useState(false);
+  const [activeId, setActiveId] = useState("");
+  const { trigger, isMutating } = useSWRMutation(
+    `/work-experiences/${activeId}`,
+    deleteVolunteering
+  );
+  const handleDelete = async () => {
+    // trigger modal
+    try {
+      await trigger({ id: activeId });
+      successMessage("Veolunteering deleted successfully");
+      setdeletemodal(false);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
+
   if (volunteers.length == 0) {
     return (
       <CPEmptyState
@@ -60,15 +78,30 @@ const ListContact = ({
       />
     );
   }
-  return volunteers.map((vol) => (
-    <CPtableListWorkExp
-      key={vol.id}
-      left={`${vol.start_date} ${vol.end_date}`}
-      title={vol.organization}
-      location={vol.location}
-      list={[vol.description]}
-    />
-  ));
+  return (
+    <>
+      {volunteers.map((vol) => (
+        <CPtableListWorkExp
+          key={vol.id}
+          left={`${vol.start_date} ${vol.end_date}`}
+          title={vol.organization}
+          location={vol.location}
+          list={[vol.description]}
+          onDelete={() => {
+            setdeletemodal(true);
+            setActiveId(vol.id);
+          }}
+        />
+      ))}
+      {deletemodal && (
+        <CPdeleteModal
+          onClose={() => setdeletemodal(false)}
+          onDelete={handleDelete}
+          isLoading={isMutating}
+        />
+      )}
+    </>
+  );
 };
 
 function AddNewVolunteer({
@@ -91,6 +124,7 @@ function AddNewVolunteer({
     try {
       await trigger(data);
       successMessage("Volunteering added successfully");
+      setAddVolunteering(false);
     } catch (err) {
       errorMessage(err);
     }
@@ -178,6 +212,15 @@ function AddNewVolunteer({
         <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
     </form>
+  );
+}
+
+function VolunteeringSkeleton() {
+  return (
+    <>
+      <CPeducationSkeleton />;
+      <CPeducationSkeleton />;
+    </>
   );
 }
 

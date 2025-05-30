@@ -7,10 +7,11 @@ import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
 import useSWR from "swr";
-import { CPspinnerLoader } from "@/components";
+import { CPeducationSkeleton } from "@/components";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import { addEducation, getEducations } from "./functions";
+import { addEducation, deleteEducation, getEducations } from "./functions";
+import CPdeleteModal from "@/components/CPdeleteModal";
 
 function Education() {
   const { data = [], isLoading } = useSWR("/education/me", getEducations);
@@ -31,7 +32,7 @@ function Education() {
       {addEduction ? (
         <AddNewEduction setAddEduction={setAddEduction} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <EducationSkeleton />
       ) : (
         <ListContact setAddEduction={setAddEduction} educations={data} />
       )}
@@ -46,6 +47,23 @@ const ListContact = ({
   setAddEduction: React.Dispatch<React.SetStateAction<boolean>>;
   educations?: TEducation[];
 }) => {
+  const [deletemodal, setdeletemodal] = useState(false);
+  const [activeId, setActiveId] = useState("");
+  const { trigger, isMutating } = useSWRMutation(
+    `/education/${activeId}`,
+    deleteEducation
+  );
+  const handleDelete = async () => {
+    // trigger modal
+    try {
+      await trigger({ id: activeId });
+      successMessage("Education deleted successfully");
+      setdeletemodal(false);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
+
   if (educations.length == 0) {
     return (
       <CPEmptyState
@@ -55,17 +73,31 @@ const ListContact = ({
       />
     );
   }
-  return educations.map((edu) => (
-    <CPtableListWorkExp
-      key={edu.id}
-      left="2023 - 2024"
-      title="Head of Strategy at Refresh Studio"
-      location="Remote"
-      list={[
-        "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-      ]}
-    />
-  ));
+  return (
+    <>
+      {educations.map((edu) => (
+        <CPtableListWorkExp
+          key={edu.id}
+          left={`${edu.from_date} - ${edu.to_date}`}
+          title={edu.school}
+          location={edu.location}
+          list={[edu.description]}
+          onDelete={() => {
+            setdeletemodal(true);
+
+            setActiveId(edu.id);
+          }}
+        />
+      ))}
+      {deletemodal && (
+        <CPdeleteModal
+          onClose={() => setdeletemodal(false)}
+          onDelete={handleDelete}
+          isLoading={isMutating}
+        />
+      )}
+    </>
+  );
 };
 
 function AddNewEduction({
@@ -177,6 +209,15 @@ function AddNewEduction({
         <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
     </form>
+  );
+}
+
+function EducationSkeleton() {
+  return (
+    <>
+      <CPeducationSkeleton />;
+      <CPeducationSkeleton />;
+    </>
   );
 }
 

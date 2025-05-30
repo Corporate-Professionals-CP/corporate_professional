@@ -5,8 +5,9 @@ import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 import { fetchConnections } from "../function";
-import { CPEmptyState, CPspinnerLoader } from "@/components";
+import { CPEmptyState } from "@/components";
 import CPprofileConnectionCard from "@/components/CPprofileConnectionCard";
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 
 function page() {
   return <MiddleSection />;
@@ -34,7 +35,7 @@ function MiddleSection() {
         </div>
       </div>
       {isLoading ? (
-        <CPspinnerLoader />
+        <NetworkConnectionSkeleton />
       ) : (
         <div className="p-[18]">
           <div className="flex justify-between items-center">
@@ -45,7 +46,7 @@ function MiddleSection() {
 
           <div>
             {data.length == 0 ? (
-              <CPEmptyState textIcon="🛜" />
+              <CPEmptyState textIcon="🛜" btnText="No Connection" />
             ) : (
               data.map((item) => (
                 <CPprofileConnectionCard key={item.id} profile={item} />
@@ -57,3 +58,14 @@ function MiddleSection() {
     </>
   );
 }
+
+const NetworkConnectionSkeleton = () => {
+  return (
+    <div>
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+    </div>
+  );
+};

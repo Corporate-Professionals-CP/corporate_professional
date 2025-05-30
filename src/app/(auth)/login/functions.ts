@@ -1,5 +1,9 @@
 import httprequest from "@/utils/httpRequest";
-import { TLoginSchema } from "./type";
+import {
+  TForgotPasswordPasswordSchema,
+  TForgotPasswordSchema,
+  TLoginSchema,
+} from "./type";
 import { storeData } from "@/utils/storage";
 
 export const loginUser = async (
@@ -17,5 +21,26 @@ export const loginUser = async (
   ] = `Bearer ${response.data.access_token}`;
   storeData("access_token", response.data.access_token);
   storeData("refresh_token", response.data.refresh_token);
+  // return response.data.user;
   return response.data;
+};
+
+export const forgetPassword = async (
+  url: string,
+  { arg }: { arg: TForgotPasswordSchema }
+) => {
+  await httprequest.post(url, {
+    email: arg.email,
+  });
+};
+
+export const resetPassword = async (
+  url: string,
+  { arg }: { arg: TForgotPasswordPasswordSchema & { email: string } }
+) => {
+  await httprequest.post(url, {
+    otp: arg.otp,
+    new_password: arg.password,
+    email: arg.email,
+  });
 };

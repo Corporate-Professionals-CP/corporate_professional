@@ -24,10 +24,8 @@ const VerifyEmailModal = ({
     "/auth/verify-email",
     verifyEmail
   );
-  const { trigger: triggerReset, isMutating: loadingResend } = useSWRMutation(
-    "/auth/resend-verification",
-    resendVerifyEmail
-  );
+  const { trigger: triggerOTPResend, isMutating: loadingResend } =
+    useSWRMutation("/auth/resend-verification", resendVerifyEmail);
   const {
     handleSubmit,
     register,
@@ -45,7 +43,7 @@ const VerifyEmailModal = ({
   };
   const onClickResend = async () => {
     try {
-      await triggerReset({ email, token });
+      await triggerOTPResend({ email, token });
       successMessage(`otp sent to ${email}`);
     } catch (err) {
       errorMessage(err);

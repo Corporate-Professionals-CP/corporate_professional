@@ -65,6 +65,7 @@ const CreatePostModal = ({
       }
       mutate("/feed/");
       mutate("/feed/network/");
+      handleCloseModal();
     } catch (err) {
       errorMessage(err);
     }

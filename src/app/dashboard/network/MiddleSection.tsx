@@ -2,9 +2,11 @@
 
 import { fetSuggestedConnection } from "./function";
 import useSWR from "swr";
-import { CPEmptyState, CPspinnerLoader } from "@/components";
+import { CPEmptyState } from "@/components";
 import { TSuggestedNetwork } from "@/app/type";
 import CPprofileNetworkCard from "@/components/CPprofileNetworkCard";
+
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 
 function MiddleSection() {
   const { data: suggestedNetwork = [], isLoading } = useSWR(
@@ -18,7 +20,7 @@ function MiddleSection() {
         My Network
       </div>
       {isLoading ? (
-        <CPspinnerLoader />
+        <NetworkSkeleton />
       ) : (
         <div>
           {/* <NetworkCategory title="Invitation (2)" data={[]} /> */}
@@ -57,4 +59,21 @@ const NetworkCategory = ({
     </div>
   );
 };
+
+const NetworkSkeleton = () => {
+  return (
+    <div>
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+    </div>
+  );
+};
+
 export default MiddleSection;

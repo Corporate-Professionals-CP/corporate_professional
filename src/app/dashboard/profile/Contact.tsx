@@ -3,17 +3,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactSchema, TContact, TContactSchema } from "./type";
 import useSWRMutation from "swr/mutation";
-import httprequest from "@/utils/httpRequest";
-import useSWR, { mutate } from "swr";
-import {
-  CPspinnerLoader,
-  CPEmptyState,
-  CPsmallButton,
-  CPselect,
-  CPInput,
-} from "@/components";
+import useSWR from "swr";
+import { CPEmptyState, CPsmallButton, CPselect, CPInput } from "@/components";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import { addcontact, getContacts } from "./functions";
+import { addcontact, deletecontact, getContacts } from "./functions";
+import Skeleton from "react-loading-skeleton";
+import { LinkIcon } from "@/imagecomponents";
+import Link from "next/link";
+import CPdeleteModal from "@/components/CPdeleteModal";
 
 const Contact = () => {
   const { data = [], isLoading } = useSWR("/contacts/", getContacts);
@@ -37,7 +34,7 @@ const Contact = () => {
       {addlink ? (
         <AddNewContact setAddLink={setAddLink} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <ContactSkeleton />
       ) : (
         <ListContact setAddLink={setAddLink} contacts={data} />
       )}
@@ -76,21 +73,33 @@ const AddNewContact = ({
     register,
     formState: { errors },
     setValue,
+    getValues,
     watch,
-    handleSubmit,
+    trigger,
   } = useForm<TContactSchema>({ resolver: zodResolver(ContactSchema) });
-  const { trigger, isMutating } = useSWRMutation("/contacts/", addcontact);
-  const onClick = async (data: TContactSchema) => {
+  const { trigger: submit, isMutating } = useSWRMutation(
+    "/contacts/",
+    addcontact
+  );
+  const onClick = async () => {
+    const values = getValues();
+    let valid = true;
+    if (values.type == "custom") {
+      valid = await trigger(["platform_name", "type", "url", "username"]);
+    } else {
+      valid = await trigger(["type", "url", "username"]);
+    }
+    if (!valid) return;
     try {
-      await trigger(data);
+      await submit(values);
       successMessage("Contact added successfully");
       setAddLink(false);
     } catch (err) {
-      errorMessage(err);
+      errorMessage(err, "Contact creation failed");
     }
   };
   return (
-    <form onSubmit={handleSubmit(onClick)}>
+    <div>
       <div>
         <div className="flex gap-2">
           <div className="flex-1">
@@ -117,13 +126,26 @@ const AddNewContact = ({
           </div>
         </div>
       </div>
-      <div>
-        <label className="mb-2 text-sm text-[#475569]">URL</label>
-        <CPInput
-          placeholder="https://linkedin.com/wade"
-          {...register("url")}
-          error={errors.url?.message}
-        />
+      <div className="flex gap-2">
+        {watch("type") == "custom" && (
+          <div className="flex-1">
+            <label className="mb-2 text-sm text-[#475569]">Platform_type</label>
+            <CPInput
+              placeholder="Linkdin"
+              {...register("platform_name")}
+              error={errors.platform_name?.message}
+            />
+          </div>
+        )}
+
+        <div className="flex-1">
+          <label className="mb-2 text-sm text-[#475569]">URL</label>
+          <CPInput
+            placeholder="https://linkedin.com/wade"
+            {...register("url")}
+            error={errors.url?.message}
+          />
+        </div>
       </div>
       <div className="flex justify-end gap-2 mt-12">
         <button onClick={() => setAddLink(false)} className="p-3">
@@ -133,37 +155,78 @@ const AddNewContact = ({
           type="submit"
           text="Save"
           loading={isMutating}
-          onClick={() => console.log(errors)}
+          onClick={onClick}
         />
       </div>
-    </form>
+    </div>
   );
 };
 
 const CPcontact = ({ contact }: { contact: TContact }) => {
+  const { trigger, isMutating } = useSWRMutation(
+    `/contacts/${contact.id}`,
+    deletecontact
+  );
+  const [deletemodal, setdeletemodal] = useState(false);
   const handleDelete = async () => {
+    // trigger modal
     try {
-      await httprequest.delete(`/api/contacts/${contact.id}`);
-      mutate("/contacts");
+      await trigger({ id: contact.id });
       successMessage("contact deleted successfully");
+      setdeletemodal(false);
     } catch (err) {
       errorMessage(err);
     }
   };
 
   return (
-    <div key={contact.id} className="flex mb-8">
-      <div className="max-w-[180] min-w-[50] flex-1">
-        {contact.platform_name}
-      </div>
-      <div>
-        <p className="text-sm mb-4">{contact.url}</p>
+    <div key={contact.id} className="flex mb-8 gap-0.5">
+      <div className="w-[180]">{contact.platform_name}</div>
+      <div className="flex-1">
+        <div className="flex">
+          <p className="text-sm mb-4">{contact.username}</p>
+          <Link target="_blank" href={contact.url}>
+            <LinkIcon />
+          </Link>
+        </div>
         <div className="flex items-center gap-3">
           {/* <button className="text-xs text-[#64748B]">Edit</button> */}
-          <button className="text-xs text-[#64748B]" onClick={handleDelete}>
+          <button
+            className="text-xs text-[#64748B] cursor-pointer"
+            onClick={() => setdeletemodal(true)}
+          >
             Delete
           </button>
         </div>
+      </div>
+      {deletemodal && (
+        <CPdeleteModal
+          onClose={() => setdeletemodal(false)}
+          onDelete={handleDelete}
+          isLoading={isMutating}
+        />
+      )}
+    </div>
+  );
+};
+
+const ContactSkeleton = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <CPContactSkeleton />
+      <CPContactSkeleton />
+      <CPContactSkeleton />
+    </div>
+  );
+};
+
+const CPContactSkeleton = () => {
+  return (
+    <div className="flex items-start gap-x-20">
+      <Skeleton width={50} />
+      <div className="flex-1 ">
+        <Skeleton />
+        <Skeleton />
       </div>
     </div>
   );

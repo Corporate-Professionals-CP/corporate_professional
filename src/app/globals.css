@@ -36,6 +36,13 @@ body {
   }
 }
 
+.support {
+  background-image: url(../assets/support.svg);
+  background-position: right 10px center;
+
+  background-repeat: no-repeat;
+}
+
 .blurbackground {
   background-image: url(../assets/dashboardbg.svg);
   background-position: bottom center;

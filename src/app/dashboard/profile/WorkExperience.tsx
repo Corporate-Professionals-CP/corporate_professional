@@ -11,10 +11,15 @@ import {
 } from "./type";
 import CPEmptyState from "@/components/CPEmptyState";
 import useSWR from "swr";
-import { CPspinnerLoader } from "@/components";
+import { CPeducationSkeleton } from "@/components";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import { addexperience, getWorkExperience } from "./functions";
+import {
+  addexperience,
+  deleteWorkExperience,
+  getWorkExperience,
+} from "./functions";
+import CPdeleteModal from "@/components/CPdeleteModal";
 
 const WorkExperience = () => {
   const { data = [], isLoading } = useSWR(
@@ -39,7 +44,7 @@ const WorkExperience = () => {
       {addExperience ? (
         <AddNewExperience setAddExperience={setAddExperience} />
       ) : isLoading ? (
-        <CPspinnerLoader size={40} />
+        <WorkExperienceSkeleton />
       ) : (
         <ListContact setAddExperience={setAddExperience} experiences={data} />
       )}
@@ -55,6 +60,23 @@ const ListContact = ({
 
   experiences?: TWorkExperience[];
 }) => {
+  const [deletemodal, setdeletemodal] = useState(false);
+  const [activeId, setActiveId] = useState("");
+  const { trigger, isMutating } = useSWRMutation(
+    `/work-experiences/${activeId}`,
+    deleteWorkExperience
+  );
+  const handleDelete = async () => {
+    // trigger modal
+    try {
+      await trigger({ id: activeId });
+      successMessage("work experience deleted successfully");
+      setdeletemodal(false);
+    } catch (err) {
+      errorMessage(err);
+    }
+  };
+
   if (experiences.length == 0) {
     return (
       <CPEmptyState
@@ -65,17 +87,30 @@ const ListContact = ({
     );
   }
 
-  return experiences.map((exp) => (
-    <CPtableListWorkExp
-      key={exp.id}
-      left={`${exp.start_date} - ${exp.end_date}`}
-      title={exp.title}
-      location={exp.location}
-      list={[
-        "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-      ]}
-    />
-  ));
+  return (
+    <>
+      {experiences.map((exp) => (
+        <CPtableListWorkExp
+          key={exp.id}
+          left={`${exp.start_date} - ${exp.end_date}`}
+          title={exp.title}
+          location={exp.location}
+          list={[exp.description]}
+          onDelete={() => {
+            setdeletemodal(true);
+            setActiveId(exp.id);
+          }}
+        />
+      ))}
+      {deletemodal && (
+        <CPdeleteModal
+          onClose={() => setdeletemodal(false)}
+          onDelete={handleDelete}
+          isLoading={isMutating}
+        />
+      )}
+    </>
+  );
 };
 
 function AddNewExperience({
@@ -186,6 +221,15 @@ function AddNewExperience({
         <CPsmallButton type="submit" text="Save" loading={isMutating} />
       </div>
     </form>
+  );
+}
+
+function WorkExperienceSkeleton() {
+  return (
+    <>
+      <CPeducationSkeleton />;
+      <CPeducationSkeleton />;
+    </>
   );
 }
 export default WorkExperience;

@@ -22,10 +22,30 @@ function RightSection() {
           </p>
         </div>
         <div className="flex flex-col gap-2 mb-12">
-          <CPcard />
-          <CPcard />
-          <CPcard />
-          <CPcard />
+          <CPcard
+            title="Location"
+            description="Connect with nearby professionals."
+            link="/dashboard/profile"
+            icon="📍"
+          />
+          <CPcard
+            title="Education & Certifications"
+            description="Strengthen your credibility."
+            link="/dashboard/profile"
+            icon="📜"
+          />
+          <CPcard
+            title="Link your LinkedIn"
+            description="Expand your professional reach."
+            link="/dashboard/profile"
+            icon="🔗"
+          />
+          <CPcard
+            title="Add your skills"
+            description="Showcase what you excel at."
+            link="/dashboard/profile"
+            icon="🏅"
+          />
         </div>
         <CPSupportCard />
       </div>
@@ -33,17 +53,27 @@ function RightSection() {
   );
 }
 
-const CPcard = () => {
+const CPcard = ({
+  title,
+  description,
+  link,
+  icon,
+}: {
+  title: string;
+  description: string;
+  link: string;
+  icon: string;
+}) => {
   return (
     <div className="flex gap-2 items-center p-3 border border-[#F1F5F9] rounded-md ">
-      {/* icon */}
-      <div className="flex-1">
-        <h6 className="text-[#050505] text-sm ">Location</h6>
-        <p className="text-[#475569] text-xs">
-          Connect with nearby professionals.
-        </p>
+      <div className="bg-[#F8FAFC] w-6 h-6 grid place-content-center rounded-2xl">
+        {icon}
       </div>
-      <CPsmallButton text="Add" />
+      <div className="flex-1">
+        <h6 className="text-[#050505] text-sm ">{title}</h6>
+        <p className="text-[#475569] text-xs">{description}</p>
+      </div>
+      <CPsmallButton style={{ padding: "8px 12px" }} text="Add" isLink={link} />
     </div>
   );
 };

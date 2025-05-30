@@ -30,3 +30,6 @@ export { default as CPtermsAndPrivacy } from "./CPtermsAndPrivacy";
 
 export { default as CPText } from "./CPText";
 export { default as CPtoggleSwitch } from "./CPtoggleSwitch";
+export { default as CPrepostModal } from "./CPrepostModal";
+export { default as CPdashboardBack } from "./CPdashboardBack";
+export { default as CPeducationSkeleton } from "./CPeducationSkeleton";

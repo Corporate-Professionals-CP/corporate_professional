@@ -16,24 +16,42 @@ export type TProfileSchema = z.infer<typeof ProfileSchema>;
 
 // CONTACT SCHEMA
 export const ContactSchema = z.object({
-  type: z.string().min(2),
-  url: z.string().min(2),
-  username: z.string().min(2),
-  // platform_name: z.string().min(0),
+  type: z.string({ required_error: "Type is required" }),
+  url: z.string().min(1, "url is required"),
+  username: z.string().min(1, "Username is required"),
+  platform_name: z.string().min(1, "Platform is required"),
 });
 
 export type TContactSchema = z.infer<typeof ContactSchema>;
 
 // WORK-EXPERIENCE SCHEMA
-export const WorkExperienceSchema = z.object({
-  from: z.string(),
-  to: z.string(),
-  title: z.string().min(1),
-  company: z.string().min(1),
-  location: z.string().min(1),
-  url: z.string().min(0),
-  description: z.string().min(10),
-});
+export const WorkExperienceSchema = z
+  .object({
+    from: z.string().min(1, { message: "Start date is required" }),
+    to: z.string().min(1, { message: "End date is required" }),
+    title: z.string().min(1, { message: "Title is required" }),
+    company: z.string().min(1, { message: "Company is required" }),
+    location: z.string().min(1, { message: "Location is required" }),
+    url: z.string().optional(),
+    description: z
+      .string()
+      .min(10, { message: "Description must be at least 10 characters" }),
+  })
+  .refine(
+    (data) => {
+      const fromDate = new Date(data.from);
+      const toDate = new Date(data.to);
+      return (
+        !isNaN(fromDate.getTime()) &&
+        !isNaN(toDate.getTime()) &&
+        toDate >= fromDate
+      );
+    },
+    {
+      message: "End date cannot be before start date",
+      path: ["to"], // This will associate the error with the `to` field
+    }
+  );
 
 export type TWorkExperienceSchema = z.infer<typeof WorkExperienceSchema>;
 

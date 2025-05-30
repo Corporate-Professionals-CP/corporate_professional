@@ -27,6 +27,7 @@ function CPprofileImg({
   const [initials, setInitials] = useState("");
   const [hasError, setHasError] = useState(false);
   const user = useUser((state) => state.user);
+
   useEffect(() => {
     // Normalize path
 
@@ -41,8 +42,14 @@ function CPprofileImg({
       tempurl = user?.profile_image_url;
     }
 
-    if (tempurl && (tempurl.startsWith("http") || tempurl.startsWith("/"))) {
+    if (
+      tempurl &&
+      (tempurl.startsWith("http") ||
+        tempurl.startsWith("/") ||
+        tempurl.startsWith("blob"))
+    ) {
       setValidSrc(tempurl);
+      setHasError(false);
     } else {
       setHasError(true);
     }
@@ -50,14 +57,15 @@ function CPprofileImg({
 
   return (
     <div
-      className=" rounded-full bg-amber-100 grid place-content-center"
+      className=" rounded-full bg-amber-100 grid place-content-center overflow-hidden"
       style={{ height: size, width: size }}
     >
       {!hasError && validSrc !== "" ? (
         <Image
           src={validSrc}
           alt="profile"
-          className="w-full h-full object-cover"
+          className="object-cover"
+          style={{ height: size, width: size }}
           width={size}
           height={size}
           onError={() => setHasError(true)}

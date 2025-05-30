@@ -21,3 +21,4 @@ export { default as CloseIcon } from "./CloseIcon";
 export { default as HamburgerLinkIcon } from "./HamburgerLinkIcon";
 export { default as HamburgerIcon } from "./HamburgerIcon";
 export { default as DocIcon } from "./DocIcon";
+export { default as TwofourIcon } from "./TwofourIcon";

@@ -3,8 +3,11 @@
 import { LeftArrow } from "@/imagecomponents";
 import useSWR from "swr";
 import { fetchNotification } from "./function";
-import { CPEmptyState, CPspinnerLoader } from "@/components";
+import { CPEmptyState } from "@/components";
 import MIddleSectionContainer from "../MIddleSectionContainer";
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import Skeleton from "react-loading-skeleton";
+import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
 
 function MiddleSection() {
   const { data = [], isLoading } = useSWR("/notifications/", fetchNotification);
@@ -15,7 +18,7 @@ function MiddleSection() {
         <span>Notifications</span>
       </div>
       {isLoading ? (
-        <CPspinnerLoader />
+        <NotificationSkeleton />
       ) : data.length == 0 ? (
         <CPEmptyState textIcon="🔔" />
       ) : (
@@ -25,4 +28,30 @@ function MiddleSection() {
   );
 }
 
+const NotificationSkeleton = () => {
+  return (
+    <>
+      <CPprofileCardSkeleton />
+      <NotiCardSkeleton />
+      <NotiCardSkeleton />
+      <CPpostCardSkeleton />
+      <NotiCardSkeleton />
+      <NotiCardSkeleton />
+    </>
+  );
+};
+
+const NotiCardSkeleton = () => {
+  return (
+    <div className="flex gap-4 items-center p-6">
+      <Skeleton circle width={48} height={48} />
+      <div className="flex-1">
+        <Skeleton width={330} height={20} />
+      </div>
+      <div>
+        <Skeleton width={40} height={20} />
+      </div>
+    </div>
+  );
+};
 export default MiddleSection;

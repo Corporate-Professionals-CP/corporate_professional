@@ -7,34 +7,25 @@ import bgimg from "@/assets/loginbg.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ForgotPasswordPasswordSchema,
-  ForgotPasswordSchema,
-  LoginSchema,
-  TForgotPasswordPasswordSchema,
-  TForgotPasswordSchema,
-  TLoginSchema,
-} from "./type";
+import { LoginSchema, TLoginSchema } from "./type";
 import useSWRMutation from "swr/mutation";
-import CPModal from "@/components/CPModal";
-import CPsmallButton from "@/components/CPsmallButton";
-import { Dispatch, SetStateAction, useState } from "react";
-import httprequest from "@/utils/httpRequest";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-// import useUser from "@/statestore/useUser";
+import useUser from "@/statestore/useUser";
 import { loginUser } from "./functions";
 import Link from "next/link";
 import VerifyEmailModal from "../VerifyEmailModal";
 import GoogleIcon from "@/imagecomponents/GoogleIcon";
 import AppleIcon from "@/imagecomponents/AppleIcon";
+import FormPasswordModel from "./FormPasswordModel";
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [emailmodal, setEmailModal] = useState(false);
 
-  // const state = useUser((state) => state.updateBears);
+  const setUser = useUser((state) => state.setUser);
   const router = useRouter();
   const { trigger, isMutating } = useSWRMutation("auth/login", loginUser);
 
@@ -48,7 +39,8 @@ export default function Login() {
   });
   const onSubmit = async (data: TLoginSchema) => {
     try {
-      await trigger(data);
+      const response = await trigger(data);
+      setUser(response);
       successMessage("Login Successful");
       router.push("/dashboard");
       /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -125,151 +117,5 @@ export default function Login() {
 
       {modalOpen && <FormPasswordModel setModalOpen={setModalOpen} />}
     </main>
-  );
-}
-
-const forgetPassword = async (
-  url: string,
-  { arg }: { arg: TForgotPasswordSchema }
-) => {
-  await httprequest.post("auth/login", {
-    email: arg.email,
-  });
-};
-
-function FormPasswordModel({
-  setModalOpen,
-}: {
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
-}) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TForgotPasswordSchema>({
-    resolver: zodResolver(ForgotPasswordSchema),
-  });
-  const { trigger, isMutating } = useSWRMutation(
-    "auth/forgot-password",
-    forgetPassword
-  );
-  const [step, setStep] = useState(1);
-  const onSubmit = (data: TForgotPasswordSchema) => {
-    try {
-      trigger(data);
-      setStep(2);
-    } catch (err) {
-      errorMessage(err);
-    }
-  };
-
-  return (
-    <CPModal width={445}>
-      {step == 1 && (
-        <form className="p-[18]" onSubmit={handleSubmit(onSubmit)}>
-          <h3 className="mb-4 text-lg font-medium">Forgot password? 😢</h3>
-          <p className="mb-6 text-[#64748B]">
-            Enter your email and we’ll send you reset instructions
-          </p>
-          <CPInput
-            error={errors.email?.message}
-            {...register("email")}
-            type="email"
-            placeholder="Email address"
-          />
-          <div className="flex justify-end gap-2 mt-12">
-            <button className="p-3" onClick={() => setModalOpen(false)}>
-              Back
-            </button>
-            <CPsmallButton type="submit" text="Submit" loading={isMutating} />
-          </div>
-        </form>
-      )}
-      {step == 2 && (
-        <div className="p-[18]">
-          <h3 className="mb-4 text-lg font-medium">Check your inbox! 🍄</h3>
-          <p className=" text-[#64748B] mb-24">
-            Open the link sent to{" "}
-            <span className="text-slate">danielanozie@icloud.com</span> in this
-            browser.
-          </p>
-          <div className="flex justify-end gap-2 mt-12">
-            <button className="p-3">Back</button>
-            <CPsmallButton type="submit" text="Submit" />
-          </div>
-        </div>
-      )}
-      {step == 3 && <ForgotPasswordPassInput />}
-
-      {step == 4 && (
-        <div className="p-[18]">
-          <h3 className="mb-4 text-lg font-medium">Successful ✨</h3>
-          <p className=" text-[#64748B] mb-12">
-            We’ve successfully reset your password!
-          </p>
-          <div className="flex justify-end gap-2 mt-12">
-            <button className="p-3">Back</button>
-            <CPsmallButton type="submit" text="Login" />
-          </div>
-        </div>
-      )}
-    </CPModal>
-  );
-}
-
-const resetPassword = async (
-  url: string,
-  { arg }: { arg: TForgotPasswordPasswordSchema }
-) => {
-  await httprequest.post("auth/reset-password", {
-    email: arg.password,
-  });
-};
-
-function ForgotPasswordPassInput() {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TForgotPasswordPasswordSchema>({
-    resolver: zodResolver(ForgotPasswordPasswordSchema),
-  });
-  const { trigger, isMutating } = useSWRMutation(
-    "auth/reset-password",
-    resetPassword
-  );
-  const onSubmit = (data: TForgotPasswordPasswordSchema) => {
-    try {
-      trigger(data);
-      successMessage("password reset successful");
-      router.push("/login");
-    } catch (err) {
-      errorMessage(err);
-    }
-  };
-  return (
-    <form className="p-[18]" onSubmit={handleSubmit(onSubmit)}>
-      <h3 className="mb-4 text-lg font-medium">Create new password 🛡️</h3>
-      <p className="mb-6 text-[#64748B]">
-        Your new password must be different from your previously used passwords
-      </p>
-      <div>
-        <div className="flex justify-between items-center mb-2 text-slate text-sm">
-          <p>Create new password</p>
-          <p className="text-xs">Good</p>
-        </div>
-        <CPInput
-          error={errors.password?.message}
-          {...register("password")}
-          type="password"
-          placeholder="New password"
-        />
-      </div>
-      <div className="flex justify-end gap-2 mt-12">
-        <button className="p-3">Back</button>
-        <CPsmallButton type="submit" text="Done" loading={isMutating} />
-      </div>
-    </form>
   );
 }

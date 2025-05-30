@@ -56,7 +56,7 @@ function CPselect({
         <p className="text-[#E62E2E] text-sm -translate-1.5 mb-0">{error}</p>
       )}
       {open && (
-        <div className="min-w-[223] min-h-[200] bg-white absolute top-16 shadow-dropdown rounded-lg">
+        <div className="min-w-[223] min-h-[200] bg-white absolute top-16 shadow-dropdown rounded-lg z-50">
           {items?.map((item) => (
             <div
               key={item.val}

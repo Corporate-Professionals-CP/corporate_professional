@@ -13,12 +13,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPsmallButton from "./CPsmallButton";
 import { errorMessage } from "@/utils/toastalert";
+import CPrepostModal from "./CPrepostModal";
 // import CPInput from "./CPInput";
 
 function CPpostCard({ post }: { post: TPost }) {
-  // fetch the comments
-  const [showComments, setShowComments] = useState(false);
+  // display different UI for a repost
 
+  const [showComments, setShowComments] = useState(false);
+  const [openRepost, setOpenRepost] = useState(false);
   return (
     <div className="border-b border-[#E2E8F0] p-6">
       <div className=" flex gap-4 items-start mb-3">
@@ -38,12 +40,15 @@ function CPpostCard({ post }: { post: TPost }) {
             total_reactions={post.total_reactions}
             is_bookmarked={post.is_bookmarked}
             // is_liked = {}
+            setOpenRepost={setOpenRepost}
             setShowComments={setShowComments}
             post_id={post.id}
           />
         </div>
       </div>
-
+      {openRepost && (
+        <CPrepostModal setCreatemodal={setOpenRepost} post={post} />
+      )}
       {showComments && <CPpostCommentBody post_id={post.id} />}
     </div>
   );

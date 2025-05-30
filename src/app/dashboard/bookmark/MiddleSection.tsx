@@ -5,8 +5,9 @@ import { LeftArrow, SearchIcon } from "@/imagecomponents";
 import useSWR from "swr";
 
 import { fetchBookmarkdata } from "./functions";
-import { CPspinnerLoader } from "@/components";
+
 import MIddleSectionContainer from "../MIddleSectionContainer";
+import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
 
 function MiddleSection() {
   const { data, isLoading } = useSWR("/bookmarks/bookmarks", fetchBookmarkdata);
@@ -28,7 +29,7 @@ function MiddleSection() {
       </div>
       <div>
         {isLoading ? (
-          <CPspinnerLoader />
+          <BookmarkSkeleton />
         ) : (
           data?.map((bookmark) => (
             <CPpostCard key={bookmark.id} post={bookmark} />
@@ -38,5 +39,15 @@ function MiddleSection() {
     </MIddleSectionContainer>
   );
 }
+
+const BookmarkSkeleton = () => {
+  return (
+    <div>
+      <CPpostCardSkeleton />
+      <CPpostCardSkeleton />
+      <CPpostCardSkeleton />
+    </div>
+  );
+};
 
 export default MiddleSection;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { helvneue } from "./font";
 import { ToastContainer } from "react-toastify";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

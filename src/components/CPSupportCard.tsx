@@ -1,7 +1,11 @@
+import { TwofourIcon } from "@/imagecomponents";
+
 function CPSupportCard() {
   return (
-    <div className="bg-[#F8FAFC] rounded-[8] p-4 ">
-      <div className="mb-4"></div>
+    <div className="bg-[#F8FAFC] rounded-[8] p-4 support">
+      <div className="mb-4">
+        <TwofourIcon />
+      </div>
       <div className="mb-[18px]">
         <p className="mb-2 text-sm font-medium text-slate">Need help?</p>
         <p className="text-[#334155] text-sm">Contact our cusomer support</p>

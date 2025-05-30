@@ -1,6 +1,7 @@
 import httprequest from "@/utils/httpRequest";
 import { errorMessage } from "@/utils/toastalert";
 import { TOnboardSchema } from "./type";
+// import { storeData } from "@/utils/storage";
 
 export const signupUser = async (
   url: string,
@@ -42,6 +43,9 @@ export const verifyEmail = async (
     email: arg.email,
     token: arg.email,
   });
+  // storeData("access_token", response.data.access_token);
+  // storeData("refresh_token", response.data.refresh_token);
+  // return response.data.user;
   return response.data;
 };
 

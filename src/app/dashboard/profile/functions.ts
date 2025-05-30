@@ -17,6 +17,13 @@ import {
 import { mutate } from "swr";
 import { TUser } from "@/app/type";
 
+export async function getskills() {
+  return httprequest
+    .get("/skill/")
+    .then((res) => res.data as TSkill[])
+    .catch(() => []);
+}
+
 export const addskills = async (
   url: string,
   { arg }: { arg: TSkillsSchema }
@@ -25,19 +32,28 @@ export const addskills = async (
     names: [arg.skill],
   });
   mutate(
-    "skill/",
-    (current: TSkill[] = []) => [
-      ...current,
-      { name: arg.skill, id: Date.now() },
-    ],
+    "/skill/",
+    (current: TSkill[] = []) => [...current, ...response.data],
     true
   );
   return response.data;
 };
 
+export async function deleteskills(
+  url: string,
+  { arg }: { arg: { id: number } }
+) {
+  httprequest.delete(`/skill/${arg.id}`);
+  mutate(
+    "/skill/",
+    (current: TSkill[] = []) => current.filter((el) => el.id != arg.id),
+    true
+  );
+}
+
 export const getCertifications = () => {
   return httprequest
-    .get("certification/me")
+    .get("/certification/me")
     .then((res) => res.data as TCertification[])
     .catch(() => []);
 };
@@ -56,25 +72,25 @@ export const submitCertification = async (
     expiration_date: arg.expiration_date,
   });
   mutate(
-    "certification/me",
-    (current: TCertification[] = []) => [
-      ...current,
-      {
-        name: arg.name,
-        organization: arg.organization,
-        url: arg.url,
-        description: arg.description,
-        media_url: arg.url,
-        issued_date: arg.issued_date,
-        expiration_date: arg.expiration_date,
-        id: `${Date.now()}`,
-        created_at: `${Date.now()}`,
-      },
-    ],
+    "/certification/me",
+    (current: TCertification[] = []) => [...current, response.data],
     true
   );
   return response.data;
 };
+
+export async function deleteCertification(
+  url: string,
+  { arg }: { arg: { id: string } }
+) {
+  await httprequest.delete(`/certification/${arg.id}`);
+  mutate(
+    "/certification/me",
+    (current: TCertification[] = []) =>
+      current.filter((el) => el.id !== arg.id),
+    true
+  );
+}
 
 export const getEducations = () => {
   return httprequest
@@ -99,24 +115,22 @@ export async function addEducation(
   });
   mutate(
     "/education/me",
-    (current: TEducation[] = []) => [
-      ...current,
-      {
-        degree: arg.degree,
-        school: arg.school,
-        location: arg.location,
-        url: arg.url,
-        description: arg.description,
-        media_url: arg.url,
-        from_date: arg.from_date,
-        to_date: arg.to_date,
-        id: `${Date.now()}`,
-        created_at: `${Date.now()}`,
-      },
-    ],
+    (current: TEducation[] = []) => [...current, response.data],
     true
   );
   return response.data;
+}
+
+export async function deleteEducation(
+  url: string,
+  { arg }: { arg: { id: string } }
+) {
+  await httprequest.delete(`/education/${arg.id}`);
+  mutate(
+    "/education/me",
+    (current: TEducation[] = []) => current.filter((el) => el.id !== arg.id),
+    true
+  );
 }
 
 export const getVolunteers = () => {
@@ -142,25 +156,23 @@ export async function addvolunteer(
   });
   mutate(
     "/volunteering/",
-    (current: TVolunteering[] = []) => [
-      ...current,
-      {
-        role: arg.role,
-        organization: arg.organization,
-        organization_url: arg.organization_url,
-        location: arg.location,
-        start_date: arg.start_date,
-        end_date: arg.end_date,
-        currently_volunteering: false,
-        description: arg.description,
-        id: `${Date.now()}`,
-        created_at: `${Date.now()}`,
-      },
-    ],
+    (current: TVolunteering[] = []) => [...current, response.data],
     true
   );
   return response.data;
 }
+
+export const deleteVolunteering = async (
+  url: string,
+  { arg }: { arg: { id: string } }
+) => {
+  await httprequest.delete(`/volunteering/${arg.id}`);
+  mutate(
+    "/volunteering/",
+    (current: TVolunteering[] = []) => current.filter((el) => el.id !== arg.id),
+    true
+  );
+};
 
 export const getWorkExperience = () => {
   return httprequest
@@ -187,26 +199,23 @@ export const addexperience = async (
   });
   mutate(
     "/work-experiences/",
-    (current: TWorkExperience[] = []) => [
-      ...current,
-      {
-        title: arg.title,
-        company: arg.company,
-        company_url: arg.url,
-        location: arg.location,
-        employment_type: "contract",
-        start_date: arg.from,
-        end_date: arg.to,
-        currently_working: false,
-        description: arg.description,
-        achievements: "",
-        id: `${Date.now()}`,
-        created_at: `${Date.now()}`,
-      },
-    ],
+    (current: TWorkExperience[] = []) => [...current, response.data],
     true
   );
   return response.data;
+};
+
+export const deleteWorkExperience = async (
+  url: string,
+  { arg }: { arg: { id: string } }
+) => {
+  await httprequest.delete(`/work-experiences/${arg.id}`);
+  mutate(
+    "/work-experiences/",
+    (current: TWorkExperience[] = []) =>
+      current.filter((el) => el.id !== arg.id),
+    true
+  );
 };
 
 export const getContacts = () => {
@@ -222,28 +231,28 @@ export async function addcontact(
 ) {
   const response = await httprequest.post(url, {
     type: arg.type,
-    // platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
-    platform_name: arg.type,
+    platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
     username: arg.username,
     url: arg.url,
   });
   mutate(
     "/contacts/",
-    (current: TContact[] = []) => [
-      ...current,
-      {
-        type: arg.type,
-        // platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
-        platform_name: arg.type,
-        username: arg.username,
-        url: arg.url,
-        id: `${Date.now()}`,
-        created_at: `${Date.now()}`,
-      },
-    ],
+    (current: TContact[] = []) => [...current, response.data],
     true
   );
   return response.data;
+}
+
+export async function deletecontact(
+  url: string,
+  { arg }: { arg: { id: string } }
+) {
+  await httprequest.delete(url);
+  mutate(
+    "/contacts/",
+    (current: TContact[] = []) => current.filter((el) => el.id !== arg.id),
+    true
+  );
 }
 
 export const updateProfile = async (

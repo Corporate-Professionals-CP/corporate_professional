@@ -3,7 +3,7 @@ import {
   bookmarkToPost,
   ReactToPost,
   removeBookmarkToPost,
-  RemoveToPost,
+  RemoveReactToPost,
 } from "@/app/functions";
 import { BookmarkIcon } from "@/imagecomponents";
 import CommentIcon from "@/imagecomponents/CommentIcon";
@@ -23,6 +23,7 @@ type TCPpostCardFooter = {
   post_id: string;
   is_liked?: boolean;
   setShowComments: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenRepost: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CPpostCardFooter({
@@ -32,18 +33,20 @@ function CPpostCardFooter({
   post_id,
   is_liked = false,
   setShowComments = () => {},
+  setOpenRepost = () => {},
 }: // reactions_breakdown,
 // is_repost,
 
 TCPpostCardFooter) {
   const [heart, setHeart] = useState(is_liked);
   const [bookmark, setBookMark] = useState(is_bookmarked);
+
   const onClickLike = async () => {
     const prevHeart = heart;
     setHeart((s) => !s);
     try {
       if (prevHeart) {
-        await RemoveToPost(post_id);
+        await RemoveReactToPost(post_id);
       } else {
         await ReactToPost(post_id);
       }
@@ -66,6 +69,8 @@ TCPpostCardFooter) {
       setBookMark((s) => !s);
     }
   };
+
+  // Repost
   return (
     <div className="flex items-center">
       <div className="flex items-center flex-1 gap-[18]">
@@ -82,7 +87,9 @@ TCPpostCardFooter) {
           <span className="text-slate text-xs">{total_comments}</span>
         </div>
         <div className="flex items-center gap-2">
-          <RetweetIcon />
+          <button onClick={() => setOpenRepost(true)}>
+            <RetweetIcon />
+          </button>
           <span className="text-slate text-xs">10K</span>
         </div>
       </div>

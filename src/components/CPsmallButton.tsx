@@ -16,7 +16,8 @@ function CPsmallButton({
     return (
       <Link
         href={isLink}
-        className={" py-3 px-6 rounded-full text-white font-medium bg-primary"}
+        className={`py-3 px-6 rounded-full text-white font-medium bg-primary ${props.className}`}
+        style={props.style}
       >
         {text}
         {props.children}
