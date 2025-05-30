@@ -7,13 +7,13 @@ import CPpostCardFooter from "./CPpostCardFooter";
 import { CommentSchema, TComment, TCommentSchema, TPost } from "@/app/type";
 import useSWR, { mutate } from "swr";
 import { fetchPostComments, submitComment } from "@/app/dashboard/functions";
-import CPspinnerLoader from "./CPspinnerLoader";
 import useSWRMutation from "swr/mutation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CPsmallButton from "./CPsmallButton";
 import { errorMessage } from "@/utils/toastalert";
 import CPrepostModal from "./CPrepostModal";
+import Skeleton from "react-loading-skeleton";
 
 function CPpostCard({ post }: { post: TPost }) {
   // display different UI for a repost
@@ -86,11 +86,9 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
       errorMessage(err);
     }
   };
-  return isLoading ? (
-    <CPspinnerLoader />
-  ) : (
-    <div className="px-3">
-      <form onSubmit={handleSubmit(onSubmit)}>
+  return (
+    <div className="px-3 mt-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
         <div className="flex items-center gap-2 mb-2">
           <CPprofileImg size={35} />
           <textarea
@@ -103,13 +101,19 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
             {errors.comment?.message}
           </p>
         )}
-        <CPsmallButton loading={isMutating} type="submit">
-          comment
-        </CPsmallButton>
+        <div className="flex justify-end">
+          <CPsmallButton loading={isMutating} type="submit">
+            comment
+          </CPsmallButton>
+        </div>
       </form>
-      {data?.map((comment) => (
-        <CPpostComment key={comment.created_at} comment={comment} />
-      ))}
+      {isLoading ? (
+        <CommentSkeleton />
+      ) : (
+        data?.map((comment) => (
+          <CPpostComment key={comment.created_at} comment={comment} />
+        ))
+      )}
     </div>
   );
 };
@@ -132,4 +136,16 @@ const CPpostComment = ({ comment }: { comment: TComment }) => {
   );
 };
 
+const CommentSkeleton = () => {
+  return (
+    <>
+      <div className="flex gap-3">
+        <Skeleton circle width={35} height={35} />
+        <div className="flex-1">
+          <Skeleton height={60} />
+        </div>
+      </div>
+    </>
+  );
+};
 export default CPpostCard;

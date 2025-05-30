@@ -67,66 +67,47 @@ function MiddleSection() {
             <div className="mb-5 flex justify-between">
               <h5 className="text-[#050505] ">
                 Work Experience
-                <span className="text-primary text-xs">~ From Cv</span>
+                {/* <span className="text-primary text-xs">~ From Cv</span> */}
               </h5>
 
-              <button>Edit</button>
+              {/* <button>Edit</button> */}
             </div>
-            <div className="flex flex-col gap-10">
-              <CPtableListWorkExp
-                left="2024 - Now"
-                title="Design Lead at The NOTI Company"
-                location="Lagos, Nigeria"
-                list={[
-                  "Designed aesthetically pleasing and highly functional websites that exceeded client expectations, leading to increased client retention and referrals by 24.76%.",
-                  " Designed aesthetically pleasing and highly functional websites that exceeded client expectations, leading to increased client retention and referrals by 24.76%.",
-                ]}
-              />
-              <CPtableListWorkExp
-                left="2023 - 2024"
-                title="Head of Strategy at Refresh Studio"
-                location="Remote"
-                list={[
-                  "Refresh is a remote team of curious thinkers, designers and strategists helping brands to define their future.",
-                ]}
-              />
-              <CPtableListWorkExp
-                left="2023 - 2024"
-                title="Creative Director, Co-founder at Good Fucking Design Advice﻿"
-                location="Remote"
-                list={[
-                  "Turned an otherwise profanity-laden noteworthy website for creatives into a successful three year career and entertaining story actually worth reading.",
-                ]}
-              />
+            <div className="flex flex-col gap-6">
+              {data.work_experience.map((exp) => (
+                <CPtableListWorkExp
+                  key={exp.id}
+                  left={`${exp.start_date} - ${exp.end_date}`}
+                  title={exp.title}
+                  location={exp.location}
+                  list={[exp.description]}
+                />
+              ))}
             </div>
           </div>
           <div className="mb-12">
             <div className="mb-5 flex justify-between">
-              <h5 className="text-[#050505] ">
-                Education
-                <span className="text-primary text-xs">~ From Cv</span>
-              </h5>
-
-              <button>Edit</button>
+              <h5 className="text-[#050505] ">Education</h5>
             </div>
-            <div className="flex flex-col gap-10">
-              <CPtableListWorkExp
-                left="2024 - Now"
-                title="BSc. Electrical and Electronics Engineering at University of Lagos"
-                location="Lagos, Nigeria"
-              />
-              <CPtableListWorkExp
-                left="2020 - 2020"
-                title="Georgia Institute of Technology: Intro to User Experience Design "
-                location="Cousera"
-              />
+            <div className="flex flex-col gap-6">
+              {data.education.map((exp) => (
+                <CPtableListWorkExp
+                  key={exp.id}
+                  left={`${exp.from_date} - ${exp.to_date}`}
+                  title={exp.school}
+                  location={exp.location}
+                  list={[exp.description]}
+                />
+              ))}
             </div>
           </div>
           <div className="mb-12">
             <h5 className="text-[#050505] mb-5">Profile Preferences</h5>
             <div className="flex flex-col gap-2">
-              <CPtableList left="Visibility" right="Private" />
-              <CPtableList left="Status" right="Talent" />
+              <CPtableList left="Visibility" right={data.visibility} />
+              <CPtableList
+                left="Status"
+                right={data.recruiter_tag ? "Recruiter" : "Talent"}
+              />
             </div>
           </div>
         </div>
