@@ -12,6 +12,8 @@ import useSWRMutation from "swr/mutation";
 import { updateProfile, updateProfilePicture } from "./functions";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import { useEffect, useRef, useState } from "react";
+import { EditIcon } from "@/imagecomponents";
+import { convertImage } from "@/utils/convertHEICtoJPEG";
 
 const General = () => {
   const { user, setUser } = useUser((state) => state);
@@ -80,7 +82,17 @@ const General = () => {
             Which industry best describes your work?
           </label>
           <CPselect
-            items={[]}
+            items={[
+              { text: "Technology", val: "Technology" },
+              { text: "Finance", val: "Finance" },
+              { text: "Healthcare", val: "Healthcare" },
+              { text: "Education", val: "Education" },
+              { text: "Manufacturing", val: "Manufacturing" },
+              { text: "Consulting", val: "Consulting" },
+              { text: "Government", val: "Government" },
+              { text: "Nonprofit", val: "Nonprofit" },
+              { text: "Other", val: "Other" },
+            ]}
             onChange={(val: string) => setValue("industry", val)}
             value={watch("industry")}
             error={errors.industry?.message}
@@ -185,18 +197,34 @@ function UpdateImage() {
   useEffect(() => {
     setPreviewUrl(user?.profile_image_url);
   }, [user]);
+
   const { trigger, isMutating } = useSWRMutation(
     `/profiles/${user?.id}/profile-image`,
     updateProfilePicture
   );
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+    setPreviewUrl(URL.createObjectURL(selectedFile));
+
+    if (
+      selectedFile.type === "image/heic" ||
+      selectedFile.name.endsWith(".heic")
+    ) {
+      const jpegFile = await convertImage(selectedFile);
+      if (!jpegFile) return;
+      setFile(jpegFile);
+      setPreviewUrl(URL.createObjectURL(jpegFile));
+    } else {
       setFile(selectedFile);
       setPreviewUrl(URL.createObjectURL(selectedFile));
     }
   };
 
+  console.log(previewUrl, "PREVIEW STATE");
   const handleUpload = async () => {
     if (!file) return;
 
@@ -212,7 +240,7 @@ function UpdateImage() {
 
   return (
     <div className="flex items-center gap-4 mb-8">
-      <label>
+      <label className="relative">
         <input
           type="file"
           ref={fileInputRef}
@@ -226,6 +254,9 @@ function UpdateImage() {
           url={previewUrl || null}
           full_name={user?.full_name}
         />
+        <div className="absolute -bottom-0.5 -right-1.5">
+          <EditIcon />
+        </div>
       </label>
       <button
         onClick={handleUpload}

@@ -5,15 +5,21 @@ import {
   CPdashboardBack,
   CPeducationSkeleton,
   CPprofileImg,
+  CPspinnerLoader,
   CPtableListWorkExp,
 } from "@/components";
 import useSWR from "swr";
 
 import { useParams } from "next/navigation"; // for App Router (Next.js 13+)
-import { getUserProfile } from "./functions";
+import { downloadCv, getUserProfile } from "./functions";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 import Skeleton from "react-loading-skeleton";
 import { TUser } from "@/app/type";
+import { DownloadIcon } from "@/imagecomponents";
+
+import useUser from "@/statestore/useUser";
+import useSWRMutation from "swr/mutation";
+import { errorMessage, successMessage } from "@/utils/toastalert";
 
 function MiddleSection() {
   const params = useParams();
@@ -117,21 +123,42 @@ function MiddleSection() {
 }
 
 const CPprofileCard = ({ user }: { user: TUser }) => {
+  const currUser = useUser((state) => state.user);
+  const { trigger, isMutating } = useSWRMutation(
+    `/profiles/${user.id}/cv`,
+    downloadCv
+  );
+  const ondownloadCv = async () => {
+    try {
+      const response = await trigger();
+      window.location.href = response.download_url;
+      successMessage("CV retrieved");
+    } catch (err) {
+      errorMessage(err, "error downloading cv");
+    }
+  };
   return (
     <div className="flex gap-5 items-center ">
-      <CPprofileImg full_name={user.full_name} url={user.profile_image_url} />
+      <CPprofileImg full_name={user?.full_name} url={user?.profile_image_url} />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
-          <span className="text-[#050505] ">{user.full_name}</span>
+          <span className="text-[#050505] ">{user?.full_name}</span>
           <span className="text-primary font-medium py-1 px-2 bg-[#F8FAFC] rounded-full">
-            {user.recruiter_tag ? "Recruiter" : "Talent"}
+            {/* {user.recruiter_tag ? "Recruiter" : "Talent"} */}
           </span>
         </p>
-        <p className="text-[#64748B] text-sm">{user.job_title}</p>
+        {/* <p className="text-[#64748B] text-sm">{user.job_title}</p> */}
       </div>
-      <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
-        Connect
-      </button>
+      <div className="flex gap-2 items-center">
+        <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
+          Connect
+        </button>
+        {!currUser?.recruiter_tag && (
+          <button onClick={ondownloadCv} disabled={isMutating}>
+            {isMutating ? <CPspinnerLoader size={10} /> : <DownloadIcon />}
+          </button>
+        )}
+      </div>
     </div>
   );
 };

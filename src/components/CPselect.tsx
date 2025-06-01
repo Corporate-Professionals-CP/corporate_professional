@@ -56,7 +56,7 @@ function CPselect({
         <p className="text-[#E62E2E] text-sm -translate-1.5 mb-0">{error}</p>
       )}
       {open && (
-        <div className="min-w-[223] min-h-[200] bg-white absolute top-16 shadow-dropdown rounded-lg z-50">
+        <div className="min-w-[223] min-h-[200] max-h-[300] bg-white absolute top-16 shadow-dropdown rounded-lg z-50 overflow-y-scroll">
           {items?.map((item) => (
             <div
               key={item.val}
@@ -77,3 +77,5 @@ function CPselect({
 }
 
 export default CPselect;
+
+// 'NIGERIA', 'United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France', 'India', 'Singapore', 'Remote' or 'Other'"

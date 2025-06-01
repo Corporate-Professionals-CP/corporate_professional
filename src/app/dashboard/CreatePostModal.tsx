@@ -14,6 +14,7 @@ import useSWRMutation from "swr/mutation";
 import { addpost } from "./functions";
 import CPpillet from "@/components/CPpillet";
 import { mutate } from "swr";
+import useUser from "@/statestore/useUser";
 
 const CreatePostModal = ({
   setCreatemodal,
@@ -30,7 +31,7 @@ const CreatePostModal = ({
   } = useForm<TPostSchema>({
     resolver: zodResolver(PostSchema),
   });
-
+  const user = useUser((state) => state.user);
   const { isMutating, trigger: submit } = useSWRMutation("/posts/", addpost);
 
   const handleCloseModal = () => {
@@ -76,7 +77,8 @@ const CreatePostModal = ({
         <div className="flex gap-2 border-b border-[#E2E8F0] p-4">
           <CPprofileImg />
           <div className="">
-            <p>Lawal Ayobami</p>
+            <p className="text-[#050505]">{user?.full_name}</p>
+            <p className="text-[#64748B] text-sm">{user?.job_title}</p>
           </div>
         </div>
         <div className="p-4 overflow-y-scroll flex-1">

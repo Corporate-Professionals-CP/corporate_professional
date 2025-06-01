@@ -14,12 +14,9 @@ Adding Contact
 
 What is left
 
-- navigating to a User's profile screen
-- Changing Profile Image
 - Notification UI
-- Some responsiveness on the Landing page
 - CV completion
-- user profile
-- one profile
 - change meta data
 - different render to posts
+
+- only recruiter can download cv

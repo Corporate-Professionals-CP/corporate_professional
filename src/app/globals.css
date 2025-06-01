@@ -53,6 +53,11 @@ body {
 
   background-repeat: no-repeat;
 }
+.blurprofessional {
+  background-image: url(../assets/professionalblur.svg);
+  background-position: left center;
+  background-repeat: no-repeat;
+}
 
 .careershadow {
   box-shadow: 0px 12px 16px -4px #1018280a, 0px 4px 6px -2px #10182808;

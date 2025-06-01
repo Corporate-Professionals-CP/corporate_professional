@@ -8,6 +8,7 @@ import { fetchConnections } from "../function";
 import { CPEmptyState } from "@/components";
 import CPprofileConnectionCard from "@/components/CPprofileConnectionCard";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import MIddleSectionContainer from "../../MIddleSectionContainer";
 
 function page() {
   return <MiddleSection />;
@@ -21,7 +22,7 @@ function MiddleSection() {
     fetchConnections
   );
   return (
-    <>
+    <MIddleSectionContainer>
       <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
         <Link href={"/dashboard/network"}>
           <LeftArrow />
@@ -55,7 +56,7 @@ function MiddleSection() {
           </div>
         </div>
       )}
-    </>
+    </MIddleSectionContainer>
   );
 }
 

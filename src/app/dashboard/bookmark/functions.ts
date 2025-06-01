@@ -1,9 +1,9 @@
 import httprequest from "@/utils/httpRequest";
-import { TBookmark } from "./type";
+import { TPost } from "@/app/type";
 
 export const fetchBookmarkdata = () => {
   return httprequest
     .get("/bookmarks/bookmarks")
-    .then((res) => res.data as TBookmark[])
+    .then((res) => res.data as TPost[])
     .catch(() => []);
 };

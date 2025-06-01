@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { fetchPendingNetwork, fetchSentPendingNetwork } from "../function";
 import { CPdashboardBack, CPEmptyState } from "@/components";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import MIddleSectionContainer from "../../MIddleSectionContainer";
 
 function page() {
   return <MiddleSection />;
@@ -22,7 +23,7 @@ function MiddleSection() {
     fetchSentPendingNetwork
   );
   return (
-    <>
+    <MIddleSectionContainer>
       <CPdashboardBack title="Pending requests" link="/dashboard/network" />
 
       <div className="p-[18]">
@@ -67,7 +68,7 @@ function MiddleSection() {
           </>
         )}
       </div>
-    </>
+    </MIddleSectionContainer>
   );
 }
 

@@ -21,8 +21,7 @@ export const loginUser = async (
   ] = `Bearer ${response.data.access_token}`;
   storeData("access_token", response.data.access_token);
   storeData("refresh_token", response.data.refresh_token);
-  // return response.data.user;
-  return response.data;
+  return response.data.user;
 };
 
 export const forgetPassword = async (

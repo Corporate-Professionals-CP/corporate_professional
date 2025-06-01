@@ -19,7 +19,14 @@ function RightSection() {
             <span className="text-xs text-[#475569]">
               {completedSections}/{sectionlength} completed
             </span>
-            <span className="block w-full bg-primary h-1 rounded-2xl"></span>
+            <div className="block w-full bg-[#F1F5F9] rounded-2xl">
+              <span
+                style={{
+                  width: `${(completedSections * 100) / sectionlength}%`,
+                }}
+                className="block bg-primary h-1 rounded-2xl"
+              ></span>
+            </div>
           </div>
         </div>
         <Cpdiscoverability />
@@ -88,12 +95,6 @@ const CPcard = ({
         <p className="text-[#475569] text-xs">{description}</p>
       </div>
       {completed ? (
-        <CPsmallButton
-          style={{ padding: "8px 12px" }}
-          text="Add"
-          isLink={link}
-        />
-      ) : (
         <div className="py-2 px-3 bg-[#F8FAFC] rounded-full">
           <svg
             width="20"
@@ -110,6 +111,12 @@ const CPcard = ({
             />
           </svg>
         </div>
+      ) : (
+        <CPsmallButton
+          style={{ padding: "8px 12px" }}
+          text="Add"
+          isLink={link}
+        />
       )}
     </div>
   );

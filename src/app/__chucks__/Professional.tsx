@@ -55,7 +55,7 @@ export default function Professional() {
   }, []);
 
   return (
-    <section id="professionals" className="pt-[123px]">
+    <section id="professionals" className="pt-[123px] blurprofessional">
       <div className="max-w-[984px] mx-auto mb-[64px] px-6">
         <h3 className="text-primary">How they use it</h3>
         <p className="text-[#050505] font-medium text-[39px] max-sm:text-[24px]">

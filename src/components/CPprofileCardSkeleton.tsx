@@ -3,13 +3,22 @@ import Skeleton from "react-loading-skeleton";
 
 const CPprofileCardSkeleton = () => {
   return (
-    <div className="flex gap-5 items-center  p-3.5">
-      <Skeleton circle width={48} height={48} />
+    <div className="flex gap-5 items-center p-3.5">
+      {/* Circle Avatar */}
+      <Skeleton circle height={48} width={48} />
+      {/* Text Lines */}
       <div className="flex-1">
-        <Skeleton width={176} height={20} className="mb-1" />
-        <Skeleton width={300} height={20} />
+        <div className="mb-1 w-1/3">
+          <Skeleton height={20} />
+        </div>
+        <div className="w-2/3">
+          <Skeleton height={20} />
+        </div>
       </div>
-      <Skeleton height={34} width={64} className="rounded-[5px]" />
+      <div className="w-16 rounded-[5px] overflow-hidden">
+        {/* Button Placeholder */}
+        <Skeleton height={34} /> {/* ~64px */}
+      </div>
     </div>
   );
 };

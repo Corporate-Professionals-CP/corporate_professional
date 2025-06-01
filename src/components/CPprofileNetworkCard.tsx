@@ -4,6 +4,8 @@ import { TSuggestedNetwork } from "@/app/type";
 import useSWRMutation from "swr/mutation";
 import { makeConnection } from "@/app/dashboard/network/function";
 
+import { CPbuttonTransparent } from "./CPbutton";
+
 function CPprofileNetworkCard({ profile }: { profile: TSuggestedNetwork }) {
   const { trigger, isMutating } = useSWRMutation(
     "/network/connect",
@@ -23,17 +25,17 @@ function CPprofileNetworkCard({ profile }: { profile: TSuggestedNetwork }) {
             {profile.recruiter_tag ? "Recruiter" : "Talent"}
           </span>
         </p>
-        <p className="text-[#64748B] text-sm">{profile.industry}</p>
+        <p className="text-[#64748B] text-sm">{profile.job_title}</p>
       </div>
 
       <div className="flex gap-2">
-        <button
-          disabled={isMutating}
+        <CPbuttonTransparent
+          loading={isMutating}
           onClick={() => trigger({ user_id: profile.id })}
-          className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]"
         >
           Connect
-        </button>
+        </CPbuttonTransparent>
+
         {/* <button>
           <MoreIcon />
         </button> */}

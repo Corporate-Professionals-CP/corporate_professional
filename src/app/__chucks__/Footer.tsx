@@ -72,10 +72,10 @@ const Footer = () => {
               <Link href="#why-join">Why us?</Link>
             </p>
             <p>
-              <Link href="#networking">Features.</Link>
+              <Link href="#networking">Features</Link>
             </p>
             <p>
-              <Link href="#footer">Contact.</Link>
+              <Link href="#footer">Contact</Link>
             </p>
           </div>
           <div>

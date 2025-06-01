@@ -9,19 +9,22 @@ import { BookmarkIcon } from "@/imagecomponents";
 import CommentIcon from "@/imagecomponents/CommentIcon";
 import LoveIcon from "@/imagecomponents/LoveIcon";
 import RetweetIcon from "@/imagecomponents/RetweetIcon";
-import ShareIcon from "@/imagecomponents/ShareIcon";
+
 import { errorMessage } from "@/utils/toastalert";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import CPsharePost from "./CPsharePost";
+import { TReaction } from "@/app/type";
 
 type TCPpostCardFooter = {
   total_comments: number;
   total_reactions: number;
   is_bookmarked: boolean;
-  // reactions_breakdown:{like:number, love:number: insightful:number, funny:number, congratulations: number};
-  // is_repost: boolean;
+  total_reposts: number;
+  reactions_breakdown: TReaction;
+  is_repost: boolean;
   post_id: string;
-  is_liked?: boolean;
+
   setShowComments: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenRepost: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -29,25 +32,43 @@ type TCPpostCardFooter = {
 function CPpostCardFooter({
   total_comments,
   total_reactions,
+  total_reposts,
   is_bookmarked,
   post_id,
-  is_liked = false,
+
   setShowComments = () => {},
   setOpenRepost = () => {},
-}: // reactions_breakdown,
+  reactions_breakdown,
+}: // is_repost
+// reactions_breakdown,
 // is_repost,
 
 TCPpostCardFooter) {
-  const [heart, setHeart] = useState(is_liked);
+  const [heart, setHeart] = useState(false);
   const [bookmark, setBookMark] = useState(is_bookmarked);
+
+  const [addLike, setaddLike] = useState(0);
+
+  useEffect(() => {
+    const val =
+      reactions_breakdown.congratulations?.has_reacted ||
+      reactions_breakdown.funny?.has_reacted ||
+      reactions_breakdown.insightful?.has_reacted ||
+      reactions_breakdown.like?.has_reacted ||
+      reactions_breakdown.love?.has_reacted;
+
+    setHeart(val);
+  }, [reactions_breakdown]);
 
   const onClickLike = async () => {
     const prevHeart = heart;
     setHeart((s) => !s);
     try {
       if (prevHeart) {
+        setaddLike(0);
         await RemoveReactToPost(post_id);
       } else {
+        setaddLike(1);
         await ReactToPost(post_id);
       }
     } catch (err) {
@@ -78,7 +99,9 @@ TCPpostCardFooter) {
           <button onClick={onClickLike}>
             <LoveIcon active={heart} />
           </button>
-          <span className="text-slate text-xs">{total_reactions}</span>
+          <span className="text-slate text-xs">
+            {total_reactions + addLike}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowComments((s) => !s)}>
@@ -90,14 +113,18 @@ TCPpostCardFooter) {
           <button onClick={() => setOpenRepost(true)}>
             <RetweetIcon />
           </button>
-          <span className="text-slate text-xs">10K</span>
+          <span className="text-slate text-xs">{total_reposts}</span>
         </div>
       </div>
       <div className="flex items-center gap-[18]">
         <button onClick={onClickBookMark}>
           <BookmarkIcon size="20" active={bookmark} />
         </button>
-        <ShareIcon />
+        <div className="relative">
+          <CPsharePost
+            url={`http://localhost:3000/dashboard/post/${post_id}`}
+          />
+        </div>
       </div>
     </div>
   );

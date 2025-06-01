@@ -37,7 +37,7 @@ export const CPbuttonTwo = ({
     return (
       <Link
         href={link}
-        className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className}`}
+        className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className} `}
         style={props.style}
       >
         {children}
@@ -47,7 +47,7 @@ export const CPbuttonTwo = ({
   }
   return (
     <button
-      className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className}`}
+      className={`bg-[#282A74] text-white text-sm px-6 py-3 rounded-full font-medium flex items-center justify-center gap-1 ${className} disabled:bg-[#6B6EAF]`}
       {...props}
     >
       {children}
@@ -56,10 +56,32 @@ export const CPbuttonTwo = ({
   );
 };
 
-export const CPbuttonThree = () => {
+export const CPbuttonThree = ({
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <button className="border border-[#282A74] bg-transparent text-[#282A74] text-sm px-6 py-3 rounded-full font-medium ">
+    <button
+      className="border border-[#282A74] bg-transparent text-[#282A74] text-sm px-6 py-3 rounded-full font-medium"
+      {...props}
+    >
       Learn more
+    </button>
+  );
+};
+
+export const CPbuttonTransparent = ({
+  loading = false,
+  ...props
+}: { loading?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  return (
+    <button
+      disabled={loading}
+      className={`font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px] flex items-center gap-1
+  ${loading ? "bg-[#f1f5f9] text-[#94a3b8]" : "bg-white text-[#020617]"}`}
+      {...props}
+    >
+      {loading && <CPspinnerLoader size={15} />}
+      {props.children}
     </button>
   );
 };

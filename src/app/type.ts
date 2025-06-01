@@ -25,16 +25,26 @@ export type TPost = {
   id: string;
   user: TUser | null;
   username: null;
-  is_active: true;
+  is_active: boolean;
+  is_liked: boolean;
   created_at: string;
   updated_at: string;
   published_at: string;
   total_comments: number;
   total_reactions: number;
+  total_reposts: number;
   is_bookmarked: boolean;
-  reactions_breakdown: null;
+  reactions_breakdown: TReaction;
   is_repost: boolean;
   original_post_id: string;
+};
+
+export type TReaction = {
+  like: { count: number; has_reacted: boolean };
+  love: { count: number; has_reacted: boolean };
+  insightful: { count: number; has_reacted: boolean };
+  funny: { count: number; has_reacted: boolean };
+  congratulations: { count: number; has_reacted: boolean };
 };
 
 export type TComment = {
@@ -105,7 +115,7 @@ export type TUserProfile = {
   is_recruiter: boolean;
 };
 export const CommentSchema = z.object({
-  comment: z.string().min(1),
+  comment: z.string().min(1, "comment is required"),
 });
 
 export type TCommentSchema = z.infer<typeof CommentSchema>;

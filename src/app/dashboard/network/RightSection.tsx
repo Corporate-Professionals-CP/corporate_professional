@@ -1,9 +1,19 @@
-import CPprofileCardSmall from "@/components/CPprofileCardSmall";
+"use client";
 import Link from "next/link";
+import { fetSuggestedConnection } from "./function";
+import useSWR from "swr";
+import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import CPprofileNetworkCard from "@/components/CPprofileNetworkCard";
+import RightSectionContainer from "../RightSectionContainer";
 
 function RightSection() {
+  const { data, isLoading } = useSWR(
+    "/network/suggestions",
+    fetSuggestedConnection
+  );
+  const suggestedNetwork = data?.suggestions || [];
   return (
-    <section className="w-[420]  p-4 ">
+    <RightSectionContainer>
       <div className="rounded-2xl shadow-[0px_12px_16px_-4px_#1018280A,0px_4px_6px_-2px_#10182808] flex flex-col  h-full">
         <div className="flex justify-between items-start mb-6 border-b border-[#F1F5F9] p-4">
           <h3 className="font-medium text-sm text-slate">Manage my network</h3>
@@ -16,7 +26,7 @@ function RightSection() {
               href={"/dashboard/network/connection"}
             >
               <span>Connections</span>
-              <span>120</span>
+              <span>{data?.total_connections}</span>
             </Link>
           </li>
           <li>
@@ -25,7 +35,7 @@ function RightSection() {
               href={"/dashboard/network/pending"}
             >
               <span>Pending requests</span>
-              <span>9</span>
+              <span>{data?.pending_requests}</span>
             </Link>
           </li>
         </ul>
@@ -33,14 +43,30 @@ function RightSection() {
           <h3 className="font-medium text-sm text-slate p-4">
             Add to your network
           </h3>
-          <CPprofileCardSmall />
-          <CPprofileCardSmall />
-          <CPprofileCardSmall />
-          <CPprofileCardSmall />
+          {isLoading ? (
+            <NetworkSkeleton />
+          ) : (
+            suggestedNetwork
+              .slice(0, 4)
+              .map((item) => (
+                <CPprofileNetworkCard key={item.id} profile={item} />
+              ))
+          )}
         </div>
       </div>
-    </section>
+    </RightSectionContainer>
   );
 }
+
+const NetworkSkeleton = () => {
+  return (
+    <div>
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+      <CPprofileCardSkeleton />
+    </div>
+  );
+};
 
 export default RightSection;

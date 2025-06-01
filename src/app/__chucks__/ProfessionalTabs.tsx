@@ -1,6 +1,7 @@
+"use client";
+import { useState } from "react";
 import { CPbuttonTwo } from "@/components/CPbutton";
 import Image from "next/image";
-import { useState } from "react";
 import mockup1 from "@/assets/mock1.png";
 import mockup2 from "@/assets/mock2.png";
 import mockup3 from "@/assets/mock3.png";
@@ -75,7 +76,10 @@ const ProfessionalTabs = () => {
         <div className="bg-[#F8FAFC] pt-10  px-[103] rounded-2xl careershadow max-md:hidden ">
           <div className=" text-center mb-[72] flex flex-col items-center w-[460] m-auto">
             <p className="mb-6">{proccurr[activetab].text}</p>
-            <CPbuttonTwo className="bg-primary"> Learn more</CPbuttonTwo>
+            <CPbuttonTwo className="bg-primary" disabled>
+              {" "}
+              Learn more
+            </CPbuttonTwo>
           </div>
           <div className="w-full bg-white h-[290] ">
             <Image
@@ -104,7 +108,10 @@ function ProfessionalInput() {
             {prof.name}
           </h3>
           <p className="mb-6 text-[#334155]">{prof.text}</p>
-          <CPbuttonTwo className="bg-primary"> Learn more</CPbuttonTwo>
+          <CPbuttonTwo className="bg-primary" disabled={true}>
+            {" "}
+            Learn more
+          </CPbuttonTwo>
         </div>
         <div className="w-full bg-white h-[290]">
           <Image

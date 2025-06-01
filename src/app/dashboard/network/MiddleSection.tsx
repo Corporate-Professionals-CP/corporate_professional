@@ -1,19 +1,18 @@
 "use client";
 
-import { fetSuggestedConnection } from "./function";
 import useSWR from "swr";
 import { CPEmptyState } from "@/components";
 import { TSuggestedNetwork } from "@/app/type";
 import CPprofileNetworkCard from "@/components/CPprofileNetworkCard";
 
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import { useState } from "react";
 
 function MiddleSection() {
-  const { data: suggestedNetwork = [], isLoading } = useSWR(
-    "/network/suggestions",
-    fetSuggestedConnection
-  );
-
+  const { data, isLoading } = useSWR("/network/suggestions", {
+    revalidateOnMount: false,
+  });
+  const suggestedNetwork = data?.suggestions || [];
   return (
     <>
       <div className="mb-[18] px-6 py-5 gap-5  border-b border-[#E2E8F0] text-slate font-medium ">
@@ -41,20 +40,30 @@ const NetworkCategory = ({
   title: string;
   data: TSuggestedNetwork[];
 }) => {
-  console.log(data);
-
+  const [count, setCount] = useState(10);
   return (
     <div className="mb-6 px-[18]">
       <div className="flex justify-between items-center ">
         <h4 className="text-sm text-slate mb-2">{title}</h4>
-        <button className="text-[#64748B] text-sm">View all</button>
+        <button
+          className="text-[#64748B] text-sm"
+          onClick={() => {
+            if (count > 10) {
+              setCount(10);
+            } else {
+              setCount(data.length);
+            }
+          }}
+        >
+          {count <= 10 ? "View all" : "View less"}
+        </button>
       </div>
       {data.length == 0 ? (
         <CPEmptyState textIcon="🛜" />
       ) : (
-        data.map((item) => (
-          <CPprofileNetworkCard key={item.id} profile={item} />
-        ))
+        data
+          .slice(0, count)
+          .map((item) => <CPprofileNetworkCard key={item.id} profile={item} />)
       )}
     </div>
   );

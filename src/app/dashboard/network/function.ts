@@ -20,7 +20,11 @@ export const fetchSentPendingNetwork = async (url: string) => {
 
 export const fetSuggestedConnection = async (url: string) => {
   const response = await httprequest.get(url);
-  return response.data as TSuggestedNetwork[];
+  return response.data as {
+    total_connections: number;
+    pending_requests: number;
+    suggestions: TSuggestedNetwork[];
+  };
 };
 
 export const nudgeConnection = async (url: string) => {

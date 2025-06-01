@@ -1,5 +1,5 @@
 import httprequest from "@/utils/httpRequest";
-import { errorMessage } from "@/utils/toastalert";
+
 import { TOnboardSchema } from "./type";
 // import { storeData } from "@/utils/storage";
 
@@ -23,15 +23,20 @@ export const signupUser = async (
   };
   console.log(data);
   const response = await httprequest.post("/auth/signup", data);
-  return response.data;
   // [[ALSO UPLOAD THE RESUMES UPLOADED TOO]]
   try {
-    const formdata = new FormData();
-    formdata.append("file", arg.cvfile);
-    await httprequest.post("/api/profiles/user_id/cv", formdata);
+    if (arg.cvfile) {
+      const formdata = new FormData();
+      formdata.append("file", arg.cvfile);
+      httprequest.post(`/api/profiles/${response.data.user_id}/cv`, formdata, {
+        headers: { Authorization: `Bearer ${response.data.access_token}` },
+      });
+    }
   } catch (err) {
-    errorMessage(err);
+    console.log(err);
+    // errorMessage(err);
   }
+  return response.data;
 };
 
 export const verifyEmail = async (

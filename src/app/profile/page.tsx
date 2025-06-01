@@ -133,10 +133,7 @@ const CPtableList = ({ left, right }: { left: string; right: string }) => {
 
 const TopProfile = () => {
   const onClickEdit = () => {};
-  const onClickPrint = () => {
-    window.print();
-    window.alert("hi there");
-  };
+  const onClickPrint = () => {};
   return (
     <div className="flex items-center ">
       {/* picture */}
