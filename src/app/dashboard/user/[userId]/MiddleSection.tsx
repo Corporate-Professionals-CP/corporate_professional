@@ -131,7 +131,15 @@ const CPprofileCard = ({ user }: { user: TUser }) => {
   const ondownloadCv = async () => {
     try {
       const response = await trigger();
-      window.location.href = response.download_url;
+
+      const link = document.createElement("a");
+      link.href = response.download_url;
+      link.setAttribute("download", "cv.pdf");
+      link.setAttribute("target", "_blank");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       successMessage("CV retrieved");
     } catch (err) {
       errorMessage(err, "error downloading cv");

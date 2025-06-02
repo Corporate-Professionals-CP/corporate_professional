@@ -1,26 +1,32 @@
+"use client";
 import {
   CPInput,
   CPModal,
   CPprofileImg,
   CPselect,
   CPsmallButton,
+  CPspinnerLoader,
 } from "@/components";
 import { errorMessage, successMessage } from "@/utils/toastalert";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { PostSchema, TPostSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
-import { addpost } from "./functions";
+import { addpost, uploadMedia } from "./functions";
 import CPpillet from "@/components/CPpillet";
 import { mutate } from "swr";
 import useUser from "@/statestore/useUser";
+import { CloseIcon } from "@/imagecomponents";
+import { convertImage } from "@/utils/convertHEICtoJPEG";
 
+type TMediaURL = { key: string; val: string };
 const CreatePostModal = ({
   setCreatemodal,
 }: {
   setCreatemodal: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [mediaurl, setMediaurl] = useState<TMediaURL[]>([]);
   const {
     register,
     trigger,
@@ -61,7 +67,8 @@ const CreatePostModal = ({
       const valid = await trigger(["content", "post_type"]);
       if (valid) {
         const values = getValues();
-        await submit(values);
+        const media_urls = mediaurl.map((data) => data.val);
+        await submit({ ...values, media_urls: media_urls });
         successMessage("Post added succesfully");
       }
       mutate("/feed/");
@@ -137,9 +144,18 @@ const CreatePostModal = ({
               <CPsmallButton onClick={handleAddTag}>Add</CPsmallButton>
             </div>
           </div>
+          <Mediaattach mediaurl={mediaurl} setMediaurl={setMediaurl} />
         </div>
+
         <div className="p-4">
-          <div className="flex justify-end gap-2">
+          <div className="flex  items-center gap-2">
+            <label
+              htmlFor="media"
+              className="text-[#475569] text-sm flex mb-1 mr-auto p-2 bg-gray-100  "
+            >
+              Attach media
+            </label>
+
             <button className="p-3" onClick={() => setCreatemodal(false)}>
               Back
             </button>
@@ -155,4 +171,116 @@ const CreatePostModal = ({
   );
 };
 
+function Mediaattach({
+  mediaurl,
+  setMediaurl,
+}: {
+  mediaurl: TMediaURL[];
+  setMediaurl: Dispatch<SetStateAction<TMediaURL[]>>;
+}) {
+  const [mediaPreview, setMediaPreview] = useState<
+    { media: string; loading: boolean }[]
+  >([]);
+
+  // handle media upload
+  const handleMediaChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type === "image/heic" || file.name.endsWith(".heic")) {
+      file = await convertImage(file);
+      if (!file) return;
+    }
+    let previewUrl = null;
+    if (typeof window !== "undefined") {
+      previewUrl = URL.createObjectURL(file);
+    }
+    if (!previewUrl) return;
+    setMediaPreview((s) => [...s, { media: previewUrl, loading: true }]);
+
+    try {
+      const uploadedUrl = await uploadMedia(file); // upload to S3
+      setMediaurl((s) => [...s, { key: previewUrl, val: uploadedUrl }]); // store in form
+      setMediaPreview((prev) =>
+        prev.map((media) => {
+          if (media.media === previewUrl) {
+            return { media: previewUrl, loading: false };
+          }
+          return media;
+        })
+      );
+    } catch (err) {
+      onDelete(previewUrl);
+      errorMessage(err, "Upload failed");
+    } finally {
+    }
+  };
+  const onDelete = (media: string) => {
+    setMediaPreview(mediaPreview.filter((val) => val.media != media));
+    setMediaurl(mediaurl.filter((item) => item.key != media));
+  };
+  return (
+    <div className="my-4">
+      <input
+        id="media"
+        type="file"
+        className="hidden"
+        accept="image/*,video/*"
+        onChange={handleMediaChange}
+      />
+
+      <div className="flex gap-2 flex-wrap">
+        {mediaPreview.length > 0 &&
+          mediaPreview.map((media) => {
+            return (
+              <PostImage
+                key={media.media}
+                media={media.media}
+                loading={media.loading}
+                deleteMedia={() => onDelete(media.media)}
+              />
+            );
+          })}
+      </div>
+    </div>
+  );
+}
+
+const videoFormats: string[] = [".mp4", ".mov", ".gif"];
+
+function PostImage({
+  media,
+  loading = false,
+  deleteMedia,
+}: {
+  media: string;
+  loading: boolean;
+  deleteMedia: () => void;
+}) {
+  const isVideo = videoFormats.some((ext) => media.toLowerCase().endsWith(ext));
+  return (
+    <div key={media} className="mt-2 max-w-[400] relative">
+      <button
+        onClick={deleteMedia}
+        className=" bg-white w-5 h-5 rounded-full grid place-content-center absolute top-1.5 right-1.5"
+      >
+        <CloseIcon />
+      </button>
+      {loading && (
+        <div className="w-full h-full absolute bg-[#ffffff91] grid place-content-center">
+          {" "}
+          <CPspinnerLoader size={30} />{" "}
+        </div>
+      )}
+      {isVideo ? (
+        <video src={media} controls className="w-full h-auto max-h-60" />
+      ) : (
+        <img
+          src={media}
+          alt="Preview"
+          className="w-full h-auto max-h-60 object-cover"
+        />
+      )}
+    </div>
+  );
+}
 export default CreatePostModal;

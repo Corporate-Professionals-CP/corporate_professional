@@ -1,5 +1,3 @@
-"use client";
-
 import MiddleSection from "./MiddleSection";
 import RightSection from "./RightSection";
 

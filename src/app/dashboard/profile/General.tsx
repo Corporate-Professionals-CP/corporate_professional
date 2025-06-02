@@ -1,3 +1,4 @@
+"use client";
 import CPSwitchbox from "@/components/CPSwitchbox";
 import CPInput from "@/components/CPInput";
 import CPprofileImg from "@/components/CPprofileImg";
@@ -206,9 +207,6 @@ function UpdateImage() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
-
-    setFile(selectedFile);
-    setPreviewUrl(URL.createObjectURL(selectedFile));
 
     if (
       selectedFile.type === "image/heic" ||

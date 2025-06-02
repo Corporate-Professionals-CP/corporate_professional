@@ -22,7 +22,16 @@ function MiddleSection() {
       ) : data.length == 0 ? (
         <CPEmptyState textIcon="🔔" btnText="No Notification" />
       ) : (
-        data.map((item) => <div key={item.id}>{item.message}</div>)
+        <div className="p-6">
+          {data.map((item) => (
+            <div
+              key={item.id}
+              className="text-[#64748B] py-3 px-5 border-b border-[#E2E8F0] mb-3"
+            >
+              {item.message}
+            </div>
+          ))}
+        </div>
       )}
     </MIddleSectionContainer>
   );
