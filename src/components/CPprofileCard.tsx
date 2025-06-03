@@ -38,7 +38,10 @@ const CPprofileCard = ({
   );
   return (
     <div className="flex gap-5 items-center p-3.5">
-      <CPprofileImg />
+      <CPprofileImg
+        full_name={connection.full_name}
+        url={connection.profile_image_url}
+      />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
           <span className="text-[#050505] ">{connection.full_name}</span>

@@ -12,6 +12,7 @@ import { TSearchParams } from "./type";
 import { errorMessage } from "@/utils/toastalert";
 import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
+import Link from "next/link";
 
 function DashboardModals() {
   const router = useRouter();
@@ -23,7 +24,7 @@ function DashboardModals() {
     isMutating,
     trigger,
     data = [],
-  } = useSWRMutation("/api/directory/", searchDirectory);
+  } = useSWRMutation("/directory/", searchDirectory);
   const onclick = async (data: TSearchParams) => {
     try {
       await trigger(data);
@@ -160,9 +161,9 @@ function DashboardModals() {
           <div className="mb-4">
             {data?.map((item) => {
               if (item.title) {
-                return <CPpostCard key={item.id} post={item} />;
+                return <CPpostCard key={item.id} post={item} isLink={true} />;
               }
-              return <CPprofileCard key={item.id} />;
+              return <CPprofileCard key={item.id} user={item} />;
             })}
           </div>
         )}
@@ -171,22 +172,36 @@ function DashboardModals() {
   );
 }
 
-const CPprofileCard = () => {
+const CPprofileCard = ({
+  user,
+}: {
+  user: {
+    company: string;
+    full_name: string;
+    id: string;
+    industry: string;
+    is_recruiter: boolean;
+    job_title: string;
+    profile_image_url: string;
+  };
+}) => {
+  console.log(user, "user");
   return (
-    <div className="flex gap-5 items-center p-3.5">
-      <CPprofileImg />
+    <Link
+      href={`/dashboard/user/${user.id}`}
+      className="flex gap-5 items-center py-3.5 px-6"
+    >
+      <CPprofileImg full_name={user.full_name} url={user.profile_image_url} />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
-          <span className="text-[#050505] ">Femi Johnson</span>
+          <span className="text-[#050505] ">{user.full_name}</span>
           <span className="text-primary font-medium py-1 px-2 bg-[#F8FAFC] rounded-full">
-            Talent
+            {user.is_recruiter ? "Recruiter" : "Talent"}
           </span>
         </p>
-        <p className="text-[#64748B] text-sm">
-          Creative Director at the noti company
-        </p>
+        <p className="text-[#64748B] text-sm">{user.job_title}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

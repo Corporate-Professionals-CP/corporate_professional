@@ -1,6 +1,6 @@
 import httprequest from "@/utils/httpRequest";
 import { TSearchParams } from "./type";
-import { TPost, TUserProfile } from "@/app/type";
+import { TPost } from "@/app/type";
 
 export const searchDirectory = async (
   url: string,
@@ -18,5 +18,13 @@ export const searchDirectory = async (
     //   recruiter_only: true,
     //   job_title: UX Designer
   });
-  return response.data as (TPost & TUserProfile)[];
+  return response.data as (TPost & {
+    company: string;
+    full_name: string;
+    id: string;
+    industry: string;
+    is_recruiter: boolean;
+    job_title: string;
+    profile_image_url: string;
+  })[];
 };
