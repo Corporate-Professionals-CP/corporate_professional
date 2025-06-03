@@ -20,7 +20,7 @@ export type TPost = {
   tags: string[];
   skills: string[];
   expires_at: string;
-  media_url: string;
+  media_urls: string[];
   media_type: string;
   id: string;
   user: TUser | null;

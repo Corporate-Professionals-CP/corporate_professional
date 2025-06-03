@@ -1,12 +1,16 @@
 import React from "react";
-import adobeimg from "@/assets/adobe.png";
-import slackimg from "@/assets/slack.png";
-import stripeimg from "@/assets/stripe.png";
-import googleimg from "@/assets/google.png";
-import netfliximg from "@/assets/netflix.png";
-import nextimg from "@/assets/nextlogo.png";
-import disneyimg from "@/assets/display.png";
-import microsoftimg from "@/assets/microsoft.png";
+import accounted from "@/assets/cppatners/accounted.png";
+import auc from "@/assets/cppatners/auc.jpg";
+import girlsconstruction from "@/assets/cppatners/girlsunderconstruction.jpg";
+import insurance from "@/assets/cppatners/insurance.jpg";
+import insurance2 from "@/assets/cppatners/insurance2.jpg";
+import irxcruit from "@/assets/cppatners/irxcruit.jpg";
+import knightshield from "@/assets/cppatners/knightshield.jpg";
+import lawcity from "@/assets/cppatners/lawcity.jpg";
+import recon2 from "@/assets/cppatners/recon2.png";
+import social from "@/assets/cppatners/social-changer.jpg";
+import stemthinktank from "@/assets/cppatners/stemthinktank.jpg";
+import tsb from "@/assets/cppatners/TSB.png";
 import Image from "next/image";
 
 function CPpartners() {
@@ -15,15 +19,68 @@ function CPpartners() {
       <p className="text-slate text-center mb-10">
         Trusted and used by over 24 institutions
       </p>
-      <div className="flex gap-16 justify-between overflow-x-scroll">
-        <Image src={slackimg} alt="partner" className="shrink-0" />
-        <Image src={stripeimg} alt="partner" className="shrink-0" />
-        <Image src={googleimg} alt="partner" className="shrink-0" />
-        <Image src={netfliximg} alt="partner" className="shrink-0" />
-        <Image src={nextimg} alt="partner" className="shrink-0" />
-        <Image src={adobeimg} alt="partner" className="shrink-0" />
-        <Image src={disneyimg} alt="partner" className="shrink-0" />
-        <Image src={microsoftimg} alt="partner" className="shrink-0" />
+      <div className="flex gap-16  items-center justify-between overflow-x-scroll scrollbar-hide">
+        <Image
+          src={accounted}
+          alt="partner"
+          className="shrink-0 w-[130px] h-[30px] object-cover"
+        />
+        <Image
+          src={auc}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={girlsconstruction}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={insurance}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={insurance2}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={irxcruit}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={knightshield}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={lawcity}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+
+        <Image
+          src={recon2}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={social}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
+        <Image
+          src={stemthinktank}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-contain"
+        />
+        <Image
+          src={tsb}
+          alt="partner"
+          className="shrink-0 w-[200px] h-[100px] object-cover"
+        />
       </div>
     </div>
   );

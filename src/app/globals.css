@@ -40,6 +40,15 @@ body {
   }
 }
 
+/* globals.css or a CSS module */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .support {
   background-image: url(../assets/support.svg);
   background-position: right 10px center;
