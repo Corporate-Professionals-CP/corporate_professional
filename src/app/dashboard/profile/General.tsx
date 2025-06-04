@@ -17,7 +17,7 @@ import { EditIcon } from "@/imagecomponents";
 import { convertImage } from "@/utils/convertHEICtoJPEG";
 
 const General = () => {
-  const { user, setUser } = useUser((state) => state);
+  const { user } = useUser((state) => state);
   const {
     handleSubmit,
     register,
@@ -35,6 +35,7 @@ const General = () => {
         full_name: user.full_name || "",
         job_title: user.job_title || "",
         industry: user.industry || "",
+        // linkedin: user.linkedin_profile
         location: user.location || "",
         pronouns: user.sex || "",
         recruiter_tag: user.recruiter_tag ? "yes" : "no",
@@ -51,8 +52,8 @@ const General = () => {
   );
   const onClick = async (data: TProfileSchema) => {
     try {
-      const response = await trigger(data);
-      setUser(response);
+      await trigger(data);
+
       successMessage("Profile updated succesful");
     } catch (err) {
       errorMessage(err);
@@ -100,6 +101,14 @@ const General = () => {
           />
         </div>
         <div className="mb-5">
+          <label className="mb-2 text-sm text-[#475569]">Linkedin URL</label>
+          <CPInput
+            placeholder="https://www.example.com"
+            {...register("linkedin")}
+            error={errors.linkedin?.message}
+          />
+        </div>
+        <div className="mb-5">
           <label className="mb-2 text-sm text-[#475569]">Location</label>
           <CPInput
             placeholder="Where are you based?"
@@ -109,9 +118,17 @@ const General = () => {
         </div>
         <div className="mb-5">
           <label className="mb-2 text-sm text-[#475569]">Pronouns</label>
-          <CPInput
+          <CPselect
+            items={[
+              { text: "Male", val: "Male" },
+              { text: "Female", val: "Female" },
+              { text: "Non-binary", val: "Non-binary" },
+              { text: "Prefer not to say", val: "Prefer not to say" },
+              { text: "Other", val: "Other" },
+            ]}
+            onChange={(val: string) => setValue("pronouns", val)}
+            value={watch("pronouns")}
             placeholder="They/them, etc"
-            {...register("pronouns")}
             error={errors.pronouns?.message}
           />
         </div>

@@ -81,6 +81,7 @@ export type TUser = {
   education: TEducation[];
   contact: TContact[];
   skills: TSkill[];
+  linkedin_profile: string;
   sections: {
     full_name: TSection;
     email: TSection;

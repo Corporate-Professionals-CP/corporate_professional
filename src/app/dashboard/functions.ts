@@ -21,8 +21,17 @@ export const fetchFeeds = async (url: string) => {
 export const fetchFeedsNetwork = async () => {
   return httprequest
     .get("/feed/network")
-    .then((res) => res.data.main_posts as TPost[])
-    .catch(() => []);
+    .then(
+      (res) =>
+        res.data as {
+          main_posts: TPost[];
+          fresh_posts: [];
+          next_cursor: string;
+        }
+    )
+    .catch(() => {
+      return { main_posts: [], fresh_posts: [], next_cursor: "" };
+    });
 };
 
 export const fetchPostComments = async (url: string) => {

@@ -9,6 +9,7 @@ import {
   withdrawConnection,
 } from "@/app/dashboard/network/function";
 import useUser from "@/statestore/useUser";
+import CPspinnerLoader from "./CPspinnerLoader";
 
 const CPprofileCard = ({
   profile,
@@ -52,7 +53,7 @@ const CPprofileCard = ({
         <p className="text-[#64748B] text-sm">{connection.industry}</p>
       </div>
       {isUser ? (
-        <div>
+        <div className="flex items-center">
           <Button
             className="text-sm font-medium text-slate py-2 px-3"
             loading={loadingWithdraw}
@@ -69,7 +70,7 @@ const CPprofileCard = ({
           </Button>
         </div>
       ) : (
-        <div>
+        <div className="flex items-center">
           <Button
             className="text-sm font-medium text-slate py-2 px-3"
             loading={loadingIgnore}
@@ -78,7 +79,7 @@ const CPprofileCard = ({
             Ignore
           </Button>
           <Button
-            className="text-sm font-medium text-slate py-2 px-3 rounded-[5px] border border-[#7074FF]"
+            className="text-sm font-medium text-slate py-2 px-3 rounded-[5px] border border-[#7074FF] "
             loading={loadingAccept}
             onClick={() => onAccept({ connect_id: profile.id })}
           >
@@ -101,7 +102,12 @@ const Button = ({
   children: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <button className={` ${className}`} disabled={loading} {...props}>
+    <button
+      className={` ${className} flex items-center gap-1`}
+      disabled={loading}
+      {...props}
+    >
+      {loading && <CPspinnerLoader size={15} />}
       {children}
     </button>
   );

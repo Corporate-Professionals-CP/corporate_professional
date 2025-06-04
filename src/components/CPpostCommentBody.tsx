@@ -21,6 +21,8 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
   const {
     handleSubmit,
     register,
+    reset,
+    watch,
     formState: { errors },
   } = useForm<TCommentSchema>({
     resolver: zodResolver(CommentSchema),
@@ -38,13 +40,15 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
         ],
         true
       );
+      reset();
     } catch (err) {
       errorMessage(err);
     }
   };
+  const comment = watch("comment");
   return (
     <div className="px-3 mt-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <CPprofileImg size={35} />
           <textarea
@@ -57,15 +61,17 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
             {errors.comment?.message}
           </p>
         )}
-        <div className="flex justify-end">
-          <CPsmallButton
-            style={{ padding: "6px 12px", fontSize: "14px" }}
-            loading={isMutating}
-            type="submit"
-          >
-            comment
-          </CPsmallButton>
-        </div>
+        {comment?.length > 0 && (
+          <div className="flex justify-end">
+            <CPsmallButton
+              style={{ padding: "6px 12px", fontSize: "14px" }}
+              loading={isMutating}
+              type="submit"
+            >
+              comment
+            </CPsmallButton>
+          </div>
+        )}
       </form>
       {isLoading ? (
         <CPcommentSkeleton />

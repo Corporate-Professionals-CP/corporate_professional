@@ -1,4 +1,4 @@
-import MoreIcon from "@/imagecomponents/MoreIcon";
+// import MoreIcon from "@/imagecomponents/MoreIcon";
 import React from "react";
 import dayjs from "@/lib/dayjs";
 import Link from "next/link";
@@ -28,7 +28,7 @@ function CPpostCardHeader({
         <span className="text-[#64748B] text-xs">
           {dayjs(created_at).fromNow()}
         </span>
-        <MoreIcon />
+        {/* <MoreIcon /> */}
       </div>
     </div>
   );

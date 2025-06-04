@@ -274,7 +274,7 @@ export const updateProfile = async (
     sex: arg.pronouns,
     // status: velit mollit cillum,
     // certifications: esse aliqua dolor tempor,
-    // linkedin_profile: http://nlVUmwSdhuHAaeeuQxkmVQ.nsgvQ5aYKp1C.lk+6LlHUaLVZTZthUw4LaQ-Z+p,
+    linkedin_profile: arg.linkedin,
     visibility: arg.visibility,
     recruiter_tag: arg.recruiter_tag == "yes",
     // is_admin: false,
@@ -285,6 +285,7 @@ export const updateProfile = async (
     // is_active: false
   };
   const response = await httprequest.put(url, formdata);
+  mutate("/profiles/me");
   return response.data as TUser;
 };
 

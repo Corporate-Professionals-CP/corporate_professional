@@ -11,6 +11,7 @@ export const ProfileSchema = z.object({
   visibility: z.string().min(1),
   experience: z.string().min(1),
   bio: z.string().min(1),
+  linkedin: z.string().min(1),
 });
 export type TProfileSchema = z.infer<typeof ProfileSchema>;
 

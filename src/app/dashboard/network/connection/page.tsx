@@ -2,13 +2,12 @@
 
 import { LeftArrow, SearchIcon } from "@/imagecomponents";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { fetchConnections } from "../function";
 import { CPEmptyState } from "@/components";
 import CPprofileConnectionCard from "@/components/CPprofileConnectionCard";
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
-import MIddleSectionContainer from "../../MIddleSectionContainer";
 
 function page() {
   return <MiddleSection />;
@@ -21,8 +20,17 @@ function MiddleSection() {
     "/network/my-connections",
     fetchConnections
   );
+  const [search, setSearch] = useState("");
+  function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value);
+  }
+  const filteredData = data.filter(
+    (con) =>
+      con.receiver.full_name.toLowerCase().includes(search.toLowerCase()) ||
+      con.sender.full_name.toLowerCase().includes(search.toLowerCase())
+  );
   return (
-    <MIddleSectionContainer>
+    <>
       <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
         <Link href={"/dashboard/network"}>
           <LeftArrow />
@@ -32,7 +40,11 @@ function MiddleSection() {
       <div className="p-[18]">
         <div className="flex items-center gap-[11] py-3 mb-1 border border-[#E2E8F0] rounded-full p-3">
           <SearchIcon size={20} />
-          <input placeholder="Search by name" className="text-sm flex-1" />
+          <input
+            placeholder="Search by name"
+            className="text-sm flex-1"
+            onChange={handleSearch}
+          />
         </div>
       </div>
       {isLoading ? (
@@ -49,14 +61,14 @@ function MiddleSection() {
             {data.length == 0 ? (
               <CPEmptyState textIcon="🛜" btnText="No Connection" />
             ) : (
-              data.map((item) => (
+              filteredData.map((item) => (
                 <CPprofileConnectionCard key={item.id} profile={item} />
               ))
             )}
           </div>
         </div>
       )}
-    </MIddleSectionContainer>
+    </>
   );
 }
 

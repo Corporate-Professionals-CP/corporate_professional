@@ -5,7 +5,7 @@ import { mutate } from "swr";
 
 export const fetchConnections = async (url: string) => {
   const response = await httprequest.get(url);
-  return response.data as TNetwork[];
+  return response.data.connections as TNetwork[];
 };
 
 export const fetchPendingNetwork = async (url: string) => {
