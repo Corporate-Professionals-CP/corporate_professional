@@ -7,15 +7,17 @@ import {
   EditIcon,
   HamburgerIcon,
   HomeIcon,
+  LogoutIcon,
   NotificationIcon,
   SearchIcon,
   WifiIcon,
 } from "@/imagecomponents";
 import { CPprofileImg } from "@/components";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import AccountSetup from "./AccountSetup";
 import ProfileIcon from "@/imagecomponents/ProfileIcon";
+import { removeData } from "@/utils/storage";
 
 function MIddleSectionContainer({ ...props }: { children: ReactNode }) {
   return (
@@ -28,6 +30,7 @@ function MIddleSectionContainer({ ...props }: { children: ReactNode }) {
 
 function MobileSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -142,6 +145,20 @@ function MobileSidebar() {
                   />
                   <span className="text-sm text-[#020617]">Notifications</span>
                 </Link>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    removeData("access_token");
+                    removeData("refresh_token");
+                    router.push("/");
+                  }}
+                  className="flex gap-[10px] items-center cursor-pointer"
+                  title="logout"
+                >
+                  <LogoutIcon size={"24"} />
+                  <span className="text-sm text-[#020617]">Logout</span>
+                </button>
               </li>
             </ul>
           </div>

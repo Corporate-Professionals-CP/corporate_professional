@@ -1,12 +1,12 @@
 import React from "react";
 
-function LogoutIcon() {
+function LogoutIcon({ size = "32" }: { size?: string }) {
   return (
     <svg
       fill="none"
-      height="32"
+      height={size}
       viewBox="0 0 24 24"
-      width="32"
+      width={size}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

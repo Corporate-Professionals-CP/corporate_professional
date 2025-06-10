@@ -61,6 +61,7 @@ const CreatePostModal = ({
     setValue("tags", remainTags);
   };
   const tags = watch("tags");
+  const tag = watch("tag");
 
   const handleSubmit = async () => {
     try {
@@ -80,7 +81,7 @@ const CreatePostModal = ({
   };
   return (
     <CPModal backgroundAction={handleCloseModal} width={600}>
-      <div className="p-2 flex flex-col h-[620]">
+      <div className="p-2 flex flex-col flex-1 h-[600px] max-sm:h-[550px]">
         <div className="flex gap-2 border-b border-[#E2E8F0] p-4">
           <CPprofileImg />
           <div className="">
@@ -139,9 +140,16 @@ const CreatePostModal = ({
                 })}
               </div>
             )}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-[#F8FAFC] pr-[5px]">
               <CPInput placeholder="#tags" {...register("tag")} />
-              <CPsmallButton onClick={handleAddTag}>Add</CPsmallButton>
+              <button
+                className={`bg-[#FFFFFF] rounded-[6px] py-[10px] px-[15px] font-medium ${
+                  !tag ? "text-[#CBD5E1]" : "text-primary"
+                }  text-sm`}
+                onClick={handleAddTag}
+              >
+                Add
+              </button>
             </div>
           </div>
           <Mediaattach mediaurl={mediaurl} setMediaurl={setMediaurl} />
