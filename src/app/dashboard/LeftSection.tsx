@@ -18,7 +18,7 @@ function LeftSection() {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <section className="w-[420] py-4 p-8 flex justify-end shrink max-lg:w-max max-sm:hidden ">
+    <section className="w-[420] py-4 p-8 flex justify-end shrink overflow-y-scroll max-lg:w-max max-sm:hidden ">
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
           <Link href="/dashboard">

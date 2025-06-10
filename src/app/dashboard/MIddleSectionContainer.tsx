@@ -21,7 +21,7 @@ import { removeData } from "@/utils/storage";
 
 function MIddleSectionContainer({ ...props }: { children: ReactNode }) {
   return (
-    <section className="w-[600] border border-[#E2E8F0]  shrink-0 max-lg:shrink  max-sm:w-full max-sm:p-5">
+    <section className="w-[600] border border-[#E2E8F0] overflow-y-scroll  shrink-0 max-lg:shrink  max-sm:w-full max-sm:p-5">
       <MobileSidebar />
       {props.children}
     </section>

@@ -1,11 +1,17 @@
-import { TPost, TUser } from "@/app/type";
-
 export type TNotification = {
   id: string;
-  type: string;
+  type: "post_reaction" | "connection_request";
   message: string;
-  is_read: true;
+  is_read: boolean;
   created_at: string;
-  actor: TUser;
-  post: TPost;
+  actor: {
+    id: string;
+    full_name: string;
+    profile_image_url: string;
+    avatar: {
+      initials: string;
+      color: string;
+    };
+  };
+  post: { id: string; content: string } | null;
 };

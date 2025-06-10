@@ -43,10 +43,12 @@ body {
 /* globals.css or a CSS module */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+  background-color: #7074ff;
 }
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  background-color: #7074ff;
 }
 
 .support {

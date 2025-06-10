@@ -30,11 +30,11 @@ const CPprofileCard = ({
     nudgeConnection
   );
   const { trigger: onIgnore, isMutating: loadingIgnore } = useSWRMutation(
-    `/network/${profile.id}/respond/`,
+    `/network/${profile.id}/respond`,
     ignoreConnection
   );
   const { trigger: onAccept, isMutating: loadingAccept } = useSWRMutation(
-    `/network/${profile.id}/respond/`,
+    `/network/${profile.id}/respond`,
     acceptConnection
   );
   return (
