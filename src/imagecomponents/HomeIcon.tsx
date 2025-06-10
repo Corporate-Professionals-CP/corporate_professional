@@ -1,17 +1,19 @@
 import React from "react";
 
 function HomeIcon({
+  size = "32",
   color = "#020617",
   active = false,
 }: {
+  size?: string;
   color?: string;
   active?: boolean;
 }) {
   if (active) {
     return (
       <svg
-        width="32"
-        height="32"
+        width={size}
+        height={size}
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +27,8 @@ function HomeIcon({
   }
   return (
     <svg
-      width="32"
-      height="32"
+      width={size}
+      height={size}
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

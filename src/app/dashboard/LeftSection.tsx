@@ -3,19 +3,22 @@ import useAuth from "@/hooks/useAuth";
 import {
   BookmarkIcon,
   HomeIcon,
+  LogoutIcon,
   NotificationIcon,
   SearchIcon,
   WifiIcon,
 } from "@/imagecomponents";
+import { removeData } from "@/utils/storage";
 import Link from "next/link";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function LeftSection() {
   useAuth();
+  const router = useRouter();
   const pathname = usePathname();
   return (
-    <section className="w-[420] py-4 p-8 flex justify-end shrink ">
+    <section className="w-[420] py-4 p-8 flex justify-end shrink max-lg:w-max max-sm:hidden ">
       <div className="flex flex-col justify-between">
         <div className="flex flex-col gap-10">
           <Link href="/dashboard">
@@ -40,6 +43,17 @@ function LeftSection() {
           <Link href="/dashboard/notification">
             <NotificationIcon active={pathname == "/dashboard/notification"} />
           </Link>
+          <button
+            onClick={() => {
+              removeData("access_token");
+              removeData("refresh_token");
+              router.push("/");
+            }}
+            className="cursor-pointer"
+            title="logout"
+          >
+            <LogoutIcon />
+          </button>
         </div>
         <div></div>
       </div>

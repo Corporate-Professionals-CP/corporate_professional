@@ -4,7 +4,7 @@ function SearchIcon({
   size = 32,
   color = "#020617",
 }: {
-  size?: number;
+  size?: number | string;
   color?: string;
 }) {
   return (

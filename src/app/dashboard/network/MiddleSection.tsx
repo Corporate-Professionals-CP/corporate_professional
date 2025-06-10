@@ -7,16 +7,36 @@ import CPprofileNetworkCard from "@/components/CPprofileNetworkCard";
 
 import CPprofileCardSkeleton from "@/components/CPprofileCardSkeleton";
 import { useState } from "react";
+import CPSwitchField from "@/components/CPSwitchField";
+import { useRouter } from "next/navigation";
 
 function MiddleSection() {
+  const router = useRouter();
   const { data, isLoading } = useSWR("/network/suggestions", {
     revalidateOnMount: false,
   });
   const suggestedNetwork = data?.suggestions || [];
+
   return (
     <>
-      <div className="mb-[18] px-6 py-5 gap-5  border-b border-[#E2E8F0] text-slate font-medium ">
-        My Network
+      <div className="mb-[18] px-6 py-5 gap-5  border-b border-[#E2E8F0] flex items-center justify-between ">
+        <span className="text-slate font-medium  ">My Network</span>
+        <CPSwitchField
+          items={[
+            {
+              val: "Connections",
+              action: () => {
+                router.push("/dashboard/network/connection");
+              },
+            },
+            {
+              val: "Pending",
+              action: () => {
+                router.push("/dashboard/network/pending");
+              },
+            },
+          ]}
+        />
       </div>
       {isLoading ? (
         <NetworkSkeleton />
@@ -42,7 +62,7 @@ const NetworkCategory = ({
 }) => {
   const [count, setCount] = useState(10);
   return (
-    <div className="mb-6 px-[18]">
+    <div className="mb-6 px-[18] max-sm:px-0">
       <div className="flex justify-between items-center ">
         <h4 className="text-sm text-slate mb-2">{title}</h4>
         <button

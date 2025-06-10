@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProfileIcon({ color = "#7074FF" }: { color: string }) {
+function ProfileIcon({ color = "#7074FF" }: { color?: string }) {
   return (
     <svg
       width="20"

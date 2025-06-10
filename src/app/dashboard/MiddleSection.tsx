@@ -8,6 +8,7 @@ import { fetchFeeds, fetchFeedsNetwork } from "./functions";
 import CreatePostModal from "./CreatePostModal";
 import MIddleSectionContainer from "./MIddleSectionContainer";
 import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
+import CPSwitchField from "@/components/CPSwitchField";
 
 function MiddleSection() {
   const [selectTab, setSelectTab] = useState(0);
@@ -16,7 +17,24 @@ function MiddleSection() {
   return (
     <MIddleSectionContainer>
       <>
-        <div className="flex">
+        <CPSwitchField
+          items={[
+            {
+              val: "Highlights",
+              action: () => {
+                setSelectTab(0);
+              },
+            },
+            {
+              val: "My Network",
+              action: () => {
+                setSelectTab(1);
+              },
+            },
+          ]}
+          className={"mb-[22]"}
+        />
+        <div className="flex max-sm:hidden">
           <Tab
             text="Highlights"
             setSelectTab={setSelectTab}
@@ -30,7 +48,7 @@ function MiddleSection() {
             selectTab={selectTab}
           />
         </div>
-        <div className="border-y border-[#E2E8F0] flex p-6 gap-4 items-center">
+        <div className="border-y border-[#E2E8F0] flex p-6 gap-4 items-center max-sm:rounded-2xl max-sm:mb-6 max-sm:border-[#E2E8F0] max-sm:border max-sm:py-3 max-sm:px-4">
           <CPprofileImg size={48} />
           <p
             className=" text-[#94A3B8] flex-1 px-2 py-2 min-h-[40]"
@@ -46,33 +64,6 @@ function MiddleSection() {
     </MIddleSectionContainer>
   );
 }
-
-const Tab = ({
-  text,
-  setSelectTab,
-  selectTab,
-  tabnumber,
-}: {
-  text: string;
-  selectTab: number;
-  setSelectTab: Dispatch<SetStateAction<number>>;
-  tabnumber: number;
-}) => {
-  return (
-    <div
-      className="px-5 pt-5 gap-5 w-1/2 text-center text-slate font-medium flex flex-col items-center  cursor-pointer"
-      onClick={() => setSelectTab(tabnumber)}
-    >
-      <span>{text}</span>
-      <div
-        className={`w-[54] h-[3] ${
-          selectTab == tabnumber ? "bg-primary" : "bg-white"
-        }`}
-        style={{ borderRadius: "6px 6px 0px 0px" }}
-      ></div>
-    </div>
-  );
-};
 
 const getKey = (
   pageIndex: number,
@@ -296,6 +287,33 @@ const FeedsSkeleton = () => {
       <CPpostCardSkeleton />
       <CPpostCardSkeleton />
       <CPpostCardSkeleton />
+    </div>
+  );
+};
+
+const Tab = ({
+  text,
+  setSelectTab,
+  selectTab,
+  tabnumber,
+}: {
+  text: string;
+  selectTab: number;
+  setSelectTab: Dispatch<SetStateAction<number>>;
+  tabnumber: number;
+}) => {
+  return (
+    <div
+      className="px-5 pt-5 gap-5 w-1/2 text-center text-slate font-medium flex flex-col items-center  cursor-pointer"
+      onClick={() => setSelectTab(tabnumber)}
+    >
+      <span>{text}</span>
+      <div
+        className={`w-[54] h-[3] ${
+          selectTab == tabnumber ? "bg-primary" : "bg-white"
+        }`}
+        style={{ borderRadius: "6px 6px 0px 0px" }}
+      ></div>
     </div>
   );
 };

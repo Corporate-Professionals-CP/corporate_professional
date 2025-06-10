@@ -13,7 +13,7 @@ function CPpostCardBody({ post }: { post: TPost }) {
       )}
       <p className=" text-slate text-sm leading-5">{post.content}</p>
       {post?.media_urls?.length > 0 && (
-        <div className="flex gap-2 flex-wrap mt-4">
+        <div className="flex gap-2 flex-wrap mt-4 justify-center">
           {post.media_urls.map((media) => {
             const isVideo = videoFormats.some((ext) =>
               media.toLowerCase().endsWith(ext)

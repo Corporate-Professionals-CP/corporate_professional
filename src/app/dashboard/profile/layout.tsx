@@ -1,7 +1,6 @@
 import React from "react";
 import MiddleSection from "../MiddleSection";
 import RightSection from "../RightSection";
-import ProfileModal from "./ProfileModal";
 
 function Layout({
   children,
@@ -12,7 +11,7 @@ function Layout({
     <>
       <MiddleSection />
       <RightSection />
-      <ProfileModal>{children}</ProfileModal>
+      {children}
     </>
   );
 }

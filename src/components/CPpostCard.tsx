@@ -22,7 +22,7 @@ function CPpostCard({
   const [openRepost, setOpenRepost] = useState(false);
   // display different UI for a repost
   const content = (
-    <div className=" flex gap-4 items-start mb-3">
+    <div className=" flex gap-4 items-start mb-3 max-sm:flex-col max-sm:items-stretch">
       <CPprofileImg
         url={post.user?.profile_image_url}
         full_name={post.user?.full_name}
@@ -51,7 +51,7 @@ function CPpostCard({
   );
 
   return (
-    <div className="border-b border-[#E2E8F0] p-6">
+    <div className="border-b border-[#E2E8F0] p-6 max-sm:rounded-2xl max-sm:border mb-6 ">
       {isLink ? (
         <Link href={`/dashboard/post/${post.id}`}>{content}</Link>
       ) : (

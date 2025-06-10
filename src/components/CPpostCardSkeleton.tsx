@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 
 const CPpostCardSkeleton = () => {
   return (
-    <div className="p-6 flex items-star gap-4">
+    <div className="p-6 flex items-start gap-4 max-sm:flex-col max-sm:items-stretch">
       <Skeleton circle width={48} height={48} />
       <div className="flex-1">
         <Skeleton height={40} className="mb-4" />

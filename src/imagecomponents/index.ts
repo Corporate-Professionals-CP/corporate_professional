@@ -24,3 +24,5 @@ export { default as DocIcon } from "./DocIcon";
 export { default as TwofourIcon } from "./TwofourIcon";
 export { default as DownloadIcon } from "./DownloadIcon";
 export { default as EditIcon } from "./EditIcon";
+export { default as LogoutIcon } from "./LogoutIcon";
+export { default as BackIcon } from "./BackIcon";
