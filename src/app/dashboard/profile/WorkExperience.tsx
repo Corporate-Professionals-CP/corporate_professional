@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
@@ -92,7 +93,9 @@ const ListContact = ({
       {experiences.map((exp) => (
         <CPtableListWorkExp
           key={exp.id}
-          left={`${exp.start_date} - ${exp.end_date}`}
+          left={`${dayjs(exp.start_date).format("MMM YYYY")} - ${dayjs(
+            exp.end_date
+          ).format("MMM YYYY")}`}
           title={exp.title}
           location={exp.location}
           list={[exp.description]}

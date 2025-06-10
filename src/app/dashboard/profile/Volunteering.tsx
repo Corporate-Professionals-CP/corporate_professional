@@ -13,6 +13,7 @@ import { errorMessage, successMessage } from "@/utils/toastalert";
 import useSWRMutation from "swr/mutation";
 import { addvolunteer, deleteVolunteering, getVolunteers } from "./functions";
 import CPdeleteModal from "@/components/CPdeleteModal";
+import dayjs from "dayjs";
 
 function Volunteering() {
   const { data = [], isLoading } = useSWR("/volunteering/", getVolunteers);
@@ -83,7 +84,9 @@ const ListContact = ({
       {volunteers.map((vol) => (
         <CPtableListWorkExp
           key={vol.id}
-          left={`${vol.start_date} ${vol.end_date}`}
+          left={`${dayjs(vol.start_date).format("MMM YYYY")} - ${dayjs(
+            vol.end_date
+          ).format("MMM YYYY")}`}
           title={vol.organization}
           location={vol.location}
           list={[vol.description]}

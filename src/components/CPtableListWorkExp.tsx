@@ -17,7 +17,7 @@ function CPtableListWorkExp({
   onDelete?: () => void;
 }) {
   return (
-    <div className=" flex gap-2 mb-10">
+    <div className="flex gap-2 mb-10 max-sm:flex-col">
       <p className="w-[180] text-[#64748B] text-sm">{left}</p>
       <div className="flex-1">
         <h6 className="text-slate text-sm mb-2 flex items-center gap-1">

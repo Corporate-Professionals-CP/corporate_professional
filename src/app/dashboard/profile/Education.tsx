@@ -12,6 +12,7 @@ import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import { addEducation, deleteEducation, getEducations } from "./functions";
 import CPdeleteModal from "@/components/CPdeleteModal";
+import dayjs from "dayjs";
 
 function Education() {
   const { data = [], isLoading } = useSWR("/education/me", getEducations);
@@ -78,7 +79,9 @@ const ListContact = ({
       {educations.map((edu) => (
         <CPtableListWorkExp
           key={edu.id}
-          left={`${edu.from_date} - ${edu.to_date}`}
+          left={`${dayjs(edu.from_date).format("DD MMM YYYY")} - ${dayjs(
+            edu.to_date
+          ).format("DD MMM YYYY")}`}
           title={edu.school}
           location={edu.location}
           list={[edu.description]}

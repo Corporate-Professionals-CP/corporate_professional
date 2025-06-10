@@ -181,7 +181,7 @@ const CPcontact = ({ contact }: { contact: TContact }) => {
 
   return (
     <div key={contact.id} className="flex mb-8 gap-0.5">
-      <div className="w-[180]">{contact.platform_name}</div>
+      <div className="w-[180] max-sm:w-[100]">{contact.platform_name}</div>
       <div className="flex-1">
         <div className="flex">
           <p className="text-sm mb-4">{contact.username}</p>

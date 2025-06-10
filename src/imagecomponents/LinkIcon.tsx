@@ -3,7 +3,7 @@ import React from "react";
 function LinkIcon() {
   return (
     <svg
-      enable-background="new 0 0 100 100"
+      enableBackground="new 0 0 100 100"
       height="18px"
       id="Livello_1"
       version="1.1"

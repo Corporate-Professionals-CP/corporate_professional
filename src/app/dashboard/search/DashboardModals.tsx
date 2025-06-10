@@ -33,7 +33,12 @@ function DashboardModals() {
     }
   };
   return (
-    <CPModal backgroundAction={handleCloseModal} minHeight={500}>
+    <CPModal
+      mobileTitle="Search"
+      mobileBackAction={handleCloseModal}
+      backgroundAction={handleCloseModal}
+      minHeight={500}
+    >
       <div className="p-[18]">
         <div className="flex items-center gap-[11] py-3 mb-4">
           <SearchIcon size={20} />

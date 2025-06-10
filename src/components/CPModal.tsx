@@ -37,7 +37,7 @@ function CPModal({
 
   return (
     <div
-      className="fixed top-0 left-0 flex justify-center items-center h-screen w-screen p-6 "
+      className="fixed top-0 left-0 flex justify-center items-center h-screen w-screen p-6  z-50"
       style={{ backdropFilter: "blur(12px)" }}
     >
       <div

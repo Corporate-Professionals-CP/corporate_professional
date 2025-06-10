@@ -20,6 +20,7 @@ import {
 } from "./functions";
 import { CPeducationSkeleton } from "@/components";
 import CPdeleteModal from "@/components/CPdeleteModal";
+import dayjs from "dayjs";
 
 function Certifications() {
   const { data = [], isLoading } = useSWR(
@@ -92,7 +93,9 @@ const ListContact = ({
       {certifications.map((item) => (
         <CPtableListWorkExp
           key={item.id}
-          left={`${item.issued_date} - ${item.expiration_date}`}
+          left={`${dayjs(item.issued_date).format("DD MMM YYYY")} - ${dayjs(
+            item.expiration_date
+          ).format("DD MMM YYYY")}`}
           title={item.name}
           location={item.organization}
           link={item.media_url}
