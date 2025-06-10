@@ -17,7 +17,7 @@ import { addpost, uploadMedia } from "./functions";
 import CPpillet from "@/components/CPpillet";
 import { mutate } from "swr";
 import useUser from "@/statestore/useUser";
-import { CloseIcon } from "@/imagecomponents";
+import { CloseIcon, PlusIcon } from "@/imagecomponents";
 import { convertImage } from "@/utils/convertHEICtoJPEG";
 
 type TMediaURL = { key: string; val: string };
@@ -163,9 +163,10 @@ const CreatePostModal = ({
           <div className="flex items-center gap-2">
             <label
               htmlFor="media"
-              className="text-[#475569] text-sm flex mb-1 mr-auto p-2 bg-gray-100"
+              className="text-primary font-medium text-xs flex items-center gap-0.5 mb-1 mr-auto p-2 "
             >
-              Attach media
+              <span>Attach media</span>
+              <PlusIcon />
             </label>
 
             <button className="p-3" onClick={() => setCreatemodal(false)}>

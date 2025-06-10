@@ -26,3 +26,4 @@ export { default as DownloadIcon } from "./DownloadIcon";
 export { default as EditIcon } from "./EditIcon";
 export { default as LogoutIcon } from "./LogoutIcon";
 export { default as BackIcon } from "./BackIcon";
+export { default as PlusIcon } from "./PlusIcon";

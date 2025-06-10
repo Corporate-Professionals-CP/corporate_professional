@@ -34,7 +34,7 @@
 //       document.removeEventListener("mousedown", handleClickOutside);
 //     };
 //   }, []);
-
+//
 //   return (
 //     <div
 //       className="fixed top-0 left-0 flex justify-center items-center h-screen w-screen p-6  z-50"
