@@ -186,17 +186,16 @@ function CPModal({
     >
       <div
         ref={modalRef}
-        className="flex flex-col gap-2 max-w-full max-h-[80%] focus:outline-none"
+        className="flex flex-col gap-2 max-w-full max-h-[80vh] focus:outline-none"
         style={{
           width: width,
-          //  width: Math.min(width, window.innerWidth - 48), // Ensure it fits with padding
           height: height ? height : "auto",
-          minHeight: minHeight ? minHeight : "unset",
+          minHeight: minHeight ? minHeight : "400px", // Set a minimum height
         }}
         tabIndex={-1}
       >
         {mobileTitle && (
-          <div className="bg-white w-full p-3.5 careershadow rounded-2xl block sm:hidden">
+          <div className="bg-white w-full p-3.5 careershadow rounded-2xl block sm:hidden flex-shrink-0">
             <button
               onClick={mobileBackAction}
               className="flex gap-2 items-center focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
@@ -211,7 +210,7 @@ function CPModal({
             </button>
           </div>
         )}
-        <div className="bg-white border border-[#F1F5F9] max-w-full rounded-2xl overflow-y-auto careershadow flex-1">
+        <div className="bg-white border border-[#F1F5F9] max-w-full rounded-2xl careershadow flex-1 flex flex-col min-h-0">
           {children}
         </div>
       </div>

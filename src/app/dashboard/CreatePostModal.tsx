@@ -81,15 +81,18 @@ const CreatePostModal = ({
   };
   return (
     <CPModal backgroundAction={handleCloseModal} width={600}>
-      <div className="p-2 flex flex-col flex-1 h-[600px] max-sm:h-[550px]">
-        <div className="flex gap-2 border-b border-[#E2E8F0] p-4">
+      <div className="p-2 flex flex-col h-full min-h-0">
+        {/* Header - fixed height */}
+        <div className="flex gap-2 border-b border-[#E2E8F0] p-4 flex-shrink-0">
           <CPprofileImg />
           <div className="">
             <p className="text-[#050505]">{user?.full_name}</p>
             <p className="text-[#64748B] text-sm">{user?.job_title}</p>
           </div>
         </div>
-        <div className="p-4 overflow-y-scroll flex-1">
+
+        {/* Scrollable content area - grows to fill space */}
+        <div className="p-4 overflow-y-auto flex-1 min-h-0">
           <div>
             <label className="text-[#475569] text-sm">Post Title</label>
             <CPInput
@@ -120,7 +123,7 @@ const CreatePostModal = ({
             <CPInput
               type="textarea"
               placeholder="Share your thoughts insights or updates with your network "
-              className="h-[100]"
+              className="h-[100px]"
               {...register("content")}
             />
           </div>
@@ -155,11 +158,12 @@ const CreatePostModal = ({
           <Mediaattach mediaurl={mediaurl} setMediaurl={setMediaurl} />
         </div>
 
-        <div className="p-4">
-          <div className="flex  items-center gap-2">
+        {/* Footer - fixed height */}
+        <div className="p-4 flex-shrink-0">
+          <div className="flex items-center gap-2">
             <label
               htmlFor="media"
-              className="text-[#475569] text-sm flex mb-1 mr-auto p-2 bg-gray-100  "
+              className="text-[#475569] text-sm flex mb-1 mr-auto p-2 bg-gray-100"
             >
               Attach media
             </label>
@@ -178,7 +182,7 @@ const CreatePostModal = ({
     </CPModal>
   );
 };
-
+// h-[600px] max-sm:h-[550px]
 function Mediaattach({
   mediaurl,
   setMediaurl,
@@ -275,8 +279,7 @@ function PostImage({
       </button>
       {loading && (
         <div className="w-full h-full absolute bg-[#ffffff91] grid place-content-center">
-          {" "}
-          <CPspinnerLoader size={30} />{" "}
+          <CPspinnerLoader size={30} />
         </div>
       )}
       {isVideo ? (
