@@ -6,6 +6,8 @@ export default function Person({
   img,
   comment,
   index,
+  user,
+  job,
   activeIndex,
   setActiveIndex,
 }: {
@@ -13,6 +15,8 @@ export default function Person({
   comment: string;
   index: number;
   activeIndex: number;
+  user: string;
+  job: string;
   setActiveIndex: (i: number) => void;
 }) {
   const { ref, inView } = useInView({ threshold: 0.6 });
@@ -36,8 +40,8 @@ export default function Person({
         <div className="p-3 bg-white rounded-2xl careershadow">
           <div className="text-primary mb-10">{comment}</div>
           <div>
-            <p className="text-slate mb-0.5">Aisha</p>
-            <p className="text-[#64748B]">Marketing Manager</p>
+            <p className="text-slate mb-0.5">{user}</p>
+            <p className="text-[#64748B]">{job}</p>
           </div>
         </div>
       )}

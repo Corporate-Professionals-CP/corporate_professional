@@ -8,26 +8,36 @@ const people = [
     img: prof1,
     comment:
       "I connect with industry leaders, stay updated on trends, and find mentorship to grow my career.",
+    user: "Aisha",
+    job: "Marketing Manager",
   },
   {
     img: prof2,
     comment:
       "Finally! An app with like-minded people that share knowledgeable information that actually helps navigate real life situations. Well done!",
+    user: "James",
+    job: "Software Engineer",
   },
   {
     img: prof3,
     comment:
       "So far, so good! Broad network for communicating with employers across industries and also for finding the right job for yourself.",
+    user: "Lola",
+    job: "UX Designer",
   },
   {
     img: prof4,
     comment:
       "I’ve been able to meet new people, expand my network, and even attend some workshops. I like this platform, and I can see myself using it every day.",
+    user: "Kwame",
+    job: "Product Manager",
   },
   {
     img: prof5,
     comment:
       "Very professional platform, the most inspiring I have to date. I got help to draft up my CV which has dramatically increased the number of offers I’ve been receiving!",
+    user: "Zara",
+    job: "Data Analyst",
   },
 ];
 
@@ -72,6 +82,8 @@ export default function Professional() {
             index={i % people.length}
             img={p.img}
             comment={p.comment}
+            user={p.user}
+            job={p.job}
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
           />

@@ -17,6 +17,7 @@ import cplogo from "./cplogo.svg";
 import logotwo from "./logotwo.svg";
 import logosign from "./logosign.svg";
 import logosignblue from "./logosignblue.svg";
+import expert from "./expert.png";
 
 export {
   prof1,
@@ -38,4 +39,5 @@ export {
   logotwo,
   logosign,
   logosignblue,
+  expert,
 };

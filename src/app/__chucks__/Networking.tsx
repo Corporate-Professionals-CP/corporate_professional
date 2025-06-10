@@ -1,6 +1,6 @@
 import { CPbuttonTwo } from "@/components/CPbutton";
 import Image from "next/image";
-import { insight, shake } from "@/assets";
+import { insight, shake, expert } from "@/assets";
 
 const NetWorking = () => {
   return (
@@ -24,11 +24,17 @@ const NetWorking = () => {
               </p>
             </div>
             <div className="flex gap-4 mb-5 overflow-x-auto">
-              <Pellet /> <Pellet /> <Pellet /> <Pellet /> <Pellet /> <Pellet />
-              <Pellet />
+              <Pellet text="Project Manager" /> <Pellet text="HR Specialist" />
+              <Pellet text="Accountant" /> <Pellet text="Project Design" />
+              <Pellet text="Software Engineer" />
+              <Pellet text="Cyber Analyst" />
+              <Pellet text="Embedded Engineer" />
             </div>
             <div className="flex gap-4 mb-8 overflow-x-auto">
-              <Pellet /> <Pellet /> <Pellet /> <Pellet />
+              <Pellet text="Accountant" /> <Pellet text="Project Design" />
+              <Pellet text="Software Engineer" />
+              <Pellet text="Cyber Analyst" />
+              <Pellet text="Embedded Engineer" />
             </div>
           </div>
           <div className="bg-[#F8FAFC] rounded-2xl">
@@ -58,10 +64,7 @@ const NetWorking = () => {
           Access workshops, courses, and events led by industry leaders who
           share practical insights you won&apos;t find elsewhere.
         </p>
-        <textarea
-          placeholder="mockup"
-          className="bg-white w-full h-40 p-4"
-        ></textarea>
+        <Image src={expert} className="w-full rounded-2xl" alt="expert" />
       </div>
       <div className="flex justify-center mt-16">
         <CPbuttonTwo className="w-[300px] max-sm:w-full" link="/onboarding">
@@ -72,10 +75,10 @@ const NetWorking = () => {
   );
 };
 
-const Pellet = () => {
+const Pellet = ({ text }: { text: string }) => {
   return (
     <div className="py-2 px-[18] text-xs rounded-full text-slate bg-white shrink-0 ">
-      Project Manager
+      {text}
     </div>
   );
 };
