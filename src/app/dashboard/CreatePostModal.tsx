@@ -173,7 +173,7 @@ const CreatePostModal = ({
               Back
             </button>
             <CPsmallButton
-              text="Next"
+              text="Post"
               onClick={handleSubmit}
               loading={isMutating}
             />
