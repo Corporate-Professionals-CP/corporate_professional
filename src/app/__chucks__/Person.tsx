@@ -1,6 +1,4 @@
-import { useInView } from "react-intersection-observer";
 import Image, { StaticImageData } from "next/image";
-import { useEffect } from "react";
 
 export default function Person({
   img,
@@ -9,7 +7,6 @@ export default function Person({
   user,
   job,
   activeIndex,
-  setActiveIndex,
 }: {
   img: StaticImageData;
   comment: string;
@@ -17,34 +14,45 @@ export default function Person({
   activeIndex: number;
   user: string;
   job: string;
-  setActiveIndex: (i: number) => void;
 }) {
-  const { ref, inView } = useInView({ threshold: 0.6 });
-
-  useEffect(() => {
-    if (inView) setActiveIndex(index);
-  }, [inView, index, setActiveIndex]);
-
   const isActive = activeIndex === index;
 
   return (
-    <div ref={ref} className="w-[300px] h-[560px] shrink-0 snap-center">
-      <div className="h-[300px] p-2 bg-white rounded-lg mb-4">
-        <Image
-          src={img}
-          alt="prof"
-          className="rounded-lg w-full object-cover"
-        />
-      </div>
-      {isActive && (
-        <div className="p-3 bg-white rounded-2xl careershadow">
-          <div className="text-primary mb-10">{comment}</div>
-          <div>
-            <p className="text-slate mb-0.5">{user}</p>
-            <p className="text-[#64748B]">{job}</p>
-          </div>
+    <div className="w-[280px] max-w-[280px]">
+      {/* Image Container */}
+      <div className="relative mb-6">
+        <div className="h-[320px] p-2 bg-white rounded-2xl mb-4 careershadow">
+          <Image
+            src={img}
+            alt={`${user} - ${job}`}
+            className="rounded-xl w-full h-full object-cover"
+            priority={index < 3}
+          />
         </div>
-      )}
+      </div>
+
+      {/* Description Container - Fixed Height */}
+      <div className="min-h-[200px]">
+        <div
+          className={`transition-all duration-500 ease-in-out ${
+            isActive
+              ? "opacity-100 transform translate-y-0"
+              : "opacity-0 transform translate-y-4"
+          }`}
+        >
+          {isActive && (
+            <div className="bg-white rounded-2xl p-3 careershadow">
+              <p className="text-primary text-base leading-relaxed mb-8">
+                {comment}
+              </p>
+              <div>
+                <p className="text-slate mb-0.5">{user}</p>
+                <p className="text-[#64748B] text-sm">{job}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
