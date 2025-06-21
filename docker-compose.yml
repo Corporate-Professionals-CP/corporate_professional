@@ -1,0 +1,10 @@
+services:
+  cp-fe:
+    container_name: cp-fe
+    build: .
+    restart: always
+    env_file: /home/fe.env
+    ports:
+      - "3030:3000"
+    environment:
+      - NODE_ENV=production
