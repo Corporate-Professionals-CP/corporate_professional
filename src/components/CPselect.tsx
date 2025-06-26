@@ -1,11 +1,9 @@
 "use client";
 import DropDownIcon from "@/imagecomponents/DropDownIcon";
 import { useEffect, useRef, useState } from "react";
-// import { ChangeHandler } from "react-hook-form";
 
 type CPselectType = {
   className?: string;
-
   placeholder?: string;
   error?: string;
   items?: { text: string; val: string }[];
@@ -22,8 +20,33 @@ function CPselect({
   onChange = () => {},
 }: CPselectType) {
   const [open, setOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  // Check if dropdown should open upward
+  const checkPosition = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const dropdownHeight = 300; // max height
+
+      // Check if there's enough space below
+      const spaceBelow = viewportHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      // Open upward if there's not enough space below but enough above
+      setOpenUpward(spaceBelow < dropdownHeight && spaceAbove > dropdownHeight);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      checkPosition();
+    }
+  }, [open]);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -42,7 +65,8 @@ function CPselect({
   return (
     <div className="w-full relative" ref={dropdownRef}>
       <div
-        className={`w-full min-h-[45] relative bg-[#F8FAFC] px-4 py-3.5 text-sm text-slate rounded-lg ${className}`}
+        ref={triggerRef}
+        className={`w-full min-h-[45px] relative bg-[#F8FAFC] px-4 py-3.5 text-sm text-slate rounded-lg cursor-pointer ${className}`}
         onClick={() => setOpen((s) => !s)}
       >
         {items?.find((v) => v.val == value)?.text || (
@@ -52,18 +76,19 @@ function CPselect({
           <DropDownIcon />
         </div>
       </div>
-      {error && (
-        <p className="text-[#E62E2E] text-sm -translate-1.5 mb-0">{error}</p>
-      )}
+      {error && <p className="text-[#E62E2E] text-sm mt-1.5 mb-0">{error}</p>}
       {open && (
-        <div className="min-w-[223] min-h-[200] max-h-[300] bg-white absolute top-16 shadow-dropdown rounded-lg z-50 overflow-y-scroll">
+        <div
+          className={`min-w-[223px] min-h-[200px] max-h-[300px] bg-white absolute shadow-dropdown rounded-lg z-[9999] overflow-y-scroll ${
+            openUpward ? "bottom-16" : "top-16"
+          }`}
+        >
           {items?.map((item) => (
             <div
               key={item.val}
               className="px-2 py-3 text-slate text-sm hover:bg-[#F8FAFC] cursor-pointer block"
-              // {...props}
               onClick={() => {
-                onChange(item.val); // notify React Hook Form
+                onChange(item.val);
                 setOpen(false);
               }}
             >
@@ -77,5 +102,3 @@ function CPselect({
 }
 
 export default CPselect;
-
-// 'NIGERIA', 'United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France', 'India', 'Singapore', 'Remote' or 'Other'"

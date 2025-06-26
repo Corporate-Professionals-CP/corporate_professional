@@ -210,7 +210,7 @@ function CPModal({
             </button>
           </div>
         )}
-        <div className="bg-white border border-[#F1F5F9] max-w-full rounded-2xl careershadow flex-1 flex flex-col min-h-0">
+        <div className="bg-white border border-[#F1F5F9] max-w-full rounded-2xl careershadow flex-1 flex flex-col min-h-0 overflow-scroll">
           {children}
         </div>
       </div>
