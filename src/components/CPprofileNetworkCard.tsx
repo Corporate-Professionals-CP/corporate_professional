@@ -5,6 +5,7 @@ import useSWRMutation from "swr/mutation";
 import { makeConnection } from "@/app/dashboard/network/function";
 
 import { CPbuttonTransparent } from "./CPbutton";
+import Link from "next/link";
 
 function CPprofileNetworkCard({ profile }: { profile: TSuggestedNetwork }) {
   const { trigger, isMutating } = useSWRMutation(
@@ -20,7 +21,12 @@ function CPprofileNetworkCard({ profile }: { profile: TSuggestedNetwork }) {
       />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
-          <span className="text-[#050505] ">{profile.full_name}</span>
+          <Link
+            href={`/dashboard/user/${profile.id}`}
+            className="text-[#050505]"
+          >
+            {profile.full_name}
+          </Link>
           <span className="text-primary font-medium py-1 px-2 bg-[#F8FAFC]  text-xs rounded-full">
             {profile.recruiter_tag ? "Recruiter" : "Talent"}
           </span>

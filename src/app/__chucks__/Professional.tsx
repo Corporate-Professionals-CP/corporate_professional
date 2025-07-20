@@ -4,6 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { prof1, prof2, prof3, prof4, prof5 } from "@/assets";
 import Person from "./Person";
+import { CheveronleftIcon, CheveronrightIcon } from "@/imagecomponents";
+// import { ChevronLeft, ChevronRight } from 'lucide-react'; // Or use your preferred icon library
 
 const people = [
   {
@@ -105,6 +107,14 @@ export default function Professional() {
     setActiveIndex(selectedIndex);
   }, [emblaApi]);
 
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();
@@ -126,23 +136,43 @@ export default function Professional() {
         </p>
       </div>
 
-      <div className="embla overflow-hidden" ref={emblaRef}>
-        <div className="embla__container flex">
-          {people.map((person, index) => (
-            <div
-              key={index}
-              className="embla__slide flex-[0_0_auto] min-w-0 pl-4 first:pl-6"
-            >
-              <Person
-                index={index}
-                img={person.img}
-                comment={person.comment}
-                user={person.user}
-                job={person.job}
-                activeIndex={activeIndex}
-              />
-            </div>
-          ))}
+      <div className="relative">
+        {/* Previous Button */}
+        <button
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-lg rounded-full p-3 transition-all duration-200 hover:scale-110"
+          onClick={scrollPrev}
+          aria-label="Previous slide"
+        >
+          <CheveronleftIcon />
+        </button>
+
+        {/* Next Button */}
+        <button
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-lg rounded-full p-3 transition-all duration-200 hover:scale-110"
+          onClick={scrollNext}
+          aria-label="Next slide"
+        >
+          <CheveronrightIcon />
+        </button>
+
+        <div className="embla overflow-hidden" ref={emblaRef}>
+          <div className="embla__container flex">
+            {people.map((person, index) => (
+              <div
+                key={index}
+                className="embla__slide flex-[0_0_auto] min-w-0 pl-4 first:pl-6"
+              >
+                <Person
+                  index={index}
+                  img={person.img}
+                  comment={person.comment}
+                  user={person.user}
+                  job={person.job}
+                  activeIndex={activeIndex}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

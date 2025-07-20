@@ -154,7 +154,7 @@ const General = () => {
         </div>
         <div className="mb-5">
           <label className="mb-2 text-sm text-[#475569]">
-            Who should see your profile?
+            Profile preferences
           </label>
           <div className="flex gap-2">
             <CPSwitchbox

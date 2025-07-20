@@ -1,5 +1,5 @@
 export type TSearchParams = {
-  role: string;
+  job_title: string;
   location: string;
   industry: string;
   experince: string;

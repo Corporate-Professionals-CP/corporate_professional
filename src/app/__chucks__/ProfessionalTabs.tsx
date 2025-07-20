@@ -24,8 +24,8 @@ const proccurr = [
     image: mockup3,
   },
   {
-    name: "Professional Profiles",
-    text: "Build a profile that showcases your skills, experience, and achievements to the right people.",
+    name: "Connect",
+    text: "Build Networks that leads to mentorship, collaboration, and real opportunities.",
     image: mockup4,
   },
 ];
@@ -70,16 +70,13 @@ const ProfessionalTabs = () => {
             }  rounded-full p-3`}
             onClick={() => setActivetab(3)}
           >
-            Professional Profiles
+            Connect
           </button>
         </div>
         <div className="bg-[#F8FAFC] pt-10  px-[103] rounded-2xl careershadow max-md:hidden ">
           <div className=" text-center mb-[72] flex flex-col items-center w-[460] m-auto">
             <p className="mb-6">{proccurr[activetab].text}</p>
-            <CPbuttonTwo className="bg-primary" disabled>
-              {" "}
-              Learn more
-            </CPbuttonTwo>
+            {/* <CPbuttonTwo className="bg-primary" disabled>Learn more</CPbuttonTwo> */}
           </div>
           <div className="w-full bg-white h-[290] ">
             <Image

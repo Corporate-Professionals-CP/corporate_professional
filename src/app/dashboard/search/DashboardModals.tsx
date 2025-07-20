@@ -51,8 +51,8 @@ function DashboardModals() {
         </div>
         <div className="flex flex-wrap gap-2 mb-9">
           <CPsearchFIlterDropDown
-            onChange={(val: string) => setValue("role", val)}
-            value={watch("role")}
+            onChange={(val: string) => setValue("job_title", val)}
+            value={watch("job_title")}
             tabText="Role"
             prefix="Role"
             items={[
@@ -69,7 +69,6 @@ function DashboardModals() {
               },
               { text: "UX Designer", val: "UX Designer", number: 12 },
               { text: "UI Designer", val: "UI Designer", number: 12 },
-              { text: "UI/UX Designer", val: "UI/UX Designer", number: 12 },
               {
                 text: "Software Engineer",
                 val: "Software Engineer",
@@ -194,7 +193,7 @@ const CPprofileCard = ({
   return (
     <Link
       href={`/dashboard/user/${user.id}`}
-      className="flex gap-5 items-center py-3.5 px-6"
+      className="flex gap-5 items-center py-3.5 px-6 border-b border-[#E2E8F0]"
     >
       <CPprofileImg full_name={user.full_name} url={user.profile_image_url} />
       <div className="flex-1">

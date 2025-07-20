@@ -14,6 +14,7 @@ import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import { TPost } from "@/app/type";
 import { repostPost } from "@/app/functions";
+import useUser from "@/statestore/useUser";
 
 type TRepost = { quote: string };
 const CPrepostModal = ({
@@ -24,7 +25,7 @@ const CPrepostModal = ({
   post: TPost;
 }) => {
   const { handleSubmit, register } = useForm<TRepost>({});
-
+  const { user } = useUser();
   const { isMutating, trigger: submit } = useSWRMutation(
     `/posts/${post.id}/repost`,
     repostPost
@@ -51,7 +52,9 @@ const CPrepostModal = ({
         <div className="flex gap-3 items-center border-b border-gray-200 pb-3">
           <CPprofileImg />
           <div>
-            <p className="text-base font-medium text-gray-800">Lawal Ayobami</p>
+            <p className="text-base font-medium text-gray-800">
+              {user?.full_name}
+            </p>
             <p className="text-sm text-gray-500">Reposting to your feed</p>
           </div>
         </div>

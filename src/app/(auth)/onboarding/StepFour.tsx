@@ -19,7 +19,7 @@ const StepFour = ({
       />
 
       <CPInput
-        placeholder="Start typing your role..."
+        placeholder="Marketing , Software Engineer"
         type="text"
         {...register("role")}
         error={error}

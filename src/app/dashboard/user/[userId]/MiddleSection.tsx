@@ -20,6 +20,7 @@ import { DownloadIcon } from "@/imagecomponents";
 import useUser from "@/statestore/useUser";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
+import dayjs from "dayjs";
 
 function MiddleSection() {
   const params = useParams();
@@ -82,7 +83,9 @@ function MiddleSection() {
               {data.work_experience.map((exp) => (
                 <CPtableListWorkExp
                   key={exp.id}
-                  left={`${exp.start_date} - ${exp.end_date}`}
+                  left={`${dayjs(exp.start_date).format(
+                    "DD MMM YYYY"
+                  )} - ${dayjs(exp.end_date).format("DD MMM YYYY")}`}
                   title={exp.title}
                   location={exp.location}
                   list={[exp.description]}
@@ -98,7 +101,9 @@ function MiddleSection() {
               {data.education.map((exp) => (
                 <CPtableListWorkExp
                   key={exp.id}
-                  left={`${exp.from_date} - ${exp.to_date}`}
+                  left={`${dayjs(exp.from_date).format(
+                    "DD MMM YYYY"
+                  )} - ${dayjs(exp.to_date).format("DD MMM YYYY")}`}
                   title={exp.school}
                   location={exp.location}
                   list={[exp.description]}

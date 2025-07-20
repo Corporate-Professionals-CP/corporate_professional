@@ -74,7 +74,9 @@ export default function Login() {
       />
       <div className="bg-white p-[18] rounded-2xl max-w-[445px] w-full careershadow">
         <form className="" onSubmit={handleSubmit(onSubmit)}>
-          <h3 className="mb-6 text-lg font-medium">Login to your account ✨</h3>
+          <h3 className="mb-6 text-lg font-medium">
+            Log In to your account ✨
+          </h3>
           <CPInput
             {...register("email")}
             error={errors.email?.message}
@@ -89,7 +91,11 @@ export default function Login() {
           />
           <div className="flex justify-end mb-6 text-sm">
             {/* <p className="text-[#E62E2E] ">{error && "Incorrect password"}</p> */}
-            <button type="button" onClick={() => setModalOpen(true)}>
+            <button
+              className="cursor-pointer"
+              type="button"
+              onClick={() => setModalOpen(true)}
+            >
               Forgot password?
             </button>
           </div>

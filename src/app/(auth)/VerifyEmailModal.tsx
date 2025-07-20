@@ -59,15 +59,13 @@ const VerifyEmailModal = ({
           <h3 className="mb-4 text-lg font-medium text-[#050505]">
             Verify your email ✨
           </h3>
-          <p className="mb-6 text-[#64748B]">
-            You can complete your profile later to unlock more opportunities.
-          </p>
+          <p className="mb-6 text-[#64748B]">OTP has been sent to your email</p>
           <CPInput
             {...register("otp")}
             error={errors.otp?.message}
             placeholder="OTP"
           />
-          <div className="flex justify-end gap-2 mt-12">
+          <div className="flex justify-end gap-2 mt-12 mb-2">
             <button
               className="p-3"
               type="button"
@@ -78,6 +76,9 @@ const VerifyEmailModal = ({
             </button>
             <CPsmallButton text="Submit" loading={isMutating} />
           </div>
+          <p className="mb-6 text-[#64748B] ">
+            You can complete your profile later to unlock more opportunities.
+          </p>
         </form>
       )}
     </CPModal>

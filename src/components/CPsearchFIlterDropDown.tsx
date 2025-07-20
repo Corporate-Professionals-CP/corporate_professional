@@ -1,4 +1,5 @@
 "use client";
+import { CloseIcon } from "@/imagecomponents";
 import React, { useEffect, useRef, useState } from "react";
 
 type CPselectType = {
@@ -48,6 +49,14 @@ function CPsearchFIlterDropDown({
               <input className="flex-1 py-3 px-2" placeholder={placeholder} />
               <button className="p-2 text-sm text-slate">Done</button>
             </div>
+
+            <Pill
+              value={value}
+              cancel={() => {
+                onChange("");
+              }}
+            />
+
             <p className="text-xs text-[#64748B] p-2">Suggestions</p>
             {items?.map((item) => (
               <div
@@ -81,16 +90,28 @@ const CPsmallTab = ({
   value: string;
   prefix: string;
 }) => {
+  const style =
+    "py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis";
   if (value) {
     return (
-      <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis bg-[#7074FF1A]">
-        {prefix || text}: {value}
+      <div className={`${style} bg-[#7074FF1A]`}>
+        <span className="text-primary">{prefix || text}</span>:{" "}
+        <span className=" text-primary font-medium">{value}</span>
       </div>
     );
   }
+  return <div className={style}>{text}</div>;
+};
+
+const Pill = ({ value, cancel }: { value: string; cancel: () => void }) => {
   return (
-    <div className="py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">
-      {text}
-    </div>
+    value && (
+      <div className="py-2 px-3 mt-2 text-xs text-primary border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis bg-[#7074FF1A] flex gap-2">
+        {value}
+        <button onClick={cancel} className="cursor-pointer">
+          <CloseIcon color="#7074ff" />
+        </button>
+      </div>
+    )
   );
 };

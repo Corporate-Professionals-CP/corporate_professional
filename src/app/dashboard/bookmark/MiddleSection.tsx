@@ -19,8 +19,11 @@ function MiddleSection() {
         <span>Bookmarks</span>
       </div>
       <div className="p-[18]">
-        <div className="flex items-center gap-[11] py-3 mb-4 border border-slate rounded-full p-3">
-          <SearchIcon size={20} />
+        <div className="flex items-center gap-[11] py-3 mb-4 border border-slate rounded-full p-3 focus-within:border-primary">
+          <SearchIcon
+            size={20}
+            className="focus-within:fill-primary fill-[#020617]"
+          />
           <input
             placeholder="Search by name, job title, company, or industry..."
             className="text-sm flex-1"

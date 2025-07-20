@@ -33,7 +33,7 @@ const Empowering = () => {
           <CPbuttonThree disabled={true} />
         </div>
       </div>
-      <div className="mt-[122] flex justify-center overflow-x-hidden">
+      <div className="mt-[122] flex justify-center">
         <Image src={fashPhoto} alt="fash photo" className="w-[288]" />
         <Image
           src={proddesign}

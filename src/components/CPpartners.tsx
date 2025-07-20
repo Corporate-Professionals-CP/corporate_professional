@@ -2,8 +2,8 @@ import React from "react";
 import accounted from "@/assets/cppatners/accounted.png";
 import auc from "@/assets/cppatners/auc.jpg";
 import girlsconstruction from "@/assets/cppatners/girlsunderconstruction.jpg";
-import insurance from "@/assets/cppatners/insurance.jpg";
-import insurance2 from "@/assets/cppatners/insurance2.jpg";
+import insurance from "@/assets/cppatners/insurance.png";
+
 import irxcruit from "@/assets/cppatners/irxcruit.jpg";
 import knightshield from "@/assets/cppatners/knightshield.jpg";
 import lawcity from "@/assets/cppatners/lawcity.jpg";
@@ -40,11 +40,7 @@ function CPpartners() {
           alt="partner"
           className="shrink-0 w-[200px] h-[100px] object-cover"
         />
-        <Image
-          src={insurance2}
-          alt="partner"
-          className="shrink-0 w-[200px] h-[100px] object-cover"
-        />
+
         <Image
           src={irxcruit}
           alt="partner"

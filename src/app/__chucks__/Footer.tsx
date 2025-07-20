@@ -4,7 +4,6 @@ import {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
-  TwitterIcon,
   YoutubeIcon,
 } from "@/imagecomponents";
 import Image from "next/image";
@@ -48,14 +47,22 @@ const Footer = () => {
             The Corporates and Professionals platform helps members grow through
             expert programs, valuable resources, and meaningful networking.
           </p>
-          <p className="flex-1 text-white text-xs">More about us</p>
+          {/* <p className="flex-1 text-white text-xs">More about us</p> */}
           <div className="flex justify-between items-end max-md:mt-[80px] ">
             <div className="grid grid-cols-2 gap-[10] ">
               <Social Icon={<YoutubeIcon />} />
-              <Social Icon={<LinkedinIcon />} />
+              <Social
+                Icon={<LinkedinIcon />}
+                link="https://www.linkedin.com/company/thecorporatesandprofessionalsplatform/?viewAsMember=true"
+              />
               <Social Icon={<FacebookIcon />} />
-              <Social Icon={<TwitterIcon />} />
-              <Social Icon={<InstagramIcon />} />
+              {/* <Social Icon={<TwitterIcon />} /> */}
+              <Social
+                link={
+                  "https://www.instagram.com/thecp_platform?igsh=MTJrOGl3dHJvM2t1OA=="
+                }
+                Icon={<InstagramIcon />}
+              />
             </div>
             <div className="text-sm text-[#FFFFFFB2] text-right">
               © 2025 — Copyright <br />
@@ -81,7 +88,7 @@ const Footer = () => {
           <div>
             <div className="mb-12">
               <h4 className="mb-4">Contact us</h4>
-              <p className="text-[#FFFFFFB2] text-sm">07479648276</p>
+              <p className="text-[#FFFFFFB2] text-sm">020 8159 6113</p>
               <p className="text-[#FFFFFFB2] text-sm">
                 info@corporatesandprofessionals.com
               </p>
@@ -92,7 +99,7 @@ const Footer = () => {
                 <p className="text-[#FFFFFFB2] text-sm">London</p>
                 <p className="text-[#FFFFFFB2] text-sm">United Kingdom</p>
               </div>
-              <div className="text-right">
+              {/* <div className="text-right">
                 <h4 className="mb-4">Languages</h4>
 
                 <p className="text-[#FFFFFFB2] text-sm flex gap-5">
@@ -102,7 +109,7 @@ const Footer = () => {
                   <span>De</span>
                   <span>Ru</span>
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -114,16 +121,19 @@ const Footer = () => {
 function Social({
   className = "",
   Icon,
+  link = "#",
 }: {
   className?: string;
   Icon: React.JSX.Element;
+  link?: string;
 }) {
   return (
-    <div
+    <Link
+      href={link}
       className={`w-[40] h-[40] rounded-full bg-white grid place-content-center ${className}`}
     >
       {Icon}
-    </div>
+    </Link>
   );
 }
 

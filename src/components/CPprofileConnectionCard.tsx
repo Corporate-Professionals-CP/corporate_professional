@@ -5,6 +5,7 @@ import TopRightIcon from "@/imagecomponents/TopRightIcon";
 import { TNetwork } from "@/app/type";
 
 import useUser from "@/statestore/useUser";
+import Link from "next/link";
 
 function CPprofileConnectionCard({ profile }: { profile: TNetwork }) {
   // get user and chose profile that is not user
@@ -19,7 +20,12 @@ function CPprofileConnectionCard({ profile }: { profile: TNetwork }) {
       />
       <div className="flex-1">
         <p className="flex gap-3 items-center">
-          <span className="text-[#050505] ">{connection.full_name}</span>
+          <Link
+            href={`/dashboard/user/${connection.id}`}
+            className="text-[#050505]"
+          >
+            {connection.full_name}
+          </Link>
           <span className="text-primary font-medium py-1 px-2 bg-[#F8FAFC]  text-xs rounded-full">
             {connection.recruiter_tag ? "Recruiter" : "Talent"}
           </span>

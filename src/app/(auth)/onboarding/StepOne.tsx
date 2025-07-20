@@ -14,7 +14,7 @@ const StepOne = ({
   return (
     <>
       <CPText
-        majorheading="Let’s start with your basic informations"
+        majorheading="Let’s start with your basic information"
         minorheading="Basic Information"
       />
       <CPInput

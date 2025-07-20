@@ -12,7 +12,7 @@ function CPdeleteModal({
   isLoading: boolean;
 }) {
   return (
-    <CPModal width={445}>
+    <CPModal width={445} backgroundAction={onClose} zIndex={60}>
       <div className="p-4">
         <div className="mb-12">
           <h5 className="text-[#050505] font-medium text-lg mb-4">
@@ -24,7 +24,7 @@ function CPdeleteModal({
         </div>
         <div className="flex justify-end gap-4 items-center">
           <button
-            className="text-[#020617] font-medium text-sm gap-2"
+            className="text-[#020617] font-medium text-sm gap-2 cursor-pointer"
             onClick={onClose}
           >
             Cancel
@@ -36,6 +36,7 @@ function CPdeleteModal({
               color: "#020617",
               border: "1px solid #CBD5E1",
               fontWeight: "500",
+              cursor: "pointer",
             }}
             loading={isLoading}
             onClick={onDelete}

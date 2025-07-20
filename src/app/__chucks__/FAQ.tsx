@@ -14,17 +14,17 @@ const FAQList = [
   {
     question: "How do I find and connect with professionals?",
     answer:
-      "It's very simple, once you've signed up to become a member, the search bar at the top of every page allows you to search for people, jobs, posts, companies and industry groups. You can click any of the search suggestions that appear in the dropdown list as you type or generate your search to see the full results. To search for jobs, you can click the  Jobs icon in the homepage and search for jobs in the Jobs homepage.",
+      "It's very simple, once you've signed up to become a member, the search bar at the side of the page allows you to search for people, jobs, posts, companies and industry groups. You can click any of the search suggestions that appear in the dropdown list as you type or generate your search to see the full results. To search for jobs, you can click the Jobs icon in the homepage and search for jobs in the Jobs homepage.",
   },
   {
     question: "Can I post job opportunities?",
     answer:
       "Yes, our streamlined approach to recruitment solutions allows for our Corporate Clients and partners to post vacancies on our job board giving our members exclusive access to roles that become available on the market.",
   },
-  {
-    question: "How does TC&P protect my privacy?",
-    answer: "",
-  },
+  // {
+  //   question: "How does TC&P protect my privacy?",
+  //   answer: "",
+  // },
   {
     question: "What makes TC&P different from other professional networks?",
     answer:

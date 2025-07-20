@@ -27,3 +27,7 @@ export { default as EditIcon } from "./EditIcon";
 export { default as LogoutIcon } from "./LogoutIcon";
 export { default as BackIcon } from "./BackIcon";
 export { default as PlusIcon } from "./PlusIcon";
+export { default as CheveronleftIcon } from "./CheveronleftIcon";
+export { default as CheveronrightIcon } from "./CheveronrightIcon";
+export { default as EyeOnIcon } from "./EyeOnIcon";
+export { default as EyeOffIcon } from "./EyeOffIcon";

@@ -15,8 +15,8 @@ export const searchDirectory = async (
       state: arg.location,
     },
     skill: arg.skill,
+    job_title: arg.job_title,
     //   recruiter_only: true,
-    //   job_title: UX Designer
   });
   return response.data as (TPost & {
     company: string;

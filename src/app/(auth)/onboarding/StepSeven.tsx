@@ -17,7 +17,7 @@ const StepSeven = ({
   return (
     <>
       <CPText
-        majorheading="Who should see your profile?"
+        majorheading="Profile preferences"
         minorheading="Professional Details"
       />
 

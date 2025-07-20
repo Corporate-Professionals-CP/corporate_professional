@@ -14,7 +14,6 @@ const Building = () => {
       </div>
       <div className="flex gap-[18] flex-wrap justify-center">
         <BuildingPart
-          active
           no="1"
           title="Create Your Profile"
           desc="Complete your profile with structured fields that highlight your expertise & accomplishment"
@@ -40,32 +39,21 @@ const Building = () => {
 };
 
 const BuildingPart = ({
-  active = false,
   no,
   title,
   desc,
 }: {
-  active?: boolean;
   no: string;
   title: string;
   desc: string;
 }) => {
   return (
-    <div
-      className={`w-[221] px-[16] py-[24] max-sm:w-full ${
-        active ? "bg-primary" : "bg-[#F8FAFC]"
-      } rounded-2xl ${active ? "text-white" : "#475569"} careershadow`}
-    >
+    <div className="w-[221] px-[16] py-[24] max-sm:w-full bg-[#F8FAFC] #475569 rounded-2xl  careershadow hover:bg-primary hover:text-white text-[#020617] transition-all duration-300 ease-in-out">
+      {" "}
       <div className="w-[40] h-[40] rounded-[8] bg-[#282A74] text-white flex justify-center items-center mb-[78] ">
         {no}
       </div>
-      <p
-        className={`font-medium text-[18px] mb-[16] ${
-          active ? "text-white" : "#020617"
-        }`}
-      >
-        {title}
-      </p>
+      <p className="font-medium text-[18px] mb-[16] ">{title}</p>
       <p>{desc}</p>
     </div>
   );

@@ -101,14 +101,17 @@ export const makeConnection = async (
     await httprequest.post(url, {
       receiver_id: arg.user_id,
     });
-    // remove from suggetd
-    mutate(
+
+    mutate<{ suggestions: TSuggestedNetwork[] }>(
       "/network/suggestions",
-      (current: TSuggestedNetwork[] = []) =>
-        current.filter((item) => item.id != arg.user_id),
+      (current) => ({
+        suggestions:
+          current?.suggestions.filter((item) => item.id !== arg.user_id) ?? [],
+      }),
       true
     );
-    successMessage("Connection made");
+
+    successMessage("Connection made here");
   } catch (err) {
     errorMessage(err, "unable to make conneciton");
   }

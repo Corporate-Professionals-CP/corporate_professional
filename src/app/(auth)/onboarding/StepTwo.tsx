@@ -22,6 +22,7 @@ const StepTwo = ({
         className="h-[169]"
         type="textarea"
         error={error}
+        spellCheck={true}
         {...register("profession_journey")}
       />
     </>
