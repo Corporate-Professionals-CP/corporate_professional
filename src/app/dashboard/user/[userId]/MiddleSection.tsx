@@ -147,7 +147,7 @@ const CPprofileCard = ({ user }: { user: TUser }) => {
 
       successMessage("CV retrieved");
     } catch (err) {
-      errorMessage(err, "error downloading cv");
+      errorMessage(err, "User’s CV not available for download");
     }
   };
   return (
@@ -163,10 +163,12 @@ const CPprofileCard = ({ user }: { user: TUser }) => {
         {/* <p className="text-[#64748B] text-sm">{user.job_title}</p> */}
       </div>
       <div className="flex gap-2 items-center">
-        <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
-          Connect
-        </button>
-        {!currUser?.recruiter_tag && (
+        {currUser?.id != user.id && (
+          <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
+            Connect
+          </button>
+        )}
+        {currUser?.recruiter_tag && (
           <button onClick={ondownloadCv} disabled={isMutating}>
             {isMutating ? <CPspinnerLoader size={10} /> : <DownloadIcon />}
           </button>

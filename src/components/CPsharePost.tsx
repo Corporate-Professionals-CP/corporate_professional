@@ -10,10 +10,13 @@ import {
 } from "react-share";
 
 import ShareIcon from "@/imagecomponents/ShareIcon";
+import { CopyIcon } from "@/imagecomponents";
+import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 
 function CPsharePost({ url }: { url: string }) {
   const [showShareOptions, setShowShareOptions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const copyTextToClipboard = useCopyToClipboard();
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -52,6 +55,14 @@ function CPsharePost({ url }: { url: string }) {
           <WhatsappShareButton url={url} title={"Check out this post!"}>
             <WhatsappIcon size={32} round />
           </WhatsappShareButton>
+          <button
+            className="cursor-pointer"
+            onClick={() => {
+              copyTextToClipboard(url);
+            }}
+          >
+            <CopyIcon />
+          </button>
         </div>
       )}
     </div>

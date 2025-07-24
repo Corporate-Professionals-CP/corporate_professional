@@ -15,6 +15,7 @@ import { errorMessage, successMessage } from "@/utils/toastalert";
 import { useEffect, useRef, useState } from "react";
 import { EditIcon } from "@/imagecomponents";
 import { convertImage } from "@/utils/convertHEICtoJPEG";
+import { industriesList } from "@/utils";
 
 const General = () => {
   const { user } = useUser((state) => state);
@@ -83,18 +84,9 @@ const General = () => {
           <label className="mb-2 text-sm text-[#475569]">
             Which industry best describes your work?
           </label>
+
           <CPselect
-            items={[
-              { text: "Technology", val: "Technology" },
-              { text: "Finance", val: "Finance" },
-              { text: "Healthcare", val: "Healthcare" },
-              { text: "Education", val: "Education" },
-              { text: "Manufacturing", val: "Manufacturing" },
-              { text: "Consulting", val: "Consulting" },
-              { text: "Government", val: "Government" },
-              { text: "Nonprofit", val: "Nonprofit" },
-              { text: "Other", val: "Other" },
-            ]}
+            items={industriesList.map((ind) => ({ text: ind, val: ind }))}
             onChange={(val: string) => setValue("industry", val)}
             value={watch("industry")}
             error={errors.industry?.message}
@@ -239,7 +231,6 @@ function UpdateImage() {
     }
   };
 
-  console.log(previewUrl, "PREVIEW STATE");
   const handleUpload = async () => {
     if (!file) return;
 

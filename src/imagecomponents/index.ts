@@ -31,3 +31,4 @@ export { default as CheveronleftIcon } from "./CheveronleftIcon";
 export { default as CheveronrightIcon } from "./CheveronrightIcon";
 export { default as EyeOnIcon } from "./EyeOnIcon";
 export { default as EyeOffIcon } from "./EyeOffIcon";
+export { default as CopyIcon } from "./CopyIcon";

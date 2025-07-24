@@ -122,7 +122,7 @@ TCPpostCardFooter) {
         </button>
         <div className="relative">
           <CPsharePost
-            url={`http://localhost:3000/dashboard/post/${post_id}`}
+            url={`${window.location.origin}/dashboard/post/${post_id}`}
           />
         </div>
       </div>

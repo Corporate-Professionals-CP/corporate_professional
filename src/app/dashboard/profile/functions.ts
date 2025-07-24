@@ -29,7 +29,7 @@ export const addskills = async (
   { arg }: { arg: TSkillsSchema }
 ) => {
   const response = await httprequest.post("skill/", {
-    names: [arg.skill],
+    names: arg.skill,
   });
   mutate(
     "/skill/",
@@ -60,9 +60,9 @@ export const getCertifications = () => {
 
 export const submitCertification = async (
   url: string,
-  { arg }: { arg: TCertificationSchema }
+  { arg }: { arg: TCertificationSchema & { editId: null | string } }
 ) => {
-  const response = await httprequest.post("certification/", {
+  const formdata = {
     name: arg.name,
     organization: arg.organization,
     url: arg.url,
@@ -70,12 +70,27 @@ export const submitCertification = async (
     media_url: arg.url,
     issued_date: arg.issued_date,
     expiration_date: arg.expiration_date,
-  });
-  mutate(
-    "/certification/me",
-    (current: TCertification[] = []) => [...current, response.data],
-    true
-  );
+  };
+  let response;
+  if (arg.editId) {
+    response = await httprequest.put(`certification/${arg.editId}`, formdata);
+  } else {
+    response = await httprequest.post("certification/", formdata);
+  }
+  if (arg.editId) {
+    mutate(
+      "/certification/me",
+      (current: TCertification[] = []) =>
+        current.map((el) => (el.id == arg.editId ? response.data : el)),
+      true
+    );
+  } else {
+    mutate(
+      "/certification/me",
+      (current: TCertification[] = []) => [...current, response.data],
+      true
+    );
+  }
   return response.data;
 };
 
@@ -101,9 +116,9 @@ export const getEducations = () => {
 
 export async function addEducation(
   url: string,
-  { arg }: { arg: TEducationSchema }
+  { arg }: { arg: TEducationSchema & { editId: null | string } }
 ) {
-  const response = await httprequest.post("/education/", {
+  const data = {
     degree: arg.degree,
     school: arg.school,
     location: arg.location,
@@ -112,12 +127,27 @@ export async function addEducation(
     media_url: arg.url,
     from_date: arg.from_date,
     to_date: arg.to_date,
-  });
-  mutate(
-    "/education/me",
-    (current: TEducation[] = []) => [...current, response.data],
-    true
-  );
+  };
+  let response;
+  if (arg.editId) {
+    response = await httprequest.put(`/education/${arg.editId}`, data);
+  } else {
+    response = await httprequest.post("/education/", data);
+  }
+  if (arg.editId) {
+    mutate(
+      "/education/me",
+      (current: TEducation[] = []) =>
+        current.map((el) => (el.id == arg.editId ? response.data : el)),
+      true
+    );
+  } else {
+    mutate(
+      "/education/me",
+      (current: TEducation[] = []) => [...current, response.data],
+      true
+    );
+  }
   return response.data;
 }
 
@@ -142,9 +172,9 @@ export const getVolunteers = () => {
 
 export async function addvolunteer(
   url: string,
-  { arg }: { arg: TVolunteerSchema }
+  { arg }: { arg: TVolunteerSchema & { editId: null | string } }
 ) {
-  const response = await httprequest.post("/volunteering/", {
+  const formdata = {
     role: arg.role,
     organization: arg.organization,
     organization_url: arg.organization_url,
@@ -153,12 +183,27 @@ export async function addvolunteer(
     end_date: arg.end_date,
     // currently_volunteering: arg.currently_volunteering,
     description: arg.description,
-  });
-  mutate(
-    "/volunteering/",
-    (current: TVolunteering[] = []) => [...current, response.data],
-    true
-  );
+  };
+  let response;
+  if (arg.editId) {
+    response = await httprequest.put(`/volunteering/${arg.editId}`, formdata);
+  } else {
+    response = await httprequest.post("/volunteering/", formdata);
+  }
+  if (arg.editId) {
+    mutate(
+      "/volunteering/",
+      (current: TVolunteering[] = []) =>
+        current.map((el) => (el.id == arg.editId ? response.data : el)),
+      true
+    );
+  } else {
+    mutate(
+      "/volunteering/",
+      (current: TVolunteering[] = []) => [...current, response.data],
+      true
+    );
+  }
   return response.data;
 }
 
@@ -183,9 +228,9 @@ export const getWorkExperience = () => {
 
 export const addexperience = async (
   url: string,
-  { arg }: { arg: TWorkExperienceSchema }
+  { arg }: { arg: TWorkExperienceSchema & { editId: null | string } }
 ) => {
-  const response = await httprequest.post("/work-experiences/", {
+  const formdata = {
     title: arg.title,
     company: arg.company,
     company_url: arg.url,
@@ -196,12 +241,30 @@ export const addexperience = async (
     // currently_working: false,
     description: arg.description,
     // achievements: string
-  });
-  mutate(
-    "/work-experiences/",
-    (current: TWorkExperience[] = []) => [...current, response.data],
-    true
-  );
+  };
+  let response;
+  if (arg.editId) {
+    response = await httprequest.put(
+      `/work-experiences/${arg.editId}`,
+      formdata
+    );
+  } else {
+    response = await httprequest.post("/work-experiences/", formdata);
+  }
+  if (arg.editId) {
+    mutate(
+      "/work-experiences/",
+      (current: TWorkExperience[] = []) =>
+        current.map((el) => (el.id == arg.editId ? response.data : el)),
+      true
+    );
+  } else {
+    mutate(
+      "/work-experiences/",
+      (current: TWorkExperience[] = []) => [...current, response.data],
+      true
+    );
+  }
   return response.data;
 };
 
@@ -227,19 +290,34 @@ export const getContacts = () => {
 
 export async function addcontact(
   url: string,
-  { arg }: { arg: TContactSchema }
+  { arg }: { arg: TContactSchema & { editId: null | string } }
 ) {
-  const response = await httprequest.post(url, {
+  const formdata = {
     type: arg.type,
     platform_name: arg.type == "custom" ? arg.platform_name : arg.type,
     username: arg.username,
     url: arg.url,
-  });
-  mutate(
-    "/contacts/",
-    (current: TContact[] = []) => [...current, response.data],
-    true
-  );
+  };
+  let response;
+  if (arg.editId) {
+    response = await httprequest.put(`/contacts/${arg.editId}`, formdata);
+  } else {
+    response = await httprequest.post(url, formdata);
+  }
+  if (arg.editId) {
+    mutate(
+      "/contacts/",
+      (current: TContact[] = []) =>
+        current.map((el) => (el.id == arg.editId ? response.data : el)),
+      true
+    );
+  } else {
+    mutate(
+      "/contacts/",
+      (current: TContact[] = []) => [...current, response.data],
+      true
+    );
+  }
   return response.data;
 }
 

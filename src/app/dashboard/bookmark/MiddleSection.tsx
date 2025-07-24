@@ -8,6 +8,7 @@ import { fetchBookmarkdata } from "./functions";
 
 import MIddleSectionContainer from "../MIddleSectionContainer";
 import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
+import Link from "next/link";
 
 function MiddleSection() {
   const { data, isLoading } = useSWR("/bookmarks/bookmarks", fetchBookmarkdata);
@@ -15,7 +16,9 @@ function MiddleSection() {
   return (
     <MIddleSectionContainer>
       <div className="mb-[18] px-6 py-5  border-b border-[#E2E8F0] text-slate font-medium flex items-center gap-6">
-        <LeftArrow />
+        <Link href="/dashboard">
+          <LeftArrow />
+        </Link>
         <span>Bookmarks</span>
       </div>
       <div className="p-[18]">

@@ -21,10 +21,11 @@ const FAQList = [
     answer:
       "Yes, our streamlined approach to recruitment solutions allows for our Corporate Clients and partners to post vacancies on our job board giving our members exclusive access to roles that become available on the market.",
   },
-  // {
-  //   question: "How does TC&P protect my privacy?",
-  //   answer: "",
-  // },
+  {
+    question: "How does TC&P protect my privacy?",
+    answer:
+      "We take your privacy seriously. All user data is encrypted, securely stored, and never shared without your consent. You control what information you share, and we follow strict privacy and security standards, including GDPR compliance. Our platform is built with privacy by design to ensure a safe and trusted environment for all members",
+  },
   {
     question: "What makes TC&P different from other professional networks?",
     answer:

@@ -1,5 +1,6 @@
 "use client";
 import useAuth from "@/hooks/useAuth";
+import useNotification from "@/hooks/useNotification";
 import {
   BookmarkIcon,
   HomeIcon,
@@ -17,6 +18,7 @@ function LeftSection() {
   useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const { notificationUnreadCount } = useNotification();
   return (
     <section className="w-[420] py-4 p-8 flex justify-end shrink overflow-y-scroll max-lg:w-max max-sm:hidden ">
       <div className="flex flex-col justify-between">
@@ -41,7 +43,14 @@ function LeftSection() {
             />
           </Link>
           <Link href="/dashboard/notification">
-            <NotificationIcon active={pathname == "/dashboard/notification"} />
+            <div className="relative">
+              <NotificationIcon
+                active={pathname == "/dashboard/notification"}
+              />
+              <span className="text-red-500 font-bold text-xs absolute top-0 right-0">
+                {notificationUnreadCount}
+              </span>
+            </div>
           </Link>
           <button
             onClick={() => {

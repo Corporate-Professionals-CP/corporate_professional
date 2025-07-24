@@ -65,7 +65,7 @@ const CPrepostModal = ({
             type="textarea"
             placeholder="Add your thoughts..."
             {...register("quote")}
-            className="w-full resize-none"
+            className="w-full "
           />
 
           <div className="border border-gray-200 rounded-lg p-3 bg-[#F9FAFB]">

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactSchema, TContact, TContactSchema } from "./type";
 import useSWRMutation from "swr/mutation";
@@ -14,7 +14,7 @@ import CPdeleteModal from "@/components/CPdeleteModal";
 
 const Contact = () => {
   const { data = [], isLoading } = useSWR("/contacts/", getContacts);
-
+  const [activeData, setActiveData] = useState<null | TContact>(null);
   const [addlink, setAddLink] = useState(false);
   return (
     <section>
@@ -27,25 +27,31 @@ const Contact = () => {
               setAddLink(true);
             }}
           >
-            Add link
+            Add
           </button>
         )}
       </div>
       {addlink ? (
-        <AddNewContact setAddLink={setAddLink} />
+        <AddNewContact editContact={activeData} setAddLink={setAddLink} />
       ) : isLoading ? (
         <ContactSkeleton />
       ) : (
-        <ListContact setAddLink={setAddLink} contacts={data} />
+        <ListContact
+          setActiveContact={setActiveData}
+          setAddLink={setAddLink}
+          contacts={data}
+        />
       )}
     </section>
   );
 };
 
 const ListContact = ({
+  setActiveContact,
   setAddLink,
   contacts = [],
 }: {
+  setActiveContact: React.Dispatch<React.SetStateAction<null | TContact>>;
   setAddLink: React.Dispatch<React.SetStateAction<boolean>>;
   contacts?: TContact[];
 }) => {
@@ -60,13 +66,22 @@ const ListContact = ({
   }
 
   return contacts.map((contact) => (
-    <CPcontact key={contact.id} contact={contact} />
+    <CPcontact
+      key={contact.id}
+      contact={contact}
+      onEdit={() => {
+        setAddLink(true);
+        setActiveContact(contact);
+      }}
+    />
   ));
 };
 
 const AddNewContact = ({
   setAddLink,
+  editContact,
 }: {
+  editContact: null | TContact;
   setAddLink: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
@@ -81,6 +96,18 @@ const AddNewContact = ({
     "/contacts/",
     addcontact
   );
+  useEffect(() => {
+    if (editContact) {
+      if (!["X", "Custom"].includes(editContact.type)) {
+        setValue("type", "custom");
+      } else {
+        setValue("type", editContact.type);
+      }
+      setValue("platform_name", editContact.platform_name);
+      setValue("url", editContact.url);
+      setValue("username", editContact.username);
+    }
+  }, [editContact, setValue]);
   const onClick = async () => {
     const values = getValues();
     let valid = true;
@@ -90,8 +117,9 @@ const AddNewContact = ({
       valid = await trigger(["type", "url", "username"]);
     }
     if (!valid) return;
+    const editId = editContact?.id || null;
     try {
-      await submit(values);
+      await submit({ ...values, editId: editId });
       successMessage("Contact added successfully");
       setAddLink(false);
     } catch (err) {
@@ -106,7 +134,6 @@ const AddNewContact = ({
             <label className="mb-2 text-sm text-[#475569]">Type</label>
             <CPselect
               items={[
-                { text: "Linkedin", val: "linkedin" },
                 { text: "X", val: "X" },
                 { text: "Email", val: "email" },
                 { text: "Custom", val: "custom" },
@@ -131,7 +158,7 @@ const AddNewContact = ({
           <div className="flex-1">
             <label className="mb-2 text-sm text-[#475569]">Platform_type</label>
             <CPInput
-              placeholder="Linkdin"
+              placeholder="Platform name"
               {...register("platform_name")}
               error={errors.platform_name?.message}
             />
@@ -141,7 +168,7 @@ const AddNewContact = ({
         <div className="flex-1">
           <label className="mb-2 text-sm text-[#475569]">URL</label>
           <CPInput
-            placeholder="https://linkedin.com/wade"
+            placeholder="https://example.com"
             {...register("url")}
             error={errors.url?.message}
           />
@@ -162,7 +189,13 @@ const AddNewContact = ({
   );
 };
 
-const CPcontact = ({ contact }: { contact: TContact }) => {
+const CPcontact = ({
+  contact,
+  onEdit,
+}: {
+  contact: TContact;
+  onEdit: () => void;
+}) => {
   const { trigger, isMutating } = useSWRMutation(
     `/contacts/${contact.id}`,
     deletecontact
@@ -196,6 +229,13 @@ const CPcontact = ({ contact }: { contact: TContact }) => {
             onClick={() => setdeletemodal(true)}
           >
             Delete
+          </button>
+
+          <button
+            className="text-xs text-[#64748B] cursor-pointer"
+            onClick={onEdit}
+          >
+            Edit
           </button>
         </div>
       </div>

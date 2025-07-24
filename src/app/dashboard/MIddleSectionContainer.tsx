@@ -62,9 +62,12 @@ function MobileSidebar() {
             </p>
             <p className="text-xs font-medium text-primary">Get Started</p>
           </div>
-          <button className="w-full text-center text-xs text-[#020617] p-3 rounded-full border border-[#E2E8F0] font-medium">
+          <a
+            href="mailto:info@corporatesandprofessionals.com"
+            className="w-full text-center text-xs text-[#020617] p-3 rounded-full border border-[#E2E8F0] font-medium"
+          >
             Contact support
-          </button>
+          </a>
           <div className="mt-auto mb-7 px-3">
             <button onClick={() => setAccountOpen(true)}>
               <CPprofileImg size={32} />

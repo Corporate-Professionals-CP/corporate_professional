@@ -18,13 +18,7 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
 
   const { trigger, isMutating } = useSWRMutation("/comments/", submitComment);
 
-  const {
-    handleSubmit,
-    register,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm<TCommentSchema>({
+  const { handleSubmit, register, reset, watch } = useForm<TCommentSchema>({
     resolver: zodResolver(CommentSchema),
   });
   const onSubmit = async (data: TCommentSchema) => {
@@ -52,15 +46,11 @@ const CPpostCommentBody = ({ post_id }: { post_id: string }) => {
         <div className="flex items-center gap-2 mb-2">
           <CPprofileImg size={35} />
           <textarea
-            className="flex-1 min-h-[30] h-[30] p-1 bg-[#FFFF] border-b border-[#E2E8F0] "
+            className="flex-1 min-h-[30] h-[30] p-1 bg-[#FFFF] border-b border-[#E2E8F0] outline-0 focus:border-primary "
             {...register("comment")}
           ></textarea>
         </div>
-        {errors.comment?.message && (
-          <p className="text-[#E62E2E] text-sm -translate-1.5 mb-0">
-            {errors.comment?.message}
-          </p>
-        )}
+
         {comment?.length > 0 && (
           <div className="flex justify-end">
             <CPsmallButton

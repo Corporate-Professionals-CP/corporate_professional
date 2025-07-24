@@ -72,7 +72,7 @@ function CPselect({
         {items?.find((v) => v.val == value)?.text || (
           <span className="text-[#64748B]">{placeholder}</span>
         )}
-        <div className="absolute right-4 top-3.5">
+        <div className="absolute right-4 top-3.5 rotate-180">
           <DropDownIcon />
         </div>
       </div>

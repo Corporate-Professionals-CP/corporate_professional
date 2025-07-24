@@ -3,7 +3,7 @@ import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   TWorkExperience,
@@ -27,7 +27,7 @@ const WorkExperience = () => {
     "/work-experiences/",
     getWorkExperience
   );
-
+  const [activeData, setActiveData] = useState<null | TWorkExperience>(null);
   const [addExperience, setAddExperience] = useState(false);
   return (
     <div>
@@ -36,29 +36,42 @@ const WorkExperience = () => {
         {!addExperience && (
           <button
             className="text-[#050505] text-sm font-medium px-3 py-2 rounded-lg bg-[#F8FAFC] "
-            onClick={() => setAddExperience(true)}
+            onClick={() => {
+              setAddExperience(true);
+              setActiveData(null);
+            }}
           >
             Add workplace
           </button>
         )}
       </div>
       {addExperience ? (
-        <AddNewExperience setAddExperience={setAddExperience} />
+        <AddNewExperience
+          editExperience={activeData}
+          setAddExperience={setAddExperience}
+        />
       ) : isLoading ? (
         <WorkExperienceSkeleton />
       ) : (
-        <ListContact setAddExperience={setAddExperience} experiences={data} />
+        <ListContact
+          setAddExperience={setAddExperience}
+          setActiveExperience={setActiveData}
+          experiences={data}
+        />
       )}
     </div>
   );
 };
 
 const ListContact = ({
+  setActiveExperience,
   setAddExperience,
   experiences = [],
 }: {
+  setActiveExperience: React.Dispatch<
+    React.SetStateAction<null | TWorkExperience>
+  >;
   setAddExperience: React.Dispatch<React.SetStateAction<boolean>>;
-
   experiences?: TWorkExperience[];
 }) => {
   const [deletemodal, setdeletemodal] = useState(false);
@@ -103,6 +116,10 @@ const ListContact = ({
             setdeletemodal(true);
             setActiveId(exp.id);
           }}
+          onEdit={() => {
+            setAddExperience(true);
+            setActiveExperience(exp);
+          }}
         />
       ))}
       {deletemodal && (
@@ -117,13 +134,16 @@ const ListContact = ({
 };
 
 function AddNewExperience({
+  editExperience,
   setAddExperience,
 }: {
+  editExperience: null | TWorkExperience;
   setAddExperience: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm<TWorkExperienceSchema>({
     resolver: zodResolver(WorkExperienceSchema),
@@ -132,10 +152,24 @@ function AddNewExperience({
     "/work-experiences/",
     addexperience
   );
+  useEffect(() => {
+    if (editExperience) {
+      setValue("company", editExperience?.company);
+      setValue("description", editExperience?.description);
+      setValue("from", editExperience?.start_date);
+      setValue("location", editExperience?.location);
+      setValue("title", editExperience?.title);
+      setValue("to", editExperience?.end_date);
+      setValue("url", editExperience?.company_url);
+    }
+  }, [editExperience, setValue]);
   const onClick = async (data: TWorkExperienceSchema) => {
+    const editId = editExperience?.id || null;
     try {
-      await trigger(data);
-      successMessage("Work Experience added successfully");
+      await trigger({ ...data, editId: editId });
+      successMessage(
+        `Work Experience ${editId ? "edited" : "added"} successfully`
+      );
       setAddExperience(false);
     } catch (err) {
       errorMessage(err);

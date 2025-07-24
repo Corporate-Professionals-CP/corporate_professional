@@ -1,5 +1,5 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CertificationSchema,
   TCertification,
@@ -27,7 +27,7 @@ function Certifications() {
     "/certification/me",
     getCertifications
   );
-
+  const [activeData, setActiveData] = useState<null | TCertification>(null);
   const [addCertifications, setAddCertifications] = useState(false);
   return (
     <div>
@@ -36,19 +36,26 @@ function Certifications() {
         {!addCertifications && (
           <button
             className="text-[#050505] text-sm font-medium px-3 py-2 rounded-lg bg-[#F8FAFC] "
-            onClick={() => setAddCertifications(true)}
+            onClick={() => {
+              setAddCertifications(true);
+              setActiveData(null);
+            }}
           >
             Add Certification
           </button>
         )}
       </div>
       {addCertifications ? (
-        <AddNewCertification setAddCertifications={setAddCertifications} />
+        <AddNewCertification
+          editCertification={activeData}
+          setAddCertifications={setAddCertifications}
+        />
       ) : isLoading ? (
         <CertificationSkeleton />
       ) : (
         <ListContact
           setAddCertifications={setAddCertifications}
+          setActiveCertification={setActiveData}
           certifications={data}
         />
       )}
@@ -57,9 +64,13 @@ function Certifications() {
 }
 
 const ListContact = ({
+  setActiveCertification,
   setAddCertifications,
   certifications,
 }: {
+  setActiveCertification: React.Dispatch<
+    React.SetStateAction<null | TCertification>
+  >;
   setAddCertifications: React.Dispatch<React.SetStateAction<boolean>>;
   certifications: TCertification[];
 }) => {
@@ -105,6 +116,10 @@ const ListContact = ({
 
             setActiveId(item.id);
           }}
+          onEdit={() => {
+            setAddCertifications(true);
+            setActiveCertification(item);
+          }}
         />
       ))}
       {deletemodal && (
@@ -119,13 +134,16 @@ const ListContact = ({
 };
 
 function AddNewCertification({
+  editCertification,
   setAddCertifications,
 }: {
+  editCertification: null | TCertification;
   setAddCertifications: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm<TCertificationSchema>({
     resolver: zodResolver(CertificationSchema),
@@ -134,10 +152,24 @@ function AddNewCertification({
     "/certification/",
     submitCertification
   );
+  useEffect(() => {
+    if (editCertification) {
+      setValue("description", editCertification?.description);
+      setValue("expiration_date", editCertification?.expiration_date);
+      setValue("issued_date", editCertification?.issued_date);
+      setValue("name", editCertification?.name);
+      setValue("organization", editCertification.organization);
+      setValue("url", editCertification.url);
+    }
+  }, [editCertification, setValue]);
+
   const onSubmit = async (data: TCertificationSchema) => {
+    const editId = editCertification?.id || null;
     try {
-      await trigger(data);
-      successMessage("Certification added");
+      await trigger({ ...data, editId: editId });
+      successMessage(
+        `Certification ${editId ? "edited" : "added"} successfully`
+      );
       setAddCertifications(false);
     } catch (err) {
       errorMessage(err);

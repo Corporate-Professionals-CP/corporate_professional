@@ -1,6 +1,10 @@
 export type TNotification = {
   id: string;
-  type: "post_reaction" | "connection_request";
+  type:
+    | "post_reaction"
+    | "connection_request"
+    | "connection_accept"
+    | "post_comment";
   message: string;
   is_read: boolean;
   created_at: string;

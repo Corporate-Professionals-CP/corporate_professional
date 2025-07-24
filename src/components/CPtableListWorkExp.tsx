@@ -8,6 +8,7 @@ function CPtableListWorkExp({
   list,
   link,
   onDelete = null,
+  onEdit = null,
 }: {
   left?: string;
   title?: string;
@@ -15,6 +16,7 @@ function CPtableListWorkExp({
   list?: string[];
   link?: string;
   onDelete?: (() => void) | null;
+  onEdit?: (() => void) | null;
 }) {
   return (
     <div className="flex gap-2 mb-10 max-sm:flex-col">
@@ -46,6 +48,14 @@ function CPtableListWorkExp({
               onClick={onDelete}
             >
               Delete
+            </button>
+          )}
+          {onEdit && (
+            <button
+              className="text-xs text-[#64748B] cursor-pointer"
+              onClick={onEdit}
+            >
+              Edit
             </button>
           )}
         </div>

@@ -10,9 +10,12 @@ function CPSupportCard() {
         <p className="mb-2 text-sm font-medium text-slate">Need help?</p>
         <p className="text-[#334155] text-sm">Contact our cusomer support</p>
       </div>
-      <button className="text-slate bg-white font-medium border border-[#E2E8F0]  py-2 px-3">
+      <a
+        href="mailto:info@corporatesandprofessionals.com"
+        className="text-slate bg-white font-medium border border-[#E2E8F0]  py-2 px-3"
+      >
         Contact support
-      </button>
+      </a>
     </div>
   );
 }

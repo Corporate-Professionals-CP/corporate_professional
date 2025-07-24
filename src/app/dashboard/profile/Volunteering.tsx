@@ -1,5 +1,5 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TVolunteering, TVolunteerSchema, VolunteerSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 
 function Volunteering() {
   const { data = [], isLoading } = useSWR("/volunteering/", getVolunteers);
-
+  const [activeData, setActiveData] = useState<null | TVolunteering>(null);
   const [addVolunteering, setAddVolunteering] = useState(false);
   return (
     <div>
@@ -26,20 +26,27 @@ function Volunteering() {
         {!addVolunteering && (
           <button
             className="text-[#050505] text-sm font-medium px-3 py-2 rounded-lg bg-[#F8FAFC] "
-            onClick={() => setAddVolunteering(true)}
+            onClick={() => {
+              setAddVolunteering(true);
+              setActiveData(null);
+            }}
           >
             Add Volunteering
           </button>
         )}
       </div>
       {addVolunteering ? (
-        <AddNewVolunteer setAddVolunteering={setAddVolunteering} />
+        <AddNewVolunteer
+          editVolunteering={activeData}
+          setAddVolunteering={setAddVolunteering}
+        />
       ) : isLoading ? (
         <VolunteeringSkeleton />
       ) : (
         <ListContact
           setAddVolunteering={setAddVolunteering}
           volunteers={data}
+          setActiveVolunteering={setActiveData}
         />
       )}
     </div>
@@ -47,9 +54,13 @@ function Volunteering() {
 }
 
 const ListContact = ({
+  setActiveVolunteering,
   setAddVolunteering,
   volunteers = [],
 }: {
+  setActiveVolunteering: React.Dispatch<
+    React.SetStateAction<null | TVolunteering>
+  >;
   setAddVolunteering: React.Dispatch<React.SetStateAction<boolean>>;
   volunteers?: TVolunteering[];
 }) => {
@@ -94,6 +105,10 @@ const ListContact = ({
             setdeletemodal(true);
             setActiveId(vol.id);
           }}
+          onEdit={() => {
+            setAddVolunteering(true);
+            setActiveVolunteering(vol);
+          }}
         />
       ))}
       {deletemodal && (
@@ -108,25 +123,44 @@ const ListContact = ({
 };
 
 function AddNewVolunteer({
+  editVolunteering,
   setAddVolunteering,
 }: {
+  editVolunteering: null | TVolunteering;
   setAddVolunteering: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm<TVolunteerSchema>({
     resolver: zodResolver(VolunteerSchema),
   });
+
+  useEffect(() => {
+    if (editVolunteering) {
+      setValue("description", editVolunteering?.description);
+      setValue("end_date", editVolunteering?.end_date);
+      setValue("location", editVolunteering?.location);
+      setValue("organization", editVolunteering?.organization);
+      setValue("organization_url", editVolunteering?.organization_url);
+      setValue("role", editVolunteering?.role);
+      setValue("start_date", editVolunteering?.start_date);
+    }
+  }, [editVolunteering, setValue]);
+
   const { trigger, isMutating } = useSWRMutation(
     "/volunteering/",
     addvolunteer
   );
   const onclick = async (data: TVolunteerSchema) => {
+    const editId = editVolunteering?.id || null;
     try {
-      await trigger(data);
-      successMessage("Volunteering added successfully");
+      await trigger({ ...data, editId: editId });
+      successMessage(
+        `Volunteering ${editId ? "edited" : "added"}  successfully`
+      );
       setAddVolunteering(false);
     } catch (err) {
       errorMessage(err);

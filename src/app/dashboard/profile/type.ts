@@ -18,8 +18,8 @@ export type TProfileSchema = z.infer<typeof ProfileSchema>;
 // CONTACT SCHEMA
 export const ContactSchema = z.object({
   type: z.string({ required_error: "Type is required" }),
-  url: z.string().min(1, "url is required"),
-  username: z.string().min(1, "Username is required"),
+  url: z.string().optional(),
+  username: z.string().optional(),
   platform_name: z.string().min(1, "Platform is required"),
 });
 
@@ -57,47 +57,104 @@ export const WorkExperienceSchema = z
 export type TWorkExperienceSchema = z.infer<typeof WorkExperienceSchema>;
 
 // VOLUNTEERING SCHEMA
-export const VolunteerSchema = z.object({
-  start_date: z.string({ required_error: "Issue date is required" }),
-  end_date: z.string({ required_error: "Expiry date is required" }),
-  role: z.string().min(1, "Name is required"),
-  organization: z.string().min(1, "Organization is required"),
-  organization_url: z.string().min(0),
-  description: z.string().min(10, "Description is required"),
-  location: z.string().min(1),
-  // currently_volunteering: z.boolean().default(false),
-});
+export const VolunteerSchema = z
+  .object({
+    start_date: z.string().min(1, { message: "Issue date is required" }),
+    end_date: z.string().min(1, { message: "Expiry date is required" }),
+    role: z.string().min(1, "Name is required"),
+    organization: z.string().min(1, "Organization is required"),
+    organization_url: z.string().optional(),
+    description: z
+      .string()
+      .min(10, { message: "Description must be at least 10 characters" }),
+    location: z.string().min(1, { message: "Location is required" }),
+    // currently_volunteering: z.boolean().default(false),
+  })
+  .refine(
+    (data) => {
+      const fromDate = new Date(data.start_date);
+      const toDate = new Date(data.end_date);
+      return (
+        !isNaN(fromDate.getTime()) &&
+        !isNaN(toDate.getTime()) &&
+        toDate >= fromDate
+      );
+    },
+    {
+      message: "End date cannot be before start date",
+      path: ["end_date"],
+    }
+  );
 
 export type TVolunteerSchema = z.infer<typeof VolunteerSchema>;
 
 // CERTIFICATION SCHEMA
-export const CertificationSchema = z.object({
-  issued_date: z.string({ required_error: "Issue date is required" }),
-  expiration_date: z.string({ required_error: "Expiry date is required" }),
-  name: z.string().min(1, "Name is required"),
-  organization: z.string().min(1, "Organization is required"),
-  url: z.string().min(0),
-  description: z.string().min(10, "Description is required"),
-});
+export const CertificationSchema = z
+  .object({
+    issued_date: z.string().min(1, { message: "Issue date is required" }),
+    expiration_date: z.string().min(1, { message: "Expiry date is required" }),
+    name: z.string().min(1, "Name is required"),
+    organization: z.string().min(1, "Organization is required"),
+    url: z.string().optional(),
+    description: z
+      .string()
+      .min(10, { message: "Description must be at least 10 characters" }),
+  })
+  .refine(
+    (data) => {
+      const fromDate = new Date(data.issued_date);
+      const toDate = new Date(data.expiration_date);
+      return (
+        !isNaN(fromDate.getTime()) &&
+        !isNaN(toDate.getTime()) &&
+        toDate >= fromDate
+      );
+    },
+    {
+      message: "End date cannot be before start date",
+      path: ["expiration_date"],
+    }
+  );
 
 export type TCertificationSchema = z.infer<typeof CertificationSchema>;
 
 // EDUCATION SCHEMA
-export const EducationSchema = z.object({
-  from_date: z.string({ required_error: "Issue date is required" }),
-  to_date: z.string({ required_error: "Expiry date is required" }),
-  degree: z.string().min(1, "Name is required"),
-  school: z.string().min(1, "Organization is required"),
-  location: z.string().min(1, "Organization is required"),
-  url: z.string().min(0),
-  description: z.string().min(10, "Description is required"),
-});
+export const EducationSchema = z
+  .object({
+    from_date: z.string({ required_error: "Issue date is required" }),
+    to_date: z.string({ required_error: "Expiry date is required" }),
+    degree: z.string().min(1, "Name is required"),
+    school: z.string().min(1, "Organization is required"),
+    location: z.string().min(1, "Organization is required"),
+    url: z.string().optional(),
+    description: z
+      .string()
+      .min(10, { message: "Description must be at least 10 characters" }),
+  })
+  .refine(
+    (data) => {
+      const fromDate = new Date(data.from_date);
+      const toDate = new Date(data.to_date);
+      return (
+        !isNaN(fromDate.getTime()) &&
+        !isNaN(toDate.getTime()) &&
+        toDate >= fromDate
+      );
+    },
+    {
+      message: "End date cannot be before start date",
+      path: ["to_date"],
+    }
+  );
 
 export type TEducationSchema = z.infer<typeof EducationSchema>;
 
 // SKILLS SCHEMA
 export const SkillsSchema = z.object({
-  skill: z.string().min(2).max(15),
+  skill: z
+    .array(z.string().min(2, "Too short"))
+    .min(1, "Select at least one skill")
+    .max(15, "You can select up to 15 skills"),
 });
 
 export type TSkillsSchema = z.infer<typeof SkillsSchema>;

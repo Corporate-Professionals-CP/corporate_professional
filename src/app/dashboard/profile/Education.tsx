@@ -1,5 +1,5 @@
 import CPtableListWorkExp from "@/components/CPtableListWorkExp";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EducationSchema, TEducation, TEducationSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 
 function Education() {
   const { data = [], isLoading } = useSWR("/education/me", getEducations);
+  const [activeData, setActiveData] = useState<null | TEducation>(null);
   const [addEduction, setAddEduction] = useState(false);
   return (
     <div>
@@ -24,27 +25,39 @@ function Education() {
         {!addEduction && (
           <button
             className="text-[#050505] text-sm font-medium px-3 py-2 rounded-lg bg-[#F8FAFC] "
-            onClick={() => setAddEduction(true)}
+            onClick={() => {
+              setAddEduction(true);
+              setActiveData(null);
+            }}
           >
             Add Education
           </button>
         )}
       </div>
       {addEduction ? (
-        <AddNewEduction setAddEduction={setAddEduction} />
+        <AddNewEduction
+          editEducation={activeData}
+          setAddEduction={setAddEduction}
+        />
       ) : isLoading ? (
         <EducationSkeleton />
       ) : (
-        <ListContact setAddEduction={setAddEduction} educations={data} />
+        <ListContact
+          setAddEduction={setAddEduction}
+          educations={data}
+          setActiveEducation={setActiveData}
+        />
       )}
     </div>
   );
 }
 
 const ListContact = ({
+  setActiveEducation,
   setAddEduction,
   educations = [],
 }: {
+  setActiveEducation: React.Dispatch<React.SetStateAction<null | TEducation>>;
   setAddEduction: React.Dispatch<React.SetStateAction<boolean>>;
   educations?: TEducation[];
 }) => {
@@ -87,8 +100,11 @@ const ListContact = ({
           list={[edu.description]}
           onDelete={() => {
             setdeletemodal(true);
-
             setActiveId(edu.id);
+          }}
+          onEdit={() => {
+            setAddEduction(true);
+            setActiveEducation(edu);
           }}
         />
       ))}
@@ -104,22 +120,37 @@ const ListContact = ({
 };
 
 function AddNewEduction({
+  editEducation,
   setAddEduction,
 }: {
+  editEducation: null | TEducation;
   setAddEduction: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm<TEducationSchema>({
     resolver: zodResolver(EducationSchema),
   });
+  useEffect(() => {
+    if (editEducation) {
+      setValue("degree", editEducation?.degree);
+      setValue("description", editEducation?.description);
+      setValue("from_date", editEducation?.from_date);
+      setValue("to_date", editEducation?.to_date);
+      setValue("location", editEducation.location);
+      setValue("school", editEducation.school);
+      setValue("url", editEducation.url);
+    }
+  }, [editEducation, setValue]);
   const { trigger, isMutating } = useSWRMutation("/education/", addEducation);
   const onclick = async (data: TEducationSchema) => {
+    const editId = editEducation?.id || null;
     try {
-      await trigger(data);
-      successMessage("Education added successfully");
+      await trigger({ ...data, editId: editId });
+      successMessage(`Education ${editId ? "edited" : "added"} successfully`);
       setAddEduction(false);
     } catch (err) {
       errorMessage(err);

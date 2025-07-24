@@ -64,6 +64,7 @@ export const addpost = async (
     tags: arg.tags,
     media_urls: arg.media_urls,
   });
+
   return response.data;
 };
 
