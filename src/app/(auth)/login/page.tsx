@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, TLoginSchema } from "./type";
 import useSWRMutation from "swr/mutation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import useUser from "@/statestore/useUser";
@@ -19,6 +19,14 @@ import VerifyEmailModal from "../VerifyEmailModal";
 import GoogleIcon from "@/imagecomponents/GoogleIcon";
 import AppleIcon from "@/imagecomponents/AppleIcon";
 import FormPasswordModel from "./FormPasswordModel";
+import { cplogo } from "@/assets";
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    google: any;
+  }
+}
 
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,7 +36,15 @@ export default function Login() {
   const setUser = useUser((state) => state.setUser);
   const router = useRouter();
   const { trigger, isMutating } = useSWRMutation("auth/login", loginUser);
+  // declare this if you’re in TypeScript
 
+  useEffect(() => {
+    window.google.accounts.id.initialize({
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
+      callback: handleCredentialResponse,
+      ux_mode: "popup", // ← tells GIS to use a popup
+    });
+  }, []);
   const {
     watch,
     register,
@@ -37,6 +53,16 @@ export default function Login() {
   } = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
   });
+
+  function handleCredentialResponse(response: { credential: string }) {
+    const idToken = response.credential;
+    // …send to your backend as before…
+    console.log(idToken);
+  }
+  const onGoogleClick = () => {
+    // this will open the popup for the user to pick their account
+    window.google.accounts.id.prompt();
+  };
   const onSubmit = async (data: TLoginSchema) => {
     try {
       const response = await trigger(data);
@@ -65,13 +91,9 @@ export default function Login() {
         backgroundPosition: "center",
       }}
     >
-      <Image
-        src={"/logo.svg"}
-        width={120}
-        height={37}
-        alt="log"
-        className="self-start ml-[100]"
-      />
+      <Link href={"/"} className="self-start ml-[100]">
+        <Image src={cplogo} width={120} height={37} alt="log" />
+      </Link>
       <div className="bg-white p-[18] rounded-2xl max-w-[445px] w-full careershadow">
         <form className="" onSubmit={handleSubmit(onSubmit)}>
           <h3 className="mb-6 text-lg font-medium">
@@ -114,8 +136,16 @@ export default function Login() {
         </form>
 
         <div>
-          <CPsocialLoginButton Icon={<GoogleIcon />} text="Login with Google" />
-          <CPsocialLoginButton Icon={<AppleIcon />} text="Login with Apple" />
+          <CPsocialLoginButton
+            onClick={onGoogleClick}
+            Icon={<GoogleIcon />}
+            text="Login with Google"
+          />
+          <CPsocialLoginButton
+            disable={true}
+            Icon={<AppleIcon />}
+            text="Login with Apple"
+          />
         </div>
       </div>
       <CPtermsAndPrivacy />

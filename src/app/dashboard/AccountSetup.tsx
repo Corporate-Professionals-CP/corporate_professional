@@ -6,7 +6,10 @@ import useUser from "@/statestore/useUser";
 
 function AccountSetup() {
   const user = useUser((state) => state.user);
-  const sections = Object.values(user?.sections || {});
+  const sections = Object.values(user?.sections || {}).filter(
+    (val) => val.type == "required"
+  );
+
   const sectionlength = sections.length;
   const completedSections = sections.filter((val) => val.completed).length;
   return (
@@ -47,7 +50,7 @@ function AccountSetup() {
           description="Strengthen your credibility."
           link="/dashboard/profile"
           icon="📜"
-          completed={!!user?.sections?.education?.completed}
+          completed={!!user?.sections?.educations?.completed}
         />
         <CPcard
           title="Link your LinkedIn"

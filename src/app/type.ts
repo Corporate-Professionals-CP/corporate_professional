@@ -5,9 +5,17 @@ import {
   TSkill,
   TWorkExperience,
 } from "./dashboard/profile/type";
+
+export interface TFeedPage {
+  main_posts: TPost[];
+  fresh_posts: TPost[]; // if this really can be empty, it should still be TPost[]
+  next_cursor: string;
+}
+
 export type TSection = {
   completed: boolean;
   weight: number;
+  type: "required" | "optional";
 };
 export type TPost = {
   title: string;
@@ -90,7 +98,7 @@ export type TUser = {
     working_experinece: TSection;
     job_title: TSection;
     skills: TSection;
-    education: TSection;
+    educations: TSection;
     years_of_experience: TSection;
     certifications: TSection;
     bio: TSection;
@@ -171,3 +179,15 @@ export type TNetwork = {
     job_title: string;
   };
 };
+
+export const ReportSchema = z.object({
+  reported_user_id: z.string({ required_error: "User Id is required" }),
+  content_type: z.string({ required_error: "Content type is required" }),
+  content_id: z.string({ required_error: "Content Id is required" }),
+  content_url: z.string({ required_error: "Content Url is required" }),
+  report_type: z.string({ required_error: "Report is required" }),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(5, "Description must be at least 5 characters"),
+});
+
+export type TReportSchema = z.infer<typeof ReportSchema>;

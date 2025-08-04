@@ -23,16 +23,16 @@ function CPheader() {
           </li>
           <div className="flex gap-3 items-center ">
             <li className="p-2">
-              <Link href="#home">Home</Link>
+              <Link href="/#home">Home</Link>
             </li>
             <li className="p-2">
-              <Link href="#why-join">Why us?</Link>
+              <Link href="/#why-join">Why us?</Link>
             </li>
             <li className="p-2">
-              <Link href="#networking">Features</Link>
+              <Link href="/#networking">Features</Link>
             </li>
             <li className="p-2">
-              <Link href="#profiles">How it works</Link>
+              <Link href="/#profiles">How it works</Link>
             </li>
           </div>
         </ul>
@@ -69,16 +69,16 @@ function CPheader() {
         {isOpen && (
           <div className="md:hidden px-4 pb-4 absolute top-16 right-6">
             <div className="mt-2 bg-white rounded-xl shadow-md py-2 space-y-2 pl-8 text-right">
-              <Link href="#home" className="block px-4 py-2 text-sm">
+              <Link href="/#home" className="block px-4 py-2 text-sm">
                 Home
               </Link>
-              <Link href="#why-join" className="block px-4 py-2 text-sm">
+              <Link href="/#why-join" className="block px-4 py-2 text-sm">
                 Why us?
               </Link>
-              <Link href="#networking" className="block px-4 py-2 text-sm">
+              <Link href="/#networking" className="block px-4 py-2 text-sm">
                 Features
               </Link>
-              <Link href="#profiles" className="block px-4 py-2 text-sm">
+              <Link href="/#profiles" className="block px-4 py-2 text-sm">
                 How it works
               </Link>
             </div>

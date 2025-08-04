@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import SuccessModal from "./SuccessModal";
 import useUser from "@/statestore/useUser";
+import { storeData } from "@/utils/storage";
 
 const VerifyEmailModal = ({
   email,
@@ -35,6 +36,7 @@ const VerifyEmailModal = ({
   const onClick = async (data: TVerifyEmail) => {
     try {
       const response = await trigger({ ...data, email, token });
+      storeData("access_token", token);
       setUser(response);
       setSuccess(true);
     } catch (err) {

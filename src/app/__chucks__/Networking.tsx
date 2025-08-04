@@ -1,7 +1,9 @@
+"use client";
 import { CPbuttonTwo } from "@/components/CPbutton";
 import Image from "next/image";
 import { insight, shake, expert } from "@/assets";
-
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 const NetWorking = () => {
   return (
     <section
@@ -23,19 +25,11 @@ const NetWorking = () => {
                 resources.
               </p>
             </div>
-            <div className="flex gap-4 mb-5 overflow-x-auto">
-              <Pellet text="Project Manager" /> <Pellet text="HR Specialist" />
-              <Pellet text="Accountant" /> <Pellet text="Project Design" />
-              <Pellet text="Software Engineer" />
-              <Pellet text="Cyber Analyst" />
-              <Pellet text="Embedded Engineer" />
-            </div>
-            <div className="flex gap-4 mb-8 overflow-x-auto">
-              <Pellet text="Accountant" /> <Pellet text="Project Design" />
-              <Pellet text="Software Engineer" />
-              <Pellet text="Cyber Analyst" />
-              <Pellet text="Embedded Engineer" />
-            </div>
+            <PelletBox1 />
+            <PelletBox2 />
+            {/* <div className="flex gap-4 mb-8 overflow-x-auto">
+              
+            </div> */}
           </div>
           <div className="bg-[#F8FAFC] rounded-2xl">
             <div className="p-6">
@@ -82,5 +76,54 @@ const Pellet = ({ text }: { text: string }) => {
     </div>
   );
 };
+const autoplay = Autoplay({
+  delay: 2000,
+});
+//   {
+//   delay: 3000,
+//   stopOnInteraction: false,
+//   stopOnMouseEnter: true,
+//   playOnInit: true,
+// }
 
+const PelletBox1 = () => {
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [autoplay]);
+
+  return (
+    <div className="embla" ref={emblaRef}>
+      <div className="flex gap-4 mb-5 ">
+        <Pellet text="Project Manager" /> <Pellet text="HR Specialist" />
+        <Pellet text="Accountant" /> <Pellet text="Project Design" />
+        <Pellet text="Software Engineer" />
+        <Pellet text="Cyber Analyst" />
+        <Pellet text="Embedded Engineer" />
+      </div>
+    </div>
+  );
+};
+
+const autoplay2 = Autoplay({
+  delay: 2500,
+});
+//   {
+//   delay: 3000,
+//   stopOnInteraction: false,
+//   stopOnMouseEnter: true,
+//   playOnInit: true,
+// }
+
+const PelletBox2 = () => {
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [autoplay2]);
+
+  return (
+    <div className="embla" ref={emblaRef}>
+      <div className="flex gap-4 mb-5 ">
+        <Pellet text="Accountant" /> <Pellet text="Project Design" />
+        <Pellet text="Software Engineer" />
+        <Pellet text="Cyber Analyst" />
+        <Pellet text="Embedded Engineer" />
+      </div>
+    </div>
+  );
+};
 export default NetWorking;

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { SkillsSchema, TSkill, TSkillsSchema } from "./type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import CPInput from "@/components/CPInput";
+// import CPInput from "@/components/CPInput";
 import CPsmallButton from "@/components/CPsmallButton";
 import CPEmptyState from "@/components/CPEmptyState";
 import useSWR from "swr";
@@ -88,57 +88,57 @@ const ListContact = ({
   );
 };
 
-function AddNewSkills({
-  setAddSkills,
-}: {
-  setAddSkills: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const { trigger, isMutating } = useSWRMutation("skill/post", addskills);
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    reset,
-  } = useForm<TSkillsSchema>({
-    resolver: zodResolver(SkillsSchema),
-  });
-  const onClick = async (data: TSkillsSchema) => {
-    try {
-      await trigger(data);
-      successMessage("Skill uploadded succesfully");
-      reset();
-    } catch (err) {
-      errorMessage(err);
-    }
-  };
-  return (
-    <form onSubmit={handleSubmit(onClick)}>
-      <div className="mb-5">
-        <label className="text-[#475569] text-sm mb-2">
-          Skills (maximum 15)
-        </label>
-        <CPInput
-          className="block bg-[#F8FAFC] w-full p-4"
-          placeholder="Add skills"
-          error={errors.skill?.message}
-          {...register("skill")}
-        />
-        <p className="text-xs text-[#64748B]">
-          <span className="text-slate">Suggested:</span> UI/UX Design,
-          Wireframing & Prototyping, Design Systems, Interaction Design, Visual
-          Design
-        </p>
-      </div>
+// function AddNewSkills({
+//   setAddSkills,
+// }: {
+//   setAddSkills: React.Dispatch<React.SetStateAction<boolean>>;
+// }) {
+//   const { trigger, isMutating } = useSWRMutation("skill/post", addskills);
+//   const {
+//     handleSubmit,
+//     register,
+//     formState: { errors },
+//     reset,
+//   } = useForm<TSkillsSchema>({
+//     resolver: zodResolver(SkillsSchema),
+//   });
+//   const onClick = async (data: TSkillsSchema) => {
+//     try {
+//       await trigger(data);
+//       successMessage("Skill uploadded succesfully");
+//       reset();
+//     } catch (err) {
+//       errorMessage(err);
+//     }
+//   };
+//   return (
+//     <form onSubmit={handleSubmit(onClick)}>
+//       <div className="mb-5">
+//         <label className="text-[#475569] text-sm mb-2">
+//           Skills (maximum 15)
+//         </label>
+//         <CPInput
+//           className="block bg-[#F8FAFC] w-full p-4"
+//           placeholder="Add skills"
+//           error={errors.skill?.message}
+//           {...register("skill")}
+//         />
+//         <p className="text-xs text-[#64748B]">
+//           <span className="text-slate">Suggested:</span> UI/UX Design,
+//           Wireframing & Prototyping, Design Systems, Interaction Design, Visual
+//           Design
+//         </p>
+//       </div>
 
-      <div className="flex justify-end gap-2 mt-12">
-        <button onClick={() => setAddSkills(false)} className="p-3">
-          Back
-        </button>
-        <CPsmallButton type="submit" text="Save" loading={isMutating} />
-      </div>
-    </form>
-  );
-}
+//       <div className="flex justify-end gap-2 mt-12">
+//         <button onClick={() => setAddSkills(false)} className="p-3">
+//           Back
+//         </button>
+//         <CPsmallButton type="submit" text="Save" loading={isMutating} />
+//       </div>
+//     </form>
+//   );
+// }
 
 function SkillSkeleton() {
   return (

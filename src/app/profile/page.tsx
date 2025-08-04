@@ -13,7 +13,7 @@ export default function Profile() {
   };
   return (
     <main className="bg-primary p-4 h-screen min-h-screen flex ">
-      <CPsideOnboard />
+      <CPsideOnboard step={1} />
       <div className="flex-1 bg-white rounded-2xl flex justify-center pt-[103] overflow-scroll">
         <div className="w-[540] pb-16">
           <TopProfile />

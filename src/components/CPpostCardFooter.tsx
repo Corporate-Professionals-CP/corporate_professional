@@ -5,7 +5,7 @@ import {
   removeBookmarkToPost,
   RemoveReactToPost,
 } from "@/app/functions";
-import { BookmarkIcon } from "@/imagecomponents";
+import { BookmarkIcon, FlagIcon } from "@/imagecomponents";
 import CommentIcon from "@/imagecomponents/CommentIcon";
 import LoveIcon from "@/imagecomponents/LoveIcon";
 import RetweetIcon from "@/imagecomponents/RetweetIcon";
@@ -27,6 +27,7 @@ type TCPpostCardFooter = {
 
   setShowComments: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenRepost: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenReport: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CPpostCardFooter({
@@ -38,6 +39,7 @@ function CPpostCardFooter({
 
   setShowComments = () => {},
   setOpenRepost = () => {},
+  setOpenReport = () => {},
   reactions_breakdown,
 }: // is_repost
 // reactions_breakdown,
@@ -117,6 +119,9 @@ TCPpostCardFooter) {
         </div>
       </div>
       <div className="flex items-center gap-[18]">
+        <button title="report" onClick={() => setOpenReport(true)}>
+          <FlagIcon />
+        </button>
         <button onClick={onClickBookMark}>
           <BookmarkIcon size="20" active={bookmark} />
         </button>

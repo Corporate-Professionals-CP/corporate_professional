@@ -3,7 +3,8 @@ import CPtermsAndPrivacy from "./CPtermsAndPrivacy";
 
 import CPprofileImg from "./CPprofileImg";
 import Link from "next/link";
-function CPsideOnboard() {
+import { CheckIcon } from "@/imagecomponents";
+function CPsideOnboard({ step }: { step: number }) {
   return (
     <section className="text-white p-4 flex flex-col h-full w-[432] max-lg:w-[300]">
       <Link href={"/"}>
@@ -24,10 +25,10 @@ function CPsideOnboard() {
           A few quick steps to personalize your experience.
         </p>
         <ul>
-          <ListItem text="Basic Information" />
-          <ListItem text="Professional Details" />
-          <ListItem text="Profile Preferences" />
-          <ListItem text="Engagement & Feed Curation" />
+          <ListItem text="Basic Information" mark={step > 1} />
+          <ListItem text="Professional Details" mark={step > 3} />
+          <ListItem text="Profile Preferences" mark={step > 7} />
+          <ListItem text="Engagement & Feed Curation" mark={step > 10} />
           {/* <ListItem text="Special symbols (*, &, @ etc.)" /> */}
         </ul>
       </div>
@@ -49,10 +50,16 @@ function CPsideOnboard() {
   );
 }
 
-const ListItem = ({ text }: { text: string }) => {
+const ListItem = ({ text, mark }: { text: string; mark: boolean }) => {
   return (
     <li className="flex items-center gap-2 mb-3">
-      <div className="w-4 h-4 rounded-4xl border border-[#82E6B6]"></div>
+      <div
+        className={`w-4 h-4 grid place-content-center rounded-4xl border border-[#82E6B6] ${
+          mark ? "bg-[#82E6B6]" : ""
+        }`}
+      >
+        {mark && <CheckIcon size={16} color="#fff" />}
+      </div>
       <span className="text-sm">{text}</span>
     </li>
   );

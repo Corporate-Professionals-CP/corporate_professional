@@ -36,7 +36,7 @@ const General = () => {
         full_name: user.full_name || "",
         job_title: user.job_title || "",
         industry: user.industry || "",
-        // linkedin: user.linkedin_profile
+        linkedin: user.linkedin_profile || "",
         location: user.location || "",
         pronouns: user.sex || "",
         recruiter_tag: user.recruiter_tag ? "yes" : "no",
@@ -274,4 +274,5 @@ function UpdateImage() {
     </div>
   );
 }
+
 export default General;

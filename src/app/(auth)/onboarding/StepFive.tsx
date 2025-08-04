@@ -1,17 +1,20 @@
 import React from "react";
-import { UseFormRegister, UseFormWatch } from "react-hook-form";
+import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { TOnboardSchema } from "./type";
 import CPText from "@/components/CPText";
-import CPCustomSelect from "@/components/CPCustomSelect";
+import { industriesList } from "@/utils";
+import { CPselect } from "@/components";
 
 const StepFive = ({
-  register,
+  // register,
   error = "",
   watch,
+  setValue,
 }: {
-  register: UseFormRegister<TOnboardSchema>;
+  // register: UseFormRegister<TOnboardSchema>;
   error?: string;
   watch: UseFormWatch<TOnboardSchema>;
+  setValue: UseFormSetValue<TOnboardSchema>;
 }) => {
   const selected = watch("industry");
   return (
@@ -20,26 +23,15 @@ const StepFive = ({
         majorheading="Which industry best describes your work?"
         minorheading="Professional Details"
       />
-
-      {[
-        { key: "Finance & Banking", value: "Finance" },
-        { key: "Technology & IT", value: "Technology" },
-        { key: "Healthcare & Life Sciences", value: "Healthcare" },
-        { key: "Marketing & Media", value: "media" },
-        { key: "Engineering & Manufacturing", value: "Manufacturing" },
-        { key: "Other", value: "Other" },
-      ].map((data) => (
-        <CPCustomSelect
-          key={data.key}
-          text={data.key}
-          {...register("industry")}
-          value={data.value}
-          checked={selected == data.value}
-        />
-      ))}
-      {error && (
-        <p className="text-[#E62E2E] text-sm -translate-1.5 mb-0">{error}</p>
-      )}
+      <CPselect
+        items={industriesList.map((ind) => {
+          return { text: ind, val: ind };
+        })}
+        onChange={(val: string) => setValue("industry", val)}
+        value={selected}
+        placeholder="Accounting"
+        error={error}
+      />
     </>
   );
 };

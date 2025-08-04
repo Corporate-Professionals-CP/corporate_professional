@@ -217,10 +217,16 @@ const CPcontact = ({
       <div className="w-[180] max-sm:w-[100]">{contact.platform_name}</div>
       <div className="flex-1">
         <div className="flex">
-          <p className="text-sm mb-4">{contact.username}</p>
-          <Link target="_blank" href={contact.url}>
-            <LinkIcon />
-          </Link>
+          {contact.username ? (
+            <p className="text-sm mb-4">{contact.username}</p>
+          ) : (
+            <p className="text-sm mb-4">{contact.url}</p>
+          )}
+          {contact.url && (
+            <Link target="_blank" href={contact.url}>
+              <LinkIcon />
+            </Link>
+          )}
         </div>
         <div className="flex items-center gap-3">
           {/* <button className="text-xs text-[#64748B]">Edit</button> */}

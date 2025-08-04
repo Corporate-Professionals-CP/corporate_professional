@@ -30,7 +30,7 @@ const Empowering = () => {
         </p>
         <div className="flex gap-3 max-sm:flex-col max-sm:w-full max-sm:gap-2">
           <CPbuttonTwo link="/onboarding" />
-          <CPbuttonThree disabled={true} />
+          <CPbuttonThree link="#networking" />
         </div>
       </div>
       <div className="mt-[122] flex justify-center">

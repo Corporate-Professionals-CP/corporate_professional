@@ -4,9 +4,9 @@ import auc from "@/assets/cppatners/auc.jpg";
 import girlsconstruction from "@/assets/cppatners/girlsunderconstruction.jpg";
 import insurance from "@/assets/cppatners/insurance.png";
 
-import irxcruit from "@/assets/cppatners/irxcruit.jpg";
+// import irxcruit from "@/assets/cppatners/irxcruit.jpg";
 import knightshield from "@/assets/cppatners/knightshield.jpg";
-import lawcity from "@/assets/cppatners/lawcity.jpg";
+// import lawcity from "@/assets/cppatners/lawcity.jpg";
 import recon2 from "@/assets/cppatners/recon2.png";
 import social from "@/assets/cppatners/social-changer.jpg";
 import stemthinktank from "@/assets/cppatners/stemthinktank.jpg";
@@ -41,21 +41,21 @@ function CPpartners() {
           className="shrink-0 w-[200px] h-[100px] object-cover"
         />
 
-        <Image
+        {/* <Image
           src={irxcruit}
           alt="partner"
           className="shrink-0 w-[200px] h-[100px] object-cover"
-        />
+        /> */}
         <Image
           src={knightshield}
           alt="partner"
           className="shrink-0 w-[200px] h-[100px] object-cover"
         />
-        <Image
+        {/* <Image
           src={lawcity}
           alt="partner"
           className="shrink-0 w-[200px] h-[100px] object-cover"
-        />
+        /> */}
 
         <Image
           src={recon2}

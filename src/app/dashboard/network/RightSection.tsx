@@ -39,20 +39,22 @@ function RightSection() {
             </Link>
           </li>
         </ul>
-        <div>
-          <h3 className="font-medium text-sm text-slate p-4">
-            Add to your network
-          </h3>
-          {isLoading ? (
-            <NetworkSkeleton />
-          ) : (
-            suggestedNetwork
-              .slice(0, 4)
-              .map((item) => (
-                <CPprofileNetworkCard key={item.id} profile={item} />
-              ))
-          )}
-        </div>
+        {(isLoading || suggestedNetwork.length > 0) && (
+          <div>
+            <h3 className="font-medium text-sm text-slate p-4">
+              Add to your network
+            </h3>
+            {isLoading ? (
+              <NetworkSkeleton />
+            ) : (
+              suggestedNetwork
+                .slice(0, 4)
+                .map((item) => (
+                  <CPprofileNetworkCard key={item.id} profile={item} />
+                ))
+            )}
+          </div>
+        )}
       </div>
     </RightSectionContainer>
   );

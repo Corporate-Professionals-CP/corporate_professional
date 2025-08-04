@@ -2,16 +2,16 @@ import { z } from "zod";
 
 // PROFILE SCHEMA
 export const ProfileSchema = z.object({
-  full_name: z.string().min(10),
-  job_title: z.string().min(1),
-  industry: z.string().min(1),
-  location: z.string().min(1),
-  pronouns: z.string().min(1),
-  recruiter_tag: z.string().min(1),
-  visibility: z.string().min(1),
-  experience: z.string().min(1),
-  bio: z.string().min(1),
-  linkedin: z.string().min(1),
+  full_name: z.string().min(1, "Full name is required"),
+  job_title: z.string().min(1, "Job title is required"),
+  industry: z.string().min(1, "Industry is required"),
+  location: z.string().min(1, "Location is required"),
+  pronouns: z.string().min(1, "Pronoun is required"),
+  recruiter_tag: z.string().min(1, "Recruiter tag is required"),
+  visibility: z.string().min(1, "Visibility is required"),
+  experience: z.string().min(1, "Experience is required"),
+  bio: z.string().min(1, "Biography is required"),
+  linkedin: z.string().min(1, "Linkedin is required"),
 });
 export type TProfileSchema = z.infer<typeof ProfileSchema>;
 

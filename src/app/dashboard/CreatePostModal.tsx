@@ -19,12 +19,15 @@ import { mutate } from "swr";
 import useUser from "@/statestore/useUser";
 import { CloseIcon, PlusIcon } from "@/imagecomponents";
 import { convertImage } from "@/utils/convertHEICtoJPEG";
+import { TPost } from "../type";
 
 type TMediaURL = { key: string; val: string };
 const CreatePostModal = ({
   setCreatemodal,
+  setNewPost,
 }: {
   setCreatemodal: Dispatch<SetStateAction<boolean>>;
+  setNewPost: Dispatch<SetStateAction<TPost | null>>;
 }) => {
   const [mediaurl, setMediaurl] = useState<TMediaURL[]>([]);
   const {
@@ -69,12 +72,13 @@ const CreatePostModal = ({
       if (valid) {
         const values = getValues();
         const media_urls = mediaurl.map((data) => data.val);
-        await submit({ ...values, media_urls: media_urls });
+        const newpost = await submit({ ...values, media_urls: media_urls });
+        setNewPost(newpost);
         successMessage("Post added succesfully");
+        mutate("/feed/");
+        mutate("/feed/network/");
+        handleCloseModal();
       }
-      mutate("/feed/");
-      mutate("/feed/network/");
-      handleCloseModal();
     } catch (err) {
       errorMessage(err);
     }

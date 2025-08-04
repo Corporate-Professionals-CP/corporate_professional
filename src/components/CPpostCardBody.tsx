@@ -22,6 +22,7 @@ function CPpostCardBody({ post }: { post: TPost }) {
               <div key={media}>
                 {isVideo ? (
                   <video
+                    key={media}
                     src={media}
                     controls
                     className="w-full h-auto max-h-60"
@@ -36,6 +37,18 @@ function CPpostCardBody({ post }: { post: TPost }) {
               </div>
             );
           })}
+        </div>
+      )}
+      {post.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 items-center mt-4">
+          {post.tags.map((tag, i) => (
+            <div
+              className="text-xs py-2 px-3 gap-2 bg-[#F8FAFC] rounded-full w-max flex items-center"
+              key={i}
+            >
+              {tag}
+            </div>
+          ))}
         </div>
       )}
     </div>

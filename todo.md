@@ -20,3 +20,5 @@ What is left
 - different render to posts
 
 - only recruiter can download cv
+
+- add more to image post

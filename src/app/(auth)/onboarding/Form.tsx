@@ -20,6 +20,7 @@ import { errorMessage } from "@/utils/toastalert";
 import { signupUser } from "./functions";
 
 import VerifyEmailModal from "../VerifyEmailModal";
+import { CPsideOnboard } from "@/components";
 
 function Form() {
   const {
@@ -90,87 +91,94 @@ function Form() {
     }
   };
   return (
-    <section className="bg-white flex-1 rounded-2xl flex justify-center pt-[103] px-6 pb-6">
-      <div className="max-w-[520] w-full">
-        <CPstepSlide currentstep={step} />
-        {step == 1 && <StepOne register={register} error={errors} />}
-        {step == 2 && (
-          <StepTwo
-            register={register}
-            error={errors.profession_journey?.message}
-          />
-        )}
-        {step == 3 && (
-          <StepThree
-            register={register}
-            error={errors.password?.message}
-            watch={watch}
-          />
-        )}
-        {step == 4 && (
-          <StepFour register={register} error={errors.role?.message} />
-        )}
-        {step == 5 && (
-          <StepFive
-            register={register}
-            error={errors.industry?.message}
-            watch={watch}
-          />
-        )}
-        {step == 6 && (
-          <StepSix
-            register={register}
-            error={errors.experience?.message}
-            watch={watch}
-          />
-        )}
-        {step == 7 && (
-          <StepSeven
-            register={register}
-            error={errors.profile?.message}
-            watch={watch}
-          />
-        )}
-        {step == 8 && (
-          <StepEight
-            register={register}
-            error={errors.profile?.message}
-            watch={watch}
-          />
-        )}
-        {step == 9 && (
-          <StepNine
-            setStep={setStep}
-            onChange={(file: File) => setValue("cvfile", file)}
-          />
-        )}
-        {step == 10 && (
-          <StepTen
-            register={register}
-            error={errors.interests?.message}
-            watch={watch}
-          />
-        )}
-        <div className="flex justify-end gap-2 mt-12">
-          <button
-            className="p-3"
-            onClick={() => {
-              if (step > 1) {
-                setStep((s) => s - 1);
-              }
-            }}
-          >
-            Back
-          </button>
-          <CPsmallButton
-            text={step == 10 ? "Finish" : "Next"}
-            onClick={handleNext}
-            loading={isMutating}
-          />
+    <>
+      <CPsideOnboard step={step} />
+
+      <section className="bg-white flex-1 rounded-2xl flex justify-center pt-[103] px-6 pb-6 overflow-y-scroll">
+        <div className="max-w-[520] w-full">
+          <CPstepSlide currentstep={step} />
+          {step == 1 && <StepOne register={register} error={errors} />}
+          {step == 2 && (
+            <StepTwo
+              register={register}
+              error={errors.profession_journey?.message}
+            />
+          )}
+          {step == 3 && (
+            <StepThree
+              register={register}
+              error={errors.password?.message}
+              watch={watch}
+            />
+          )}
+          {step == 4 && (
+            <StepFour register={register} error={errors.role?.message} />
+          )}
+          {step == 5 && (
+            <StepFive
+              // register={register}
+              setValue={setValue}
+              error={errors.industry?.message}
+              watch={watch}
+            />
+          )}
+          {step == 6 && (
+            <StepSix
+              register={register}
+              error={errors.experience?.message}
+              watch={watch}
+            />
+          )}
+          {step == 7 && (
+            <StepSeven
+              register={register}
+              error={errors.profile?.message}
+              watch={watch}
+            />
+          )}
+          {step == 8 && (
+            <StepEight
+              register={register}
+              error={errors.profile?.message}
+              watch={watch}
+            />
+          )}
+          {step == 9 && (
+            <StepNine
+              setStep={setStep}
+              onChange={(file: File) => setValue("cvfile", file)}
+            />
+          )}
+          {step == 10 && (
+            <StepTen
+              register={register}
+              error={errors.interests?.message}
+              watch={watch}
+            />
+          )}
+          <div className="flex justify-end gap-2 mt-12">
+            <button
+              className="p-3 cursor-pointer"
+              onClick={() => {
+                if (step > 1) {
+                  setStep((s) => s - 1);
+                }
+              }}
+            >
+              Back
+            </button>
+            <CPsmallButton
+              text={step == 10 ? "Finish" : "Next"}
+              onClick={handleNext}
+              loading={isMutating}
+            />
+          </div>
         </div>
-      </div>
-      {emailmodal && <VerifyEmailModal email={watch("email")} token={token} />}
-    </section>
+        {emailmodal && (
+          <VerifyEmailModal email={watch("email")} token={token} />
+        )}
+      </section>
+    </>
   );
 }
 

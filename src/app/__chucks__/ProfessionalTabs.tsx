@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { CPbuttonTwo } from "@/components/CPbutton";
 import Image from "next/image";
 import mockup1 from "@/assets/mock1.png";
 import mockup2 from "@/assets/mock2.png";
@@ -42,8 +41,8 @@ const ProfessionalTabs = () => {
         <div className="p-2 rounded-full border-[#282A74] border flex justify-between mb-6 max-md:hidden ">
           <button
             className={`w-[221] text-center ${
-              activetab == 0 ? "bg-[#282A74] text-white " : "text-[#050505]"
-            }  rounded-full p-3`}
+              activetab == 0 ? "bg-[#282A74] text-white " : "text-[#050505] "
+            }  rounded-full p-3 cursor-pointer hover:bg-[#282A74] hover:text-white transition-all`}
             onClick={() => setActivetab(0)}
           >
             Professional Profiles
@@ -51,7 +50,7 @@ const ProfessionalTabs = () => {
           <button
             className={`w-[221] text-center ${
               activetab == 1 ? "bg-[#282A74] text-white " : "text-[#050505]"
-            } rounded-full p-3`}
+            } rounded-full p-3 cursor-pointer hover:bg-[#282A74] hover:text-white transition-all`}
             onClick={() => setActivetab(1)}
           >
             Searchable Directory
@@ -59,7 +58,7 @@ const ProfessionalTabs = () => {
           <button
             className={`w-[221] text-center ${
               activetab == 2 ? "bg-[#282A74] text-white " : "text-[#050505]"
-            }  rounded-full p-3`}
+            }  rounded-full p-3 cursor-pointer hover:bg-[#282A74] hover:text-white transition-all`}
             onClick={() => setActivetab(2)}
           >
             Job & Content Feed
@@ -67,7 +66,7 @@ const ProfessionalTabs = () => {
           <button
             className={`w-[221] text-center ${
               activetab == 3 ? "bg-[#282A74] text-white " : "text-[#050505]"
-            }  rounded-full p-3`}
+            }  rounded-full p-3 cursor-pointer hover:bg-[#282A74] hover:text-white transition-all`}
             onClick={() => setActivetab(3)}
           >
             Connect
@@ -105,10 +104,6 @@ function ProfessionalInput() {
             {prof.name}
           </h3>
           <p className="mb-6 text-[#334155]">{prof.text}</p>
-          <CPbuttonTwo className="bg-primary" disabled={true}>
-            {" "}
-            Learn more
-          </CPbuttonTwo>
         </div>
         <div className="w-full bg-white h-[290]">
           <Image

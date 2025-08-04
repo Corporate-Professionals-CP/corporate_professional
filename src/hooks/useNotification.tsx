@@ -13,6 +13,7 @@ function useNotification() {
   );
   useEffect(() => {
     triggerFetchNotification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const triggerFetchNotification = async () => {
     const data = await trigger();

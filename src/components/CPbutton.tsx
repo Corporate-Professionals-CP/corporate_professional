@@ -57,14 +57,26 @@ export const CPbuttonTwo = ({
 };
 
 export const CPbuttonThree = ({
+  link = "",
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: { link?: string } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  if (link) {
+    return (
+      <Link
+        href={link}
+        className="border border-[#282A74] bg-transparent text-[#282A74] text-sm px-6 py-3 rounded-full font-medium"
+        style={props.style}
+      >
+        {props.children || "Learn more"}
+      </Link>
+    );
+  }
   return (
     <button
       className="border border-[#282A74] bg-transparent text-[#282A74] text-sm px-6 py-3 rounded-full font-medium"
       {...props}
     >
-      Learn more
+      {props.children || "Learn more"}
     </button>
   );
 };

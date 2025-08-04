@@ -21,6 +21,8 @@ import useUser from "@/statestore/useUser";
 import useSWRMutation from "swr/mutation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import dayjs from "dayjs";
+import { CPbuttonTransparent } from "@/components/CPbutton";
+import { makeConnection } from "../../network/function";
 
 function MiddleSection() {
   const params = useParams();
@@ -133,6 +135,8 @@ const CPprofileCard = ({ user }: { user: TUser }) => {
     `/profiles/${user.id}/cv`,
     downloadCv
   );
+  const { trigger: addConnection, isMutating: isLoadingConnection } =
+    useSWRMutation("/network/connect", makeConnection);
   const ondownloadCv = async () => {
     try {
       const response = await trigger();
@@ -164,9 +168,16 @@ const CPprofileCard = ({ user }: { user: TUser }) => {
       </div>
       <div className="flex gap-2 items-center">
         {currUser?.id != user.id && (
-          <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
+          <CPbuttonTransparent
+            loading={isLoadingConnection}
+            onClick={() => addConnection({ user_id: user.id })}
+          >
             Connect
-          </button>
+          </CPbuttonTransparent>
+
+          // <button className="text-[#020617] font-medium text-sm px-3 py-2 border border-[#E2E8F0] rounded-[5px]">
+          //   Connect
+          // </button>
         )}
         {currUser?.recruiter_tag && (
           <button onClick={ondownloadCv} disabled={isMutating}>

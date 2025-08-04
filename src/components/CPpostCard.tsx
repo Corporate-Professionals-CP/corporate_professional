@@ -8,6 +8,7 @@ import { TPost } from "@/app/type";
 import CPrepostModal from "./CPrepostModal";
 import CPpostCommentBody from "./CPpostCommentBody";
 import Link from "next/link";
+import CPreportPost from "./CPreportPost";
 
 function CPpostCard({
   post,
@@ -20,6 +21,7 @@ function CPpostCard({
 }) {
   const [showComments, setShowComments] = useState(showComment);
   const [openRepost, setOpenRepost] = useState(false);
+  const [openReport, setOpenReport] = useState(false);
   // display different UI for a repost
   const content = (
     <div className=" flex gap-4 items-start mb-3 max-sm:flex-col max-sm:items-stretch">
@@ -41,6 +43,7 @@ function CPpostCard({
           is_bookmarked={post.is_bookmarked}
           reactions_breakdown={post.reactions_breakdown}
           setOpenRepost={setOpenRepost}
+          setOpenReport={setOpenReport}
           setShowComments={setShowComments}
           post_id={post.id}
           is_repost={post.is_repost}
@@ -57,7 +60,14 @@ function CPpostCard({
       ) : (
         <>{content}</>
       )}
-
+      {openReport && (
+        <CPreportPost
+          content_type="post"
+          setCreatemodal={setOpenReport}
+          content_id={post.id}
+          reported_user_id={post.user?.id || ""}
+        />
+      )}
       {openRepost && (
         <CPrepostModal setCreatemodal={setOpenRepost} post={post} />
       )}

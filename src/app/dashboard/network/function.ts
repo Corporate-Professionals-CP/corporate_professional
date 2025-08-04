@@ -116,3 +116,22 @@ export const makeConnection = async (
     errorMessage(err, "unable to make conneciton");
   }
 };
+
+export const removeConnection = async (
+  url: string,
+  { arg }: { arg: { connect_id: string } }
+) => {
+  try {
+    await httprequest.delete(url);
+
+    mutate(
+      "/network/my-connections",
+      (current: TNetwork[] = []) =>
+        current.filter((item) => item.id != arg.connect_id),
+      true
+    );
+    successMessage("Connection removed");
+  } catch (err) {
+    errorMessage(err, "unable to make conneciton");
+  }
+};

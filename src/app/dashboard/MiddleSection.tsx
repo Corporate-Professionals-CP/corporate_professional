@@ -9,10 +9,12 @@ import CreatePostModal from "./CreatePostModal";
 import MIddleSectionContainer from "./MIddleSectionContainer";
 import CPpostCardSkeleton from "@/components/CPpostCardSkeleton";
 import CPSwitchField from "@/components/CPSwitchField";
+import { TFeedPage, TPost } from "../type";
 
 function MiddleSection() {
   const [selectTab, setSelectTab] = useState(0);
   const [createmodal, setCreatemodal] = useState(false);
+  const [newpost, setNewPost] = useState<TPost | null>(null);
 
   return (
     <MIddleSectionContainer>
@@ -57,9 +59,14 @@ function MiddleSection() {
             What’s on your mind...?
           </p>
         </div>
-        {selectTab == 0 && <Feeds />}
-        {selectTab == 1 && <Networks />}
-        {createmodal && <CreatePostModal setCreatemodal={setCreatemodal} />}
+        {selectTab == 0 && <Feeds newpost={newpost} />}
+        {selectTab == 1 && <Networks newpost={newpost} />}
+        {createmodal && (
+          <CreatePostModal
+            setCreatemodal={setCreatemodal}
+            setNewPost={setNewPost}
+          />
+        )}
       </>
     </MIddleSectionContainer>
   );
@@ -76,9 +83,9 @@ const getKey = (
   return `/feed/?cursor=${previousPageData.next_cursor}`;
 };
 
-const Feeds = () => {
-  const { data, size, setSize, isValidating, isLoading, error } =
-    useSWRInfinite(getKey, fetchFeeds, {
+const Feeds = ({ newpost }: { newpost: TPost | null }) => {
+  const { mutate, data, size, setSize, isValidating, isLoading, error } =
+    useSWRInfinite<TFeedPage>(getKey, fetchFeeds, {
       revalidateFirstPage: false,
       revalidateOnFocus: false,
     });
@@ -90,6 +97,24 @@ const Feeds = () => {
   const canLoadMore = data && data[data.length - 1]?.next_cursor;
   const isLoadingMore = isValidating && data && data.length > 0;
 
+  useEffect(() => {
+    if (newpost) {
+      mutate((pages = []) => {
+        if (pages.length === 0) return pages;
+
+        // take page 0 and stick our item at the front…
+        const first = pages[0];
+        const updatedFirst = {
+          ...first,
+          main_posts: [newpost, ...first.main_posts],
+        };
+
+        // …then keep the rest of the pages intact
+        return [updatedFirst, ...pages.slice(1)];
+      }, /* revalidate = */ false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newpost]);
   // Infinite scroll trigger
   useEffect(() => {
     const currentObserver = observerRef.current;
@@ -147,6 +172,7 @@ const Feeds = () => {
   return (
     <div>
       {/* Render posts */}
+
       {feeds.map((post) => (
         <CPpostCard key={post.id} post={post} />
       ))}
@@ -184,11 +210,12 @@ const getNetworkKey = (
   if (!previousPageData?.next_cursor) return null; // No more pages
   return `/feed/network?cursor=${previousPageData.next_cursor}`;
 };
-const Networks = () => {
-  const { data, size, setSize, isValidating, isLoading, error } =
-    useSWRInfinite(getNetworkKey, fetchFeedsNetwork, {
-      revalidateFirstPage: false,
-      revalidateOnFocus: false,
+
+const Networks = ({ newpost }: { newpost: TPost | null }) => {
+  const { mutate, data, size, setSize, isValidating, isLoading, error } =
+    useSWRInfinite<TFeedPage>(getNetworkKey, fetchFeedsNetwork, {
+      revalidateFirstPage: true,
+      revalidateOnFocus: true,
     });
   const feeds = data?.flatMap((page) => page.main_posts) || [];
   const observerRef = useRef<HTMLDivElement | null>(null);
@@ -196,7 +223,24 @@ const Networks = () => {
   // Check if we can load more data
   const canLoadMore = data && data[data.length - 1]?.next_cursor;
   const isLoadingMore = isValidating && data && data.length > 0;
+  useEffect(() => {
+    if (newpost) {
+      mutate((pages = []) => {
+        if (pages.length === 0) return pages;
 
+        // take page 0 and stick our item at the front…
+        const first = pages[0];
+        const updatedFirst = {
+          ...first,
+          main_posts: [newpost, ...first.main_posts],
+        };
+
+        // …then keep the rest of the pages intact
+        return [updatedFirst, ...pages.slice(1)];
+      }, /* revalidate = */ false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newpost]);
   // Infinite scroll trigger
   useEffect(() => {
     const currentObserver = observerRef.current;
@@ -254,6 +298,7 @@ const Networks = () => {
   return (
     <div>
       {/* Render posts */}
+
       {feeds.map((post) => (
         <CPpostCard key={post.id} post={post} />
       ))}

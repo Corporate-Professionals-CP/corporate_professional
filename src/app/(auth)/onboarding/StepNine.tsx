@@ -38,6 +38,7 @@ const StepNine = ({
     // Do something with the files
 
     handleFile(acceptedFiles[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
