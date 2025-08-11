@@ -24,6 +24,7 @@ const General = () => {
     register,
     formState: { errors },
     setValue,
+
     watch,
     reset,
   } = useForm<TProfileSchema>({
@@ -90,6 +91,7 @@ const General = () => {
             onChange={(val: string) => setValue("industry", val)}
             value={watch("industry")}
             error={errors.industry?.message}
+            search
           />
         </div>
         <div className="mb-5">

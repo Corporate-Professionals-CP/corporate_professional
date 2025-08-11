@@ -18,9 +18,9 @@ import StepNine from "./StepNine";
 import StepTen from "./StepTen";
 import { errorMessage } from "@/utils/toastalert";
 import { signupUser } from "./functions";
-
 import VerifyEmailModal from "../VerifyEmailModal";
 import { CPsideOnboard } from "@/components";
+import StepSkill from "./StepSkill";
 
 function Form() {
   const {
@@ -30,6 +30,7 @@ function Form() {
     watch,
     getValues,
     setValue,
+    control,
   } = useForm<TOnboardSchema>({
     resolver: zodResolver(OnboardSchema),
   });
@@ -69,13 +70,16 @@ function Form() {
       valid = await trigger(["recruiter"]);
     }
     if (step == 9) {
-      valid = true;
+      valid = await trigger(["skills"]);
     }
     if (step == 10) {
+      valid = true;
+    }
+    if (step == 11) {
       valid = await trigger(["interests"]);
     }
 
-    if (valid && step == 10) {
+    if (valid && step == 11) {
       const values = getValues();
       try {
         const response = await submit(values);
@@ -139,17 +143,20 @@ function Form() {
           {step == 8 && (
             <StepEight
               register={register}
-              error={errors.profile?.message}
+              error={errors.recruiter?.message}
               watch={watch}
             />
           )}
           {step == 9 && (
+            <StepSkill control={control} error={errors.skills?.message} />
+          )}
+          {step == 10 && (
             <StepNine
               setStep={setStep}
               onChange={(file: File) => setValue("cvfile", file)}
             />
           )}
-          {step == 10 && (
+          {step == 11 && (
             <StepTen
               register={register}
               error={errors.interests?.message}
@@ -168,7 +175,7 @@ function Form() {
               Back
             </button>
             <CPsmallButton
-              text={step == 10 ? "Finish" : "Next"}
+              text={step == 11 ? "Finish" : "Next"}
               onClick={handleNext}
               loading={isMutating}
             />

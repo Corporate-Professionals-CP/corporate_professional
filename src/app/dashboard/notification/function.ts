@@ -14,3 +14,11 @@ export const fetchNotification = (url: string) => {
       return { notifications: [], unread_count: 0 };
     });
 };
+
+export const readNotification = async (
+  url: string,
+  { arg }: { arg: { notif_id: string } }
+) => {
+  const response = await httprequest.put(`/notifications/${arg.notif_id}/read`);
+  return response;
+};

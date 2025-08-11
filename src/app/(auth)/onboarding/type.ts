@@ -23,6 +23,7 @@ export const OnboardSchema = z.object({
   profile: z.string().min(1, "Profile is required"),
   recruiter: z.string().min(1, "Field is required"),
   interests: z.array(z.string()),
+  skills: z.array(z.string()),
   cvfile: z.custom<File>((val) => val instanceof File && val.size > 0, {
     message: "A valid file is required",
   }),

@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, TLoginSchema } from "./type";
 import useSWRMutation from "swr/mutation";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import useUser from "@/statestore/useUser";
@@ -20,6 +20,7 @@ import GoogleIcon from "@/imagecomponents/GoogleIcon";
 import AppleIcon from "@/imagecomponents/AppleIcon";
 import FormPasswordModel from "./FormPasswordModel";
 import { cplogo } from "@/assets";
+import { buildGoogleImplicitUrl } from "@/lib/google-oauth";
 
 declare global {
   interface Window {
@@ -38,13 +39,6 @@ export default function Login() {
   const { trigger, isMutating } = useSWRMutation("auth/login", loginUser);
   // declare this if you’re in TypeScript
 
-  useEffect(() => {
-    window.google.accounts.id.initialize({
-      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
-      callback: handleCredentialResponse,
-      ux_mode: "popup", // ← tells GIS to use a popup
-    });
-  }, []);
   const {
     watch,
     register,
@@ -54,15 +48,6 @@ export default function Login() {
     resolver: zodResolver(LoginSchema),
   });
 
-  function handleCredentialResponse(response: { credential: string }) {
-    const idToken = response.credential;
-    // …send to your backend as before…
-    console.log(idToken);
-  }
-  const onGoogleClick = () => {
-    // this will open the popup for the user to pick their account
-    window.google.accounts.id.prompt();
-  };
   const onSubmit = async (data: TLoginSchema) => {
     try {
       const response = await trigger(data);
@@ -136,11 +121,7 @@ export default function Login() {
         </form>
 
         <div>
-          <CPsocialLoginButton
-            onClick={onGoogleClick}
-            Icon={<GoogleIcon />}
-            text="Login with Google"
-          />
+          <LogiWithGoogle />
           <CPsocialLoginButton
             disable={true}
             Icon={<AppleIcon />}
@@ -153,5 +134,30 @@ export default function Login() {
 
       {modalOpen && <FormPasswordModel setModalOpen={setModalOpen} />}
     </main>
+  );
+}
+
+function LogiWithGoogle() {
+  const [loading, setLoading] = useState(false);
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!;
+  const redirectUri = `${window.location.origin}/oauth-verification`;
+
+  const onGoogleClick = useCallback(async () => {
+    try {
+      setLoading(true);
+      // const url = await buildGoogleAuthUrl({ clientId, redirectUri });
+      const url = buildGoogleImplicitUrl({ clientId, redirectUri });
+      window.location.href = url; // redirect to Google
+    } finally {
+      setLoading(false);
+    }
+  }, [clientId, redirectUri]);
+
+  return (
+    <CPsocialLoginButton
+      onClick={onGoogleClick}
+      Icon={<GoogleIcon />}
+      text={loading ? "Redirecting..." : "Login with Google"}
+    />
   );
 }

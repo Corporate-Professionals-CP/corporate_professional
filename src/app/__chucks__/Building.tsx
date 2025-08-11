@@ -48,7 +48,7 @@ const BuildingPart = ({
   desc: string;
 }) => {
   return (
-    <div className="w-[221] px-[16] py-[24] max-sm:w-full bg-[#F8FAFC] #475569 rounded-2xl  careershadow hover:bg-primary hover:text-white text-[#020617] transition-all duration-300 ease-in-out">
+    <div className="w-[221] px-[16] py-[24] max-sm:w-full bg-[#F8FAFC] #475569 rounded-2xl  careershadow hover:bg-primary hover:text-white  text-[#020617] transition-all duration-300 ease-in-out">
       {" "}
       <div className="w-[40] h-[40] rounded-[8] bg-[#282A74] text-white flex justify-center items-center mb-[78] ">
         {no}

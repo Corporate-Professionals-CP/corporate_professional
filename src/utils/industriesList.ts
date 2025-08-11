@@ -120,7 +120,6 @@ const industries = [
   "Online Media",
   "Onshore Energy",
   "Operations",
-  "Other",
   "Outsourcing/Offshoring",
   "Package/Freight Delivery",
   "Packaging and Containers",

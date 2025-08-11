@@ -57,7 +57,7 @@ function AccountSetup() {
           description="Expand your professional reach."
           link="/dashboard/profile"
           icon="🔗"
-          completed={!!user?.sections?.bio?.completed}
+          completed={!!user?.sections?.linkedin_profile?.completed}
         />
         <CPcard
           title="Add your skills"

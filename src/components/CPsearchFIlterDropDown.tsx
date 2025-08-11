@@ -91,7 +91,7 @@ const CPsmallTab = ({
   prefix: string;
 }) => {
   const style =
-    "py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis";
+    "py-2 px-3 text-sm text-[#64748B] border border-[#E2E8F0] rounded-full cursor-pointer w-max max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis hover:bg-primary hover:text-white transition-all";
   if (value) {
     return (
       <div className={`${style} bg-[#7074FF1A]`}>

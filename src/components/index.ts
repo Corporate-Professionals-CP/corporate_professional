@@ -34,3 +34,4 @@ export { default as CPrepostModal } from "./CPrepostModal";
 export { default as CPdashboardBack } from "./CPdashboardBack";
 export { default as CPeducationSkeleton } from "./CPeducationSkeleton";
 export { default as CPcommentSkeleton } from "./CPcommentSkeleton";
+export { default as CPCookieBanner } from "./CPCookieBanner";

@@ -31,6 +31,7 @@ const StepFive = ({
         value={selected}
         placeholder="Accounting"
         error={error}
+        search
       />
     </>
   );

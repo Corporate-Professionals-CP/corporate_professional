@@ -102,6 +102,7 @@ export type TUser = {
     years_of_experience: TSection;
     certifications: TSection;
     bio: TSection;
+    linkedin_profile: TSection;
   };
   missing_fields: string[];
   profile_completion: number;

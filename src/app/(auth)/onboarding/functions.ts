@@ -19,6 +19,7 @@ export const signupUser = async (
     password_confirmation: arg.password,
     visibility: arg.profile,
     bio: arg.profession_journey,
+    skills: arg.skills,
     topics: arg.interests,
   };
   console.log(data);

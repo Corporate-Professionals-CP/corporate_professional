@@ -42,16 +42,41 @@ function ProfileSettings({ tab, setTab }: ProfilePageProps) {
           </Link>
         </div>
         <ul>
-          <Item text="General" onClick={() => setTab("general")} />
-          <Item text="Contact" onClick={() => setTab("contact")} />
+          <Item
+            text="General"
+            onClick={() => setTab("general")}
+            active={tab == "general"}
+          />
+          <Item
+            text="Contact"
+            onClick={() => setTab("contact")}
+            active={tab == "contact"}
+          />
           <Item
             text="Work Experience"
             onClick={() => setTab("work_experience")}
+            active={tab == "work_experience"}
           />
-          <Item text="Volunteering" onClick={() => setTab("volunteering")} />
-          <Item text="Education" onClick={() => setTab("education")} />
-          <Item text="Certifications" onClick={() => setTab("certification")} />
-          <Item text="Skills" onClick={() => setTab("skills")} />
+          <Item
+            text="Volunteering"
+            onClick={() => setTab("volunteering")}
+            active={tab == "volunteering"}
+          />
+          <Item
+            text="Education"
+            onClick={() => setTab("education")}
+            active={tab == "education"}
+          />
+          <Item
+            text="Certifications"
+            onClick={() => setTab("certification")}
+            active={tab == "certification"}
+          />
+          <Item
+            text="Skills"
+            onClick={() => setTab("skills")}
+            active={tab == "skills"}
+          />
         </ul>
       </div>
       <div className={`flex-1 p-4.5 ${tab == "" ? "max-sm:hidden" : ""}`}>
@@ -67,14 +92,24 @@ function ProfileSettings({ tab, setTab }: ProfilePageProps) {
   );
 }
 
-const Item = ({ text, onClick }: { text: string; onClick: () => void }) => {
+const Item = ({
+  text,
+  onClick,
+  active = false,
+}: {
+  text: string;
+  onClick: () => void;
+  active?: boolean;
+}) => {
   return (
     <li
-      className="text-sm py-3 px-4.5 flex items-center justify-between text-[#475569] cursor-pointer"
+      className={`text-sm py-3 px-4.5 flex items-center justify-between ${
+        active ? "bg-primary text-white" : "text-[#475569]"
+      }  cursor-pointer hover:bg-primary hover:text-white transition-all`}
       onClick={onClick}
     >
       <span>{text}</span>
-      <HamburgerLinkIcon />
+      <HamburgerLinkIcon color={"currentColor"} />
     </li>
   );
 };

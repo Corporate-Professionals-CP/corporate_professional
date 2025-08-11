@@ -23,6 +23,7 @@ import { errorMessage, successMessage } from "@/utils/toastalert";
 import dayjs from "dayjs";
 import { CPbuttonTransparent } from "@/components/CPbutton";
 import { makeConnection } from "../../network/function";
+import CPpillet from "@/components/CPpillet";
 
 function MiddleSection() {
   const params = useParams();
@@ -70,6 +71,14 @@ function MiddleSection() {
             <div className="flex flex-col gap-2">
               <CPtableList left="Industry" right={data.industry} />
               <CPtableList left="Experience" right={data.years_of_experience} />
+            </div>
+          </div>
+          <div className="mb-12">
+            <h5 className="text-[#050505] mb-5">Skills</h5>
+            <div className="flex flex-wrap gap-4">
+              {data.skills.map((skill) => (
+                <CPpillet name={skill.name} key={skill.id} />
+              ))}
             </div>
           </div>
           <div className="mb-12">

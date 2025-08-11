@@ -9,6 +9,7 @@ type CPselectType = {
   items?: { text: string; val: string }[];
   value?: string;
   onChange?: (e: string) => void;
+  search?: boolean;
 };
 
 function CPselect({
@@ -17,11 +18,12 @@ function CPselect({
   placeholder = "Select here",
   items,
   value,
+  search = false,
   onChange = () => {},
 }: CPselectType) {
   const [open, setOpen] = useState(false);
   const [openUpward, setOpenUpward] = useState(false);
-
+  const [searchval, setsearchval] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +63,11 @@ function CPselect({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const filteredItems = items?.filter(
+    (el) =>
+      el.text.toLowerCase().includes(searchval.toLowerCase()) ||
+      el.val.toLowerCase().includes(searchval.toLowerCase())
+  );
   return (
     <div className="w-full relative" ref={dropdownRef}>
       <div
@@ -83,7 +89,16 @@ function CPselect({
             openUpward ? "bottom-16" : "top-16"
           }`}
         >
-          {items?.map((item) => (
+          {search && (
+            <input
+              type=""
+              value={searchval}
+              onChange={(e) => setsearchval(e.target.value)}
+              className="border rounded-[3px] w-full p-1 border-[#aaa]"
+            />
+          )}
+
+          {filteredItems?.map((item) => (
             <div
               key={item.val}
               className="px-2 py-3 text-slate text-sm hover:bg-[#F8FAFC] cursor-pointer block"
