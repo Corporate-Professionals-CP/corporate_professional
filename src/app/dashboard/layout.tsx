@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import LeftSection from "./LeftSection";
 
 function Layout({
@@ -8,7 +8,9 @@ function Layout({
 }>) {
   return (
     <main className="flex h-screen overflow-hidden justify-center">
-      <LeftSection />
+      <Suspense fallback={null}>
+        <LeftSection />
+      </Suspense>
       {children}
     </main>
   );

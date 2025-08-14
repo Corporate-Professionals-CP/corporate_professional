@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, TLoginSchema } from "./type";
 import useSWRMutation from "swr/mutation";
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { errorMessage, successMessage } from "@/utils/toastalert";
 import useUser from "@/statestore/useUser";
 import { loginUser } from "./functions";
@@ -30,8 +30,8 @@ declare global {
 }
 
 export default function Login() {
+  const searchParams = useSearchParams();
   const [modalOpen, setModalOpen] = useState(false);
-
   const [emailmodal, setEmailModal] = useState(false);
 
   const setUser = useUser((state) => state.setUser);
@@ -53,7 +53,14 @@ export default function Login() {
       const response = await trigger(data);
       setUser(response);
       successMessage("Login Successful");
-      router.push("/dashboard");
+
+      const nextParam = searchParams.get("next");
+      if (nextParam) {
+        return router.push(nextParam);
+      }
+
+      return router.push("/dashboard");
+
       /* eslint-disable @typescript-eslint/no-explicit-any */
     } catch (err: any) {
       console.log(err);
